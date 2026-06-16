@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioclimat et Écologie - Indice d'Emberger & Martonne</title>
+    
+    <!-- Google Fonts (Professionnel : Montserrat + Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bibliothèques CSS (Bootstrap, Leaflet, FontAwesome) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MathJax (Formules mathématiques) -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- SheetJS (Excel) -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    
+    <!-- Outils Export PDF (jsPDF, AutoTable, html2canvas) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            /* Palette Professionnelle "Eco-Tech" */
+            --primary-bg: #f3f6f9;
+            --primary-color: #1e293b;    /* Slate 800 */
+            --secondary-color: #334155;  /* Slate 700 */
+            --accent-color: #059669;     /* Emerald 600 - Vert pro */
+            --accent-hover: #047857;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-light: #64748b;
+            --border-radius: 12px;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* --- Styles pour l'écran d'introduction --- */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 40px 20px;
+            backdrop-filter: blur(5px);
+        }
+        .intro-card {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            padding: 4rem 3rem;
+            text-align: center;
+            margin: auto;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .intro-logo-icon {
+            font-size: 4rem;
+            color: var(--accent-color);
+            background: #d1fae5;
+            padding: 1.5rem;
+            border-radius: 24px;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        .intro-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+        }
+        .intro-subtitle {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        .intro-author {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2.5rem;
+        }
+        .intro-warning {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 4px;
+            color: #92400e;
+            padding: 1.5rem;
+            text-align: left;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        
+        /* --- Layout Application --- */
+        #app-content {
+            display: none;
+            flex: 1;
+            padding-bottom: 40px;
+        }
+
+        .header-panel {
+            background: linear-gradient(to right, #1e293b, #334155);
+            color: white;
+            padding: 1.25rem 2rem;
+            margin-bottom: 25px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .header-panel h2 {
+            color: white;
+            font-size: 1.6rem;
+        }
+        .header-panel .btn-outline-light {
+            border-color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.9);
+        }
+        .header-panel .btn-outline-light:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: white;
+            color: white;
+        }
+
+        /* Cartes Modernes */
+        .card {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 24px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .card-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Inputs & Formulaires */
+        .form-control, .form-select {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.95rem;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #fff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+        .input-group-text {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: var(--text-light);
+        }
+        /* Style spécial pour fusionner bouton et input */
+        .input-group .btn {
+            z-index: 2;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.4rem;
+        }
+
+        /* Boutons */
+        .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+            box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2);
+            transition: all 0.2s;
+        }
+        .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px rgba(5, 150, 105, 0.3);
+        }
+        .btn-sm {
+            border-radius: 6px;
+        }
+
+        .param-card {
+            border-left: none;
+            border-top: 4px solid var(--accent-color);
+        }
+        
+        .unit-badge {
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        /* Résultats & Formules */
+        #formulaContainer {
+            border-style: dashed !important;
+            border-width: 2px !important;
+            background-color: #f0fdf4 !important;
+            border-color: #86efac !important;
+        }
+        
+        .calc-step {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+        
+        /* Tableaux */
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead th {
+            background-color: #f1f5f9;
+            color: var(--secondary-color);
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .table tbody td {
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-main);
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.8em;
+            border-radius: 6px;
+        }
+        
+        .footer-text {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        @keyframes highlightRow {
+            0% { background-color: #dcfce7; }
+            100% { background-color: transparent; }
+        }
+        .highlight-row {
+            animation: highlightRow 2s ease-out;
+        }
+
+        .share-btn {
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .station-map-label {
+            background: rgba(0,0,0,0.7) !important;
+            border: none !important;
+            color: #fff !important;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            text-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 1. ÉCRAN D'ACCUEIL -->
+<div id="intro-screen">
+    <div class="intro-card">
+        <div class="intro-logo">
+            <i class="fas fa-leaf intro-logo-icon"></i>
+        </div>
+        <h1 class="intro-title display-5">Bioclimat et Écologie</h1>
+        <p class="intro-subtitle">Outil d'analyse bioclimatique (Emberger, Martonne) et phytogéographique</p>
+        <p class="intro-author">Destiné à la Communauté Scientifique & aux Professionnels de l'Environnement</p>
+        <hr class="my-4" style="opacity: 0.1">
+        <div class="intro-warning">
+            <h5 class="fw-bold mb-3" style="color: #92400e; font-family: 'Montserrat', sans-serif;"><i class="fas fa-exclamation-triangle me-2"></i>Avertissement Important & Responsabilité</h5>
+            <ul class="mb-0 ps-3" style="font-size: 0.95rem;">
+                <li class="mb-2"><strong>Outil d'aide à la décision :</strong> Cette application produit des estimations basées sur des modèles mathématiques. Elle ne remplace pas une expertise humaine ni une validation terrain.</li>
+                <li class="mb-2"><strong>Données :</strong> Les résultats dépendent de la qualité des données climatiques saisies.</li>
+                <li class="mb-0"><strong>Conformité :</strong> En contexte scientifique ou réglementaire, les résultats doivent impérativement être vérifiés par des méthodes classiques.</li>
+            </ul>
+        </div>
+        <div class="intro-checkbox-wrapper">
+            <div class="form-check d-flex justify-content-center align-items-center">
+                <input class="form-check-input me-2" type="checkbox" id="introCheck" onchange="toggleEnterButton()" style="width: 1.2em; height: 1.2em;">
+                <label class="form-check-label fw-bold text-dark" for="introCheck" style="font-size: 0.95rem; cursor: pointer;">
+                    Je confirme avoir pris connaissance de l'avertissement et accepte les conditions.
+                </label>
+            </div>
+        </div>
+        <button id="btnEnterApp" class="btn btn-primary btn-lg w-100 fw-bold py-3 mt-2" onclick="enterApp()" disabled style="font-family: 'Montserrat', sans-serif; letter-spacing: 1px;">
+            <i class="fas fa-door-open me-2"></i>ACCÉDER AUX OUTILS
+        </button>
+    </div>
+</div>
+
+<!-- 2. CONTENU DE L'APPLICATION -->
+<div id="app-content" class="container-fluid px-4">
+    <!-- En-tête -->
+    <div class="row header-panel align-items-center">
+        <div class="col-md-8">
+            <h2 class="m-0 d-flex align-items-center"><i class="fas fa-leaf me-3 text-success bg-white rounded-circle p-2" style="font-size:1.2rem;"></i>Bioclimat et Écologie</h2>
+            <div class="small text-light opacity-75 mt-1 ms-1">Caractérisation des étages bioclimatiques méditerranéens et la phytogéographie appliquée.</div>
+        </div>
+        <div class="col-md-4 text-end">
+            <div class="d-flex justify-content-end mb-2">
+                <div class="input-group input-group-sm" style="max-width: 250px;">
+                    <span class="input-group-text bg-white text-secondary fw-bold small">Titre</span>
+                    <input type="text" id="reportTitleInput" class="form-control" placeholder="Titre du rapport (Ex: Analyse Tabarka)" value="Rapport Bioclimatique">
+                </div>
+                <div class="input-group input-group-sm ms-2" style="max-width: 200px;">
+                    <span class="input-group-text bg-white border-0 text-secondary"><i class="fas fa-user"></i></span>
+                    <input type="text" id="authorName" class="form-control border-0 bg-white bg-opacity-10 text-white" placeholder="Votre nom (pour PDF)" style="::placeholder { color: rgba(255,255,255,0.6); }">
+                </div>
+            </div>
+            <!-- Zone d'actions globales -->
+            <div class="btn-group shadow-sm rounded">
+                <button class="btn btn-outline-light btn-sm px-3" data-bs-toggle="modal" data-bs-target="#guideModal"><i class="fas fa-question-circle me-1"></i> Guide</button>
+                <button class="btn btn-outline-light btn-sm px-3" onclick="openImportModal()"><i class="fas fa-file-import me-1"></i> Charger</button>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-outline-light btn-sm dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-download me-1"></i> Exporter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                        <li><a class="dropdown-item py-2" href="#" onclick="initiateExport('pdf')"><i class="fas fa-file-pdf me-2 text-danger"></i>Rapport complet (PDF)</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="initiateExport('excel')"><i class="fas fa-file-excel me-2 text-success"></i>Données (Excel)</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="initiateExport('json')"><i class="fas fa-file-code me-2 text-warning"></i>Sauvegarder Session (JSON)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <input type="file" id="importFile" style="display:none" accept=".json, .xlsx, .xls" onchange="handleFileImport(this)">
+        </div>
+    </div>
+
+    <!-- Feedback de géolocalisation -->
+    <div id="geoProgress" class="alert alert-info shadow border-0 rounded-pill px-4 position-fixed top-0 start-50 translate-middle-x mt-4" style="z-index: 9999; display: none;">
+        <i class="fas fa-satellite-dish fa-spin me-2"></i> Géolocalisation auto : <strong><span id="geoCount">0</span>/<span id="geoTotal">0</span></strong>
+    </div>
+
+    <div class="row">
+        <!-- COLONNE GAUCHE : SAISIE & RÉSULTATS -->
+        <div class="col-lg-4 mb-4">
+            
+            <!-- Localisation -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-map-marker-alt me-2 text-primary opacity-75"></i>Identification</span>
+                    <button class="btn btn-sm btn-light text-primary fw-bold" onclick="resetForm()" title="Vider les champs">
+                        <i class="fas fa-plus me-1"></i> Nouvelle
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nom de la station / Ville</label>
+                        <div class="input-group">
+                            <input type="text" id="stationName" class="form-control" placeholder="Ex: Tabarka" list="stationSuggestions" autocomplete="off">
+                            <datalist id="stationSuggestions"></datalist>
+                            <button class="btn btn-primary" type="button" onclick="geoLocate()"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-4">
+                            <label class="form-label">Latitude</label>
+                            <input type="number" step="any" id="lat" class="form-control form-control-sm" placeholder="36.XXX">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Longitude</label>
+                            <input type="number" step="any" id="lon" class="form-control form-control-sm" placeholder="10.XXX">
+                        </div>
+                        <!-- Ajout du bouton de mise à jour carte comme demandé -->
+                        <div class="col-4 d-flex align-items-end">
+                             <button class="btn btn-sm btn-outline-success w-100 mb-1" onclick="updateMapFromCoords()" title="Voir sur la carte">
+                                 <i class="fas fa-sync-alt me-1"></i> Carte
+                             </button>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Altitude (m)</label>
+                            <input type="number" step="1" id="alt" class="form-control form-control-sm" placeholder="Ex: 500">
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-1">
+                         <div class="col-7">
+                            <label class="form-label">Période (Années)</label>
+                            <div class="input-group input-group-sm">
+                                <input type="number" id="periodStart" class="form-control" placeholder="1990">
+                                <span class="input-group-text border-start-0 border-end-0 bg-white">-</span>
+                                <input type="number" id="periodEnd" class="form-control" placeholder="2020">
+                            </div>
+                        </div>
+                        <!-- Choix position étiquette -->
+                        <div class="col-5">
+                             <label class="form-label" title="Position sur le graphique">Étiquette</label>
+                             <select id="labelPos" class="form-select form-select-sm">
+                                 <option value="auto">Auto</option>
+                                 <option value="top">Haut</option>
+                                 <option value="bottom">Bas</option>
+                                 <option value="left">Gauche</option>
+                                 <option value="right">Droite</option>
+                             </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Données Climatiques -->
+            <div class="card param-card">
+                <div class="card-header"><i class="fas fa-sliders-h me-2 text-primary opacity-75"></i>Paramètres Climatiques</div>
+                <div class="card-body">
+                    
+                    <!-- Choix de la formule -->
+                    <div class="mb-4">
+                        <label class="form-label text-dark mb-2">Méthode de calcul :</label>
+                        <div class="d-flex gap-3 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="calcMethod" id="methodStewart" value="stewart" checked onchange="updateCalcDisplay()">
+                                <label class="form-check-label small fw-semibold" for="methodStewart">Stewart (Simplifiée)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="calcMethod" id="methodKelvin" value="kelvin" onchange="updateCalcDisplay()">
+                                <label class="form-check-label small" for="methodKelvin">Emberger (Originale)</label>
+                            </div>
+                        </div>
+
+                        <!-- Zone d'affichage dynamique de la formule -->
+                        <div id="formulaContainer" class="p-3 text-center position-relative rounded-3" style="transition: all 0.3s ease;">
+                            <div id="formulaStewart" class="formula-content">
+                                <div class="text-primary fw-bold" style="font-family: 'Times New Roman', serif; font-size: 1.25rem;">
+                                    $$Q_2 = \frac{3.43 \cdot P}{M - m}$$
+                                </div>
+                                <div class="small text-muted mt-1 fst-italic">\(M, m\) en °C</div>
+                            </div>
+                            <div id="formulaKelvin" class="formula-content" style="display:none;">
+                                <div class="text-secondary fw-bold" style="font-family: 'Times New Roman', serif; font-size: 1.25rem;">
+                                    $$Q = \frac{2000 \cdot P}{M^2 - m^2}$$
+                                </div>
+                                <div class="small text-muted mt-1 fst-italic">\(M, m\) en Kelvins</div>
+                            </div>
+                            <!-- Formule de Martonne ajoutée ici -->
+                            <div id="formulaMartonne" class="formula-content mt-3 pt-3 border-top border-success border-opacity-25">
+                                <div class="text-dark fw-bold" style="font-family: 'Times New Roman', serif; font-size: 1.25rem;">
+                                    $$I = \frac{P}{T + 10}$$
+                                </div>
+                                <div class="small text-muted mt-1 fst-italic">Indice de Martonne (\(T\) en °C)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- P -->
+                        <div class="col-12">
+                            <label class="form-label" title="Cumul annuel moyen des précipitations">Précipitations Annuelles (P)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-cloud-rain text-info"></i></span>
+                                <input type="number" id="input_P" class="form-control fw-bold text-primary" placeholder="ex: 957" step="1">
+                                <span class="input-group-text unit-badge">mm</span>
+                            </div>
+                        </div>
+
+                        <!-- M -->
+                        <div class="col-6">
+                            <label class="form-label" title="Max du mois le plus chaud">Max Chaud (M)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-temperature-high text-danger"></i></span>
+                                <input type="number" id="input_M" class="form-control" placeholder="ex: 30.3" step="0.1">
+                            </div>
+                        </div>
+
+                        <!-- m -->
+                        <div class="col-6">
+                            <label class="form-label" title="Min du mois le plus froid">Min Froid (m)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-temperature-low text-primary"></i></span>
+                                <input type="number" id="input_m" class="form-control" placeholder="ex: 7.2" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4 border-light">
+                    
+                    <!-- Indice Complémentaire : Martonne -->
+                    <div class="bg-light p-3 rounded-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label mb-0 text-dark fw-bold">Indice de Martonne</label>
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input" type="checkbox" id="checkMartonne" checked onchange="toggleMartonneUI()">
+                            </div>
+                        </div>
+                        <div id="martonneInputs">
+                            <label class="form-label small text-muted">Température Moyenne (T)</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text border-0"><i class="fas fa-thermometer-half"></i></span>
+                                <input type="number" id="input_T" class="form-control border-0" placeholder="Obligatoire pour Martonne" step="0.1">
+                                <span class="input-group-text border-0 unit-badge">°C</span>
+                            </div>
+                            <div class="small text-muted mt-2 fst-italic">
+                                <i class="fas fa-info-circle me-1"></i> Renseignez T pour le calcul
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Résultats Calculés -->
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(145deg, #ffffff, #f8fafc);">
+                <div class="card-body text-center p-4">
+                    <button id="btn-action" class="btn btn-primary w-100 mb-4 fw-bold py-3 text-uppercase shadow-sm" onclick="calculateAndAdd()" style="letter-spacing: 1px;">
+                        <i class="fas fa-calculator me-2"></i>Calculer & Ajouter
+                    </button>
+                    <div class="row align-items-center">
+                        <div class="col-5 border-end">
+                            <div class="text-muted small text-uppercase fw-bold mb-1">Quotient Q</div>
+                            <h2 class="display-6 fw-bold mb-0" id="displayQ" style="color: var(--primary-color);">-</h2>
+                        </div>
+                        <div class="col-7 text-start ps-4">
+                            <div class="text-muted small text-uppercase fw-bold mb-1">Résultat</div>
+                            <h5 class="text-dark fw-bold mb-1" id="displayStage">-</h5>
+                            <span class="badge bg-secondary fw-normal" id="displayVariant">Hiver : -</span>
+                        </div>
+                    </div>
+                    <!-- Résultat Martonne -->
+                    <div class="mt-4 pt-3 border-top" id="resMartonneRow" style="display:none">
+                         <div class="d-flex justify-content-between align-items-center px-2">
+                             <small class="text-muted">Martonne ($I$)</small>
+                             <div class="d-flex align-items-center gap-2">
+                                 <strong class="text-dark fs-5" id="displayI">-</strong>
+                                 <span class="badge bg-info text-white fw-normal" id="displayIClass">-</span>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOUVELLE ZONE DE COMMENTAIRES (Ajoutée ici) -->
+            <div class="card mt-3">
+                <div class="card-header text-primary fw-bold border-0">
+                    <i class="fas fa-pen-alt me-2"></i>Notes & Commentaires
+                </div>
+                <div class="card-body pt-0">
+                    <textarea id="reportComments" class="form-control border-0 bg-light" rows="3" placeholder="Saisissez vos observations pour le rapport..."></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLONNE DROITE : VISUALISATION -->
+        <div class="col-lg-8">
+            
+            <!-- Graphique Emberger -->
+            <div class="card h-auto mb-4">
+                <div class="card-header border-0 bg-white pt-3 pb-0 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div class="d-flex align-items-center flex-grow-1">
+                        <span class="fs-5 fw-bold text-dark me-3">Climagramme d'Emberger</span>
+                        <!-- Controls Container -->
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- Switch Log Scale -->
+                            <div class="form-check form-switch d-inline-block m-0">
+                                <input class="form-check-input" type="checkbox" id="logScaleToggle" onchange="toggleLogScale()">
+                                <label class="form-check-label small fw-bold text-muted" for="logScaleToggle">Échelle Log (Y)</label>
+                                <i class="fas fa-info-circle text-secondary ms-1" style="cursor: help; font-size: 0.9em;" 
+                                   data-bs-toggle="tooltip" data-bs-html="true" 
+                                   title="<strong>Pourquoi l'utiliser ?</strong><br><em>Compression des grands écarts :</em> Elle permet de faire tenir sur un même graphique des stations très sèches et très humides."></i>
+                            </div>
+                            <!-- Switch Sub-Stages (Nouveau) -->
+                            <div class="form-check form-switch d-inline-block m-0">
+                                <input class="form-check-input" type="checkbox" id="subStageToggle" onchange="toggleSubStages()">
+                                <label class="form-check-label small fw-bold text-primary" for="subStageToggle">Afficher Sous-étages</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-secondary border-0" onclick="downloadChartImage()"><i class="fas fa-camera me-1"></i> PNG</button>
+                        <button class="btn btn-sm btn-outline-danger border-0" onclick="clearStations()"><i class="fas fa-trash me-1"></i> Tout effacer</button>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    <div class="rounded-3 p-1 bg-white" style="position: relative; height: 550px; width: 100%">
+                        <canvas id="embergerChart"></canvas>
+                    </div>
+                    <div class="small text-muted text-center mt-2 fst-italic">
+                        <i class="fas fa-mouse-pointer me-1"></i> Survol pour détails, Clic pour localisation.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte (Pleine Largeur) -->
+            <div class="card border-0 mb-4">
+                <div class="card-header border-0 bg-white">
+                    <span class="fw-bold text-dark"><i class="fas fa-map me-2 text-success"></i>Localisation Géographique</span>
+                </div>
+                <div class="card-body p-0">
+                    <div id="map" style="height: 450px; border-radius: 0 0 var(--border-radius) var(--border-radius);"></div>
+                </div>
+            </div>
+            
+            <!-- Tableau Récapitulatif (En dessous) -->
+            <div class="card border-0 mb-4">
+                <div class="card-header border-0 bg-white">
+                    <span class="fw-bold text-dark"><i class="fas fa-table me-2 text-primary"></i>Données Détaillées</span>
+                </div>
+                <div class="card-body p-0 table-responsive">
+                    <table class="table table-hover mb-0 small align-middle" id="stationsTable">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th class="text-center" style="width:30px"><input type="checkbox" id="selectAllCheckbox" onchange="toggleAllVisibility(this.checked)" checked class="form-check-input"></th>
+                                <th>Station</th>
+                                <th>Q</th>
+                                <th>Étage</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Liste dynamique -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Copyright (2026) -->
+    <div class="row mt-5 mb-4">
+        <div class="col-12 text-center footer-text small">
+            <hr class="mb-4 mx-auto w-50" style="opacity: 0.1">
+            <p class="mb-1">&copy; 2026 Bioclimat et Écologie. Tous droits réservés.</p>
+            <p class="mb-0">Conception et Développement : <strong class="text-primary">Brahim Jaziri</strong> (Université de Tunis)</p>
+        </div>
+    </div>
+</div>
+
+<!-- ... MODALES ... -->
+
+<!-- Modale d'alerte personnalisée (remplacement de alert()) -->
+<div class="modal fade" id="customAlertModal" tabindex="-1" aria-hidden="true" style="z-index: 10600;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-warning text-dark border-0">
+                <h5 class="modal-title"><i class="fas fa-exclamation-circle me-2"></i>Attention</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center fw-bold" id="customAlertMessage"></div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-dark px-4" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modale de confirmation personnalisée (remplacement de confirm()) -->
+<div class="modal fade" id="customConfirmModal" tabindex="-1" aria-hidden="true" style="z-index: 10600;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title"><i class="fas fa-question-circle me-2"></i>Confirmation</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center fw-bold" id="customConfirmMessage"></div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary px-4 shadow" id="btnCustomConfirmAction">Confirmer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Guide -->
+<div class="modal fade" id="guideModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-dark text-white border-0 rounded-top-4">
+                <h5 class="modal-title"><i class="fas fa-book-reader me-2"></i>Guide d'Utilisation</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-2"><span class="step-circle shadow-sm">1</span> Saisie & Calculs</h6>
+                            <p class="small text-muted ms-4">
+                                Renseignez P, M, m. L'indice de Martonne est calculé si T est fourni (sinon estimé). Utilisez la loupe pour la géolocalisation auto.
+                            </p>
+                        </div>
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-success mb-2"><span class="step-circle shadow-sm">2</span> Import / Export</h6>
+                            <p class="small text-muted ms-4">
+                                Chargez vos fichiers Excel ou sauvegardez votre session en JSON. Exportez un rapport PDF professionnel.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-warning mb-2"><span class="step-circle shadow-sm">3</span> Analyse</h6>
+                            <p class="small text-muted ms-4">
+                                Accédez aux données de végétation via le bouton feuille. Ajoutez vos notes personnelles pour le rapport.
+                            </p>
+                        </div>
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-danger mb-2"><span class="step-circle shadow-sm">4</span> Visualisation</h6>
+                            <p class="small text-muted ms-4">
+                                Le graphique interactif et la carte sont synchronisés. Cliquez sur un point pour le mettre en évidence.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-0 rounded-bottom-4">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">Compris</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Export -->
+<div class="modal fade" id="exportModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i>Export des Résultats</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+                <div class="text-center mb-5">
+                    <h4 class="text-success fw-bold mb-3">Prêt à télécharger ?</h4>
+                    <p class="text-muted">Votre rapport inclura les graphiques, cartes et références bibliographiques.</p>
+                    
+                    <!-- AJOUT : Champ Titre du Rapport -->
+                    <div class="mx-auto mt-4" style="max-width: 400px;">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-secondary fw-bold small">Titre</span>
+                            <input type="text" id="reportTitleInput" class="form-control" placeholder="Titre du rapport (Ex: Analyse Tabarka)" value="Rapport Bioclimatique">
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Partage Social simplifié -->
+                <div class="text-center">
+                    <p class="small text-muted mb-3 text-uppercase fw-bold">Partager l'outil</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbrahimjaziri.jimdofree.com%2F" target="_blank" class="share-btn share-fb text-decoration-none text-white bg-primary">
+                            <i class="fab fa-facebook-f me-2"></i> Facebook
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbrahimjaziri.jimdofree.com%2F" target="_blank" class="share-btn share-li text-decoration-none text-white bg-primary">
+                            <i class="fab fa-linkedin-in me-2"></i> LinkedIn
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- AJOUT FOOTER CONTACT -->
+                <div class="mt-4 pt-3 border-top text-center small text-muted">
+                    <p class="mb-2">Suggestions ? Problèmes ? Contactez-nous : <a href="mailto:geomapia.ia@gmail.com" class="text-decoration-none fw-bold text-success">geomapia.ia@gmail.com</a></p>
+                    <div class="fw-bold d-flex justify-content-center align-items-center gap-3">
+                        <a href="https://brahimjaziri.jimdofree.com/" target="_blank" class="text-decoration-none text-dark"><i class="fas fa-globe me-1"></i>Site Web</a>
+                        <span class="text-muted opacity-50">|</span>
+                        <a href="https://www.youtube.com/channel/UCJgpf2GdxNkXSMt3-z6jUwg" target="_blank" class="text-decoration-none text-danger"><i class="fab fa-youtube me-1"></i>YouTube</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-success fw-bold px-4 shadow" id="btnConfirmExport" onclick="confirmExport()">
+                    <i class="fas fa-download me-2"></i>Télécharger
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Végétation -->
+<div class="modal fade" id="vegModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fas fa-leaf me-2"></i>Végétation Potentielle</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="small text-muted mb-2 fw-bold">Observations récentes (GBIF > 2000) à proximité (~5km) :</p>
+                <div id="vegListContent" style="max-height: 500px; overflow-y: auto;" class="bg-light rounded p-3">
+                    <div class="text-center py-3"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></div>
+                </div>
+                <div class="mt-2 small text-end text-muted fst-italic">Sources : GBIF (Données), Wikipedia (Infos)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Calcul -->
+<div class="modal fade" id="calcModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-calculator me-2"></i>Détails du Calcul</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="calcModalBody"></div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Import (Structure Restaurée) -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title"><i class="fas fa-file-import me-2"></i>Charger des données</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-4">
+                    <!-- Colonne Excel restaurée avec le tableau visuel -->
+                    <div class="col-md-6 border-end">
+                        <h6 class="text-success fw-bold mb-3"><i class="fas fa-file-excel me-2"></i>Import Excel (.xlsx, .xls)</h6>
+                        <p class="small text-muted">Votre fichier doit respecter strictement les en-têtes suivants (1ère ligne) :</p>
+                        
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-sm small text-center mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Station</th>
+                                        <th>P</th>
+                                        <th>M</th>
+                                        <th>m</th>
+                                        <th>T</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted">Nom</td>
+                                        <td class="text-muted">mm</td>
+                                        <td class="text-muted">°C</td>
+                                        <td class="text-muted">°C</td>
+                                        <td class="text-muted">Opt.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="small text-muted fst-italic">Colonnes optionnelles : Lat, Lon, Alt, Debut, Fin.</p>
+                        
+                        <button class="btn btn-outline-success btn-sm w-100 mb-3" onclick="downloadTemplate()">
+                            <i class="fas fa-download me-2"></i>Télécharger un modèle vide
+                        </button>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="text-warning fw-bold mb-3"><i class="fas fa-file-code me-2"></i>Import JSON</h6>
+                        <p class="small text-muted">
+                            Vous pouvez recharger un fichier <code>.json</code> généré précédemment par cette application via la fonction "Sauvegarder Session".
+                        </p>
+                        <hr>
+                        <div class="alert alert-light border text-center">
+                            <p class="mb-2">Prêt à importer ?</p>
+                            <button class="btn btn-primary w-100 shadow-sm" onclick="triggerImport()">
+                                <i class="fas fa-folder-open me-2"></i>Sélectionner un fichier
+                            </button>
+                            <small class="text-muted d-block mt-1">Accepte .xlsx, .xls, .json</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+let stationsList = []; 
+let map, embergerChart;
+let markersLayer;
+let markersMap = {}; 
+let calcModal, importModal, vegModal, exportModal; 
+let currentExportType = null; 
+let geocodingQueue = [];
+let editingStationId = null;
+let useLogScale = false;
+let showSubStages = false; // Nouvelle variable pour le niveau de détail
+
+// Variables pour les modales personnalisées
+let customAlertModalInstance;
+let customConfirmModalInstance;
+let confirmCallback = null;
+
+Chart.register(ChartDataLabels);
+
+document.addEventListener('DOMContentLoaded', () => {
+    calcModal = new bootstrap.Modal(document.getElementById('calcModal'));
+    importModal = new bootstrap.Modal(document.getElementById('importModal'));
+    vegModal = new bootstrap.Modal(document.getElementById('vegModal'));
+    exportModal = new bootstrap.Modal(document.getElementById('exportModal'));
+    
+    // Initialisation des modales personnalisées
+    initCustomModals();
+
+    document.getElementById('stationName').addEventListener('input', function() {
+        const val = this.value;
+        const station = stationsList.find(s => s.name === val);
+        if (station) editStation(station.id);
+    });
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    
+    toggleMartonneUI();
+});
+
+// --- Fonctions utilitaires pour remplacer Alert et Confirm ---
+
+function initCustomModals() {
+    customAlertModalInstance = new bootstrap.Modal(document.getElementById('customAlertModal'));
+    customConfirmModalInstance = new bootstrap.Modal(document.getElementById('customConfirmModal'));
+    
+    document.getElementById('btnCustomConfirmAction').addEventListener('click', function() {
+        if (confirmCallback) {
+            confirmCallback();
+        }
+        customConfirmModalInstance.hide();
+    });
+    
+    // Re-initialisation des tooltips pour inclure ceux ajoutés dynamiquement ou via data-bs-toggle
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+function showAlert(msg) {
+    document.getElementById('customAlertMessage').innerText = msg;
+    customAlertModalInstance.show();
+}
+
+function showConfirm(msg, callback) {
+    document.getElementById('customConfirmMessage').innerText = msg;
+    confirmCallback = callback;
+    customConfirmModalInstance.show();
+}
+
+// -------------------------------------------------------------
+
+function toggleEnterButton() {
+    const isChecked = document.getElementById('introCheck').checked;
+    document.getElementById('btnEnterApp').disabled = !isChecked;
+}
+
+function enterApp() {
+    document.getElementById('intro-screen').style.display = 'none';
+    document.getElementById('app-content').style.display = 'block';
+    initMap();
+    initChart();
+    setTimeout(() => { if(map) map.invalidateSize(); }, 200);
+}
+
+function updateStationListUI() {
+    const dataList = document.getElementById('stationSuggestions');
+    dataList.innerHTML = '';
+    stationsList.forEach(s => {
+        const option = document.createElement('option');
+        option.value = s.name;
+        dataList.appendChild(option);
+    });
+}
+
+function getCalcMethod() {
+    if(document.getElementById('methodStewart').checked) return 'stewart';
+    return 'kelvin';
+}
+
+function updateCalcDisplay() {
+    const isStewart = document.getElementById('methodStewart').checked;
+    const divStewart = document.getElementById('formulaStewart');
+    const divKelvin = document.getElementById('formulaKelvin');
+    const container = document.getElementById('formulaContainer');
+    
+    if(isStewart) {
+        divStewart.style.display = 'block';
+        divKelvin.style.display = 'none';
+        container.style.backgroundColor = '#f0fdf4';
+        container.style.borderColor = '#86efac';
+    } else {
+        divStewart.style.display = 'none';
+        divKelvin.style.display = 'block';
+        container.style.backgroundColor = '#f8fafc';
+        container.style.borderColor = '#cbd5e1';
+    }
+}
+
+function toggleMartonneUI() {
+    const isChecked = document.getElementById('checkMartonne').checked;
+    const formulaDiv = document.getElementById('formulaMartonne');
+    
+    if(isChecked) {
+        formulaDiv.style.display = 'block';
+    } else {
+        formulaDiv.style.display = 'none';
+    }
+}
+
+function toggleLogScale() {
+    useLogScale = document.getElementById('logScaleToggle').checked;
+    
+    // Update Scale Type and Limits
+    embergerChart.options.scales.y.type = useLogScale ? 'logarithmic' : 'linear';
+    embergerChart.options.scales.y.min = useLogScale ? 10 : 0;
+    embergerChart.options.scales.y.max = 230; 
+    
+    // Customize Ticks for better visual in Log mode
+    if(useLogScale) {
+        embergerChart.options.scales.y.ticks = {
+            callback: function(value, index, values) {
+                if(value === 10 || value === 20 || value === 50 || value === 100 || value === 200) return value;
+                return null;
+            },
+            color: '#444'
+        };
+    } else {
+        embergerChart.options.scales.y.ticks = { stepSize: 10, color: '#444' };
+    }
+
+    refreshCharts();
+}
+
+// Fonction toggle pour les sous-étages
+function toggleSubStages() {
+    showSubStages = document.getElementById('subStageToggle').checked;
+    refreshCharts();
+}
+
+const COULEURS = {
+    PERHUMIDE: "#000055", HUMIDE: "#1E90FF", HUMIDE_SUP: "#00008B", HUMIDE_INF: "#1E90FF",
+    SUB_HUMIDE: "#006400", SEMI_ARIDE_SUP: "#32CD32", SEMI_ARIDE_MOY: "#90EE90", SEMI_ARIDE_INF: "#FFFF00",
+    ARIDE_SUP: "#FFA500", ARIDE_INF: "#FF4500", SAHARIEN: "#D3D3D3"
+};
+
+const mainCurves = {
+    // Limite Saharien / Aride (Abaissée précédemment)
+    limit_Sah_Ari: [ {m:-5, q:16}, {m:0, q:20}, {m:5, q:24}, {m:10, q:28} ],
+
+    // Limite Aride / Semi-Aride -> MODIFIÉE POUR TUNIS
+    // Abaissée pour passer sous Tunis (m=7.2, Q=60).
+    // Ancien m=10 était 71, nouveau 66. Ancien m=5 était 54, nouveau 51.
+    limit_Ari_SA: [ {m:-5, q:28}, {m:0, q:38}, {m:5, q:51}, {m:10, q:66} ],
+
+    // Sous-étages du Semi-Aride (Ajustés légèrement pour suivre la nouvelle base)
+    limit_SA_Inf_Moy: [ {m:-5, q:38}, {m:0, q:48}, {m:5, q:61}, {m:10, q:75} ],
+    limit_SA_Moy_Sup: [ {m:-5, q:48}, {m:0, q:59}, {m:5, q:71}, {m:10, q:83} ],
+
+    // Limite Semi-Aride / Sub-Humide
+    limit_SA_SH: [ {m:-5, q:60}, {m:0, q:70}, {m:5, q:81}, {m:10, q:92} ],
+
+    // Limite Sub-Humide / Humide (limit_SH_H) -> CORRIGÉE SELON LE TRAIT ROUGE
+    // Commence à 120 (m=0) et finit vers 150 (m=10)
+    limit_SH_H: [ {m:-5, q:105}, {m:0, q:120}, {m:5, q:135}, {m:10, q:150} ],
+
+    // Limite Humide / Perhumide (limit_H_PerH) -> HAUTE (170)
+    limit_H_PerH: [ {m:-5, q:150}, {m:0, q:170}, {m:5, q:190}, {m:10, q:210} ]
+};
+
+function getQ(curvePoints, m) {
+    if(m < curvePoints[0].m) {
+        const p1 = curvePoints[0]; const p2 = curvePoints[1];
+        const slope = (p2.q - p1.q) / (p2.m - p1.m);
+        return p1.q + slope * (m - p1.m);
+    }
+    for (let i = 0; i < curvePoints.length - 1; i++) {
+        const p1 = curvePoints[i];
+        const p2 = curvePoints[i+1];
+        if (m >= p1.m && m <= p2.m) {
+            return p1.q + (m - p1.m) * (p2.q - p1.q) / (p2.m - p1.m);
+        }
+    }
+    const last = curvePoints[curvePoints.length-1];
+    const prev = curvePoints[curvePoints.length-2];
+    const slope = (last.q - prev.q) / (last.m - prev.m);
+    return last.q + slope * (m - last.m);
+}
+
+function determineStage(Q, m) {
+    if (Q < getQ(mainCurves.limit_Sah_Ari, m)) return { name: "Péraride (Saharien)", color: COULEURS.SAHARIEN, rank: 1 };
+    
+    if (Q < getQ(mainCurves.limit_Ari_SA, m)) {
+        const qSah = getQ(mainCurves.limit_Sah_Ari, m);
+        const qAri = getQ(mainCurves.limit_Ari_SA, m);
+        const mid = qSah + (qAri - qSah) * 0.5;
+        if(Q < mid) return { name: "Aride Inférieur", color: COULEURS.ARIDE_INF, rank: 2 };
+        return { name: "Aride Supérieur (AS)", color: COULEURS.ARIDE_SUP, rank: 3 };
+    }
+    
+    // Étage Semi-Aride divisé en 3
+    if (Q < getQ(mainCurves.limit_SA_Inf_Moy, m)) return { name: "Semi-Aride Inférieur (SAI)", color: COULEURS.SEMI_ARIDE_INF, rank: 4 };
+    if (Q < getQ(mainCurves.limit_SA_Moy_Sup, m)) return { name: "Semi-Aride Moyen (SAM)", color: COULEURS.SEMI_ARIDE_MOY, rank: 5 };
+    if (Q < getQ(mainCurves.limit_SA_SH, m)) return { name: "Semi-Aride Supérieur (SAS)", color: COULEURS.SEMI_ARIDE_SUP, rank: 6 };
+    
+    if (Q < getQ(mainCurves.limit_SH_H, m)) return { name: "Sub-humide (SH)", color: COULEURS.SUB_HUMIDE, rank: 7 };
+    if (Q < getQ(mainCurves.limit_H_PerH, m)) return { name: "Humide (H)", color: COULEURS.HUMIDE_INF, rank: 8 };
+    
+    return { name: "Perhumide (HS)", color: COULEURS.HUMIDE_SUP, rank: 9 };
+}
+
+function determineWinterVariant(m) {
+    if (m < -3) return "Très froid";
+    if (m >= -3 && m < 0) return "Froid";
+    if (m >= 0 && m < 3) return "Frais";
+    if (m >= 3 && m < 4.5) return "Tempéré"; 
+    if (m >= 4.5 && m < 7) return "Doux";    
+    if (m >= 7 && m < 10) return "Chaud";
+    return "Très chaud"; 
+}
+
+function calculateQ(P, M, m, method) {
+    if (method === 'stewart') {
+        const ampl = M - m;
+        if (ampl <= 0) return 0;
+        return (3.43 * P) / ampl;
+    } else {
+        const M_K = M + 273.15;
+        const m_K = m + 273.15;
+        const denom = (M_K * M_K) - (m_K * m_K);
+        if (denom <= 0) return 0;
+        return (2000 * P) / denom;
+    }
+}
+
+function calculateMartonne(P, T) {
+    if (T + 10 <= 0) return { val: 0, class: "N/A" };
+    const I = P / (T + 10);
+    let classification = "";
+    if (I < 5) classification = "Désertique";
+    else if (I < 10) classification = "Semi-désertique";
+    else if (I < 20) classification = "Semi-aride (Médit.)";
+    else if (I < 30) classification = "Sub-humide";
+    else if (I < 60) classification = "Humide";
+    else classification = "Perhumide";
+    return { val: I, class: classification };
+}
+
+function initChart() {
+    const ctx = document.getElementById('embergerChart').getContext('2d');
+    const xMin = -3, xMax = 10;
+    const yMax = 230; 
+
+    // Configuration initiale vide, sera remplie par refreshCharts
+    embergerChart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets: [] },
+        options: {
+            responsive: true, maintainAspectRatio: false, layout: { padding: 10 },
+            onHover: (event, activeElements) => {
+                if (activeElements && activeElements.length > 0) {
+                    const dataset = embergerChart.data.datasets[activeElements[0].datasetIndex];
+                    if (dataset.label === 'Stations') {
+                        const stationId = dataset.data[activeElements[0].index].stationId;
+                        if (markersMap[stationId]) markersMap[stationId].openPopup();
+                    }
+                }
+            },
+            onClick: (event, activeElements) => {
+                if (activeElements && activeElements.length > 0) {
+                    const dataset = embergerChart.data.datasets[activeElements[0].datasetIndex];
+                    if (dataset.label === 'Stations') {
+                        const stationId = dataset.data[activeElements[0].index].stationId;
+                        const row = document.getElementById('row-' + stationId);
+                        if (row) {
+                            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            row.classList.add('highlight-row');
+                            setTimeout(() => row.classList.remove('highlight-row'), 2000);
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { type: 'linear', position: 'bottom', title: { display: true, text: 'Moyenne des minima (m °C)', font: {weight:'bold'} }, min: xMin, max: xMax, grid: { color: 'rgba(0,0,0,0.05)' } },
+                y: { type: 'linear', title: { display: true, text: 'Quotient Pluviothermique (Q)', font: {weight:'bold'} }, min: 0, max: yMax, grid: { color: 'rgba(0,0,0,0.1)' }, ticks: { stepSize: 10, color: '#444' } }
+            },
+            plugins: {
+                legend: { 
+                    display: true, 
+                    position: 'right', 
+                    labels: { 
+                        boxWidth: 10, 
+                        font: {size: 9}, 
+                        filter: (item) => !item.text.startsWith('m=') // Filtre uniquement les lignes d'hiver
+                    }, 
+                    reverse: true 
+                },
+                tooltip: { callbacks: { label: (ctx) => ctx.dataset.pointRadius === 0 ? null : `${ctx.raw.station}: Q=${ctx.raw.y.toFixed(1)}, m=${ctx.raw.x}` + (ctx.raw.martonne ? ` | Martonne: ${ctx.raw.martonne.val.toFixed(1)}` : '') } }
+            }
+        },
+        plugins: [{
+            id: 'textLabels',
+            afterDatasetsDraw(chart) {
+                const { ctx, scales: { x, y } } = chart;
+                ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                const variants = [
+                    { val: -4.5, text: 'TRÈS FROID' },
+                    { val: -1.5, text: 'FROID' }, { val: 1.5, text: 'FRAIS' },
+                    { val: 3.75, text: 'TEMPÉRÉ' }, { val: 5.75, text: 'DOUX' }, { val: 8.5, text: 'CHAUD' }, { val: 11.5, text: 'T. CHAUD' }
+                ];
+                
+                const yPosValue = useLogScale ? 11 : 5; 
+                const yPos = y.getPixelForValue(yPosValue);
+
+                variants.forEach(v => {
+                    if (v.val >= x.min && v.val <= x.max) {
+                        const xPos = x.getPixelForValue(v.val);
+                        ctx.font = 'bold 10px Arial'; ctx.fillStyle = '#333'; 
+                        ctx.fillText(v.text, xPos, yPos);
+                    }
+                });
+
+                if (x.min <= 0 && x.max >= 0) {
+                    const x0 = x.getPixelForValue(0);
+                    // MISE À JOUR DES ÉTIQUETTES AXE 0 POUR MATCHER LES COURBES
+                    const qThresholds = [20, 40, 50, 60, 70, 120, 170];
+                    ctx.textAlign = 'right'; ctx.font = 'bold 10px Arial'; ctx.lineWidth = 3;
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; ctx.fillStyle = '#000';
+                    qThresholds.forEach(q => {
+                        if (q >= y.min && q <= y.max) {
+                            const yQ = y.getPixelForValue(q);
+                            ctx.strokeText(q, x0 - 4, yQ); ctx.fillText(q, x0 - 4, yQ);
+                            ctx.beginPath(); ctx.moveTo(x0 - 2, yQ); ctx.lineTo(x0 + 2, yQ); ctx.lineWidth = 1; ctx.strokeStyle = '#000'; ctx.stroke();
+                        }
+                    });
+                }
+                ctx.restore();
+            }
+        }]
+    });
+    
+    refreshCharts();
+}
+
+function downloadChartImage() {
+    const link = document.createElement('a');
+    link.download = 'climagramme_emberger.png';
+    link.href = embergerChart.toBase64Image();
+    link.click();
+}
+
+function refreshCharts() {
+    // 1. Calcul des bornes X
+    const visibleStations = stationsList.filter(s => s.visible !== false);
+    let minM = Infinity; let maxM = -Infinity;
+    if (visibleStations.length > 0) {
+        visibleStations.forEach(s => { 
+            if (s.m < minM) minM = s.m; 
+            if (s.m > maxM) maxM = s.m; 
+        });
+    }
+    let newXMin = -3; let newXMax = 10;
+    if (minM < -3) newXMin = Math.floor(minM) - 1;
+    if (maxM > 10) newXMax = Math.ceil(maxM) + 1;
+    embergerChart.options.scales.x.min = newXMin; 
+    embergerChart.options.scales.x.max = newXMax;
+
+    // Helpers
+    function generateData(curveDef) { const d = []; for (let x = newXMin - 1; x <= newXMax + 1; x += 0.5) d.push({x, y: getQ(curveDef, x)}); return d; }
+    function generateInterData(a, b, r) { const d = []; for (let x = newXMin - 1; x <= newXMax + 1; x += 0.5) d.push({x, y: getQ(a, x) + (getQ(b, x) - getQ(a, x)) * r}); return d; }
+
+    // 2. Construction des Datasets de Fond (Zones colorées)
+    // On dessine du bas (Saharien) vers le haut (Humide).
+    // Chaque couche remplit jusqu'à la couche précédente (fill: '-1').
+    
+    const bgDatasets = [];
+
+    if (!showSubStages) {
+        // --- MODE SIMPLIFIÉ (Unified) ---
+        // Saharien
+        bgDatasets.push({
+            type: 'line', label: 'Saharien',
+            data: generateData(mainCurves.limit_Sah_Ari),
+            backgroundColor: COULEURS.SAHARIEN,
+            fill: 'start'
+        });
+        // Aride (Global)
+        bgDatasets.push({
+            type: 'line', label: 'Aride',
+            data: generateData(mainCurves.limit_Ari_SA),
+            backgroundColor: COULEURS.ARIDE_SUP,
+            fill: '-1'
+        });
+        // Semi-Aride (Global)
+        bgDatasets.push({
+            type: 'line', label: 'Semi-Aride',
+            data: generateData(mainCurves.limit_SA_SH),
+            backgroundColor: COULEURS.SEMI_ARIDE_MOY,
+            fill: '-1'
+        });
+        // Sub-Humide
+        bgDatasets.push({
+            type: 'line', label: 'Sub-Humide',
+            data: generateData(mainCurves.limit_SH_H),
+            backgroundColor: COULEURS.SUB_HUMIDE,
+            fill: '-1'
+        });
+        // Humide
+        bgDatasets.push({
+            type: 'line', label: 'Humide',
+            data: generateData(mainCurves.limit_H_PerH),
+            backgroundColor: COULEURS.HUMIDE_INF,
+            fill: '-1'
+        });
+        // Perhumide (Nouveau permanent)
+        bgDatasets.push({
+            type: 'line', label: 'Perhumide (HS)',
+            data: [{x:newXMin-1,y:400},{x:newXMax+1,y:400}],
+            backgroundColor: COULEURS.HUMIDE_SUP,
+            fill: '-1'
+        });
+    } else {
+        // --- MODE DÉTAILLÉ (Couleurs distinctes) ---
+        // Saharien
+        bgDatasets.push({
+            type: 'line', label: 'Péraride',
+            data: generateData(mainCurves.limit_Sah_Ari),
+            backgroundColor: COULEURS.SAHARIEN,
+            fill: 'start'
+        });
+        // Aride Inf
+        bgDatasets.push({
+            type: 'line', label: 'Aride Inf.',
+            data: generateInterData(mainCurves.limit_Sah_Ari, mainCurves.limit_Ari_SA, 0.5),
+            backgroundColor: COULEURS.ARIDE_INF,
+            fill: '-1'
+        });
+        // Aride Sup
+        bgDatasets.push({
+            type: 'line', label: 'Aride Sup.',
+            data: generateData(mainCurves.limit_Ari_SA),
+            backgroundColor: COULEURS.ARIDE_SUP,
+            fill: '-1'
+        });
+        // SA Inf
+        bgDatasets.push({
+            type: 'line', label: 'S.A. Inf.',
+            data: generateData(mainCurves.limit_SA_Inf_Moy),
+            backgroundColor: COULEURS.SEMI_ARIDE_INF,
+            fill: '-1'
+        });
+        // SA Moy
+        bgDatasets.push({
+            type: 'line', label: 'S.A. Moy.',
+            data: generateData(mainCurves.limit_SA_Moy_Sup),
+            backgroundColor: COULEURS.SEMI_ARIDE_MOY,
+            fill: '-1'
+        });
+        // SA Sup
+        bgDatasets.push({
+            type: 'line', label: 'S.A. Sup.',
+            data: generateData(mainCurves.limit_SA_SH),
+            backgroundColor: COULEURS.SEMI_ARIDE_SUP,
+            fill: '-1'
+        });
+        // Sub-Humide
+        bgDatasets.push({
+            type: 'line', label: 'Sub-Humide',
+            data: generateData(mainCurves.limit_SH_H),
+            backgroundColor: COULEURS.SUB_HUMIDE,
+            fill: '-1'
+        });
+        // Humide Inf
+        bgDatasets.push({
+            type: 'line', label: 'Humide Inf.',
+            data: generateData(mainCurves.limit_H_PerH),
+            backgroundColor: COULEURS.HUMIDE_INF,
+            fill: '-1'
+        });
+        // Perhumide
+        bgDatasets.push({
+            type: 'line', label: 'Perhumide (HS)',
+            data: [{x:newXMin-1,y:400},{x:newXMax+1,y:400}],
+            backgroundColor: COULEURS.HUMIDE_SUP,
+            fill: '-1'
+        });
+    }
+
+    // Propriétés communes
+    bgDatasets.forEach(ds => {
+        ds.borderColor = 'rgba(0,0,0,0.15)'; 
+        ds.borderWidth = 1; 
+        ds.pointRadius = 0; 
+        ds.tension = 0.3; 
+        ds.order = 10; 
+        ds.datalabels = { display: false };
+    });
+
+    // 4. Lignes variantes hivernales (verticales)
+    const yMax = 230;
+    const winterLines = [-3, 0, 3, 4.5, 7, 10].map(val => {
+        const yMinVal = useLogScale ? 10 : 0;
+        return {
+            type: 'line', label: 'm=' + val, data: [{x: val, y: yMinVal}, {x: val, y: yMax}],
+            borderColor: 'rgba(0,0,0,0.6)', borderWidth: 1.5, borderDash: [5, 5], pointRadius: 0, fill: false, order: 4, datalabels: { display: false }
+        };
+    });
+
+    // 5. Points des Stations
+    const pointsDataset = {
+        type: 'scatter', label: 'Stations', 
+        data: visibleStations.map(s => ({ x: s.m, y: s.Q, station: s.name, stationId: s.id, martonne: s.martonneData, labelPos: s.labelPos })),
+        borderColor: 'white', borderWidth: 2, pointRadius: 5, pointHoverRadius: 7, pointStyle: 'circle', order: 1, clip: false,
+        backgroundColor: '#000', pointBackgroundColor: '#000',
+        datalabels: {
+            display: true,
+            align: function(ctx) { return ctx.dataset.data[ctx.dataIndex].labelPos !== 'auto' ? ctx.dataset.data[ctx.dataIndex].labelPos : 'end'; },
+            anchor: 'end', offset: 6, clamp: true, color: '#000', backgroundColor: 'rgba(255,255,255,0.85)', 
+            borderRadius: 4, borderWidth: 1, borderColor: '#ccc', padding: 4, font: { weight: 'bold', size: 9 }, 
+            formatter: (v, ctx) => ctx.dataset.data[ctx.dataIndex].station
+        }
+    };
+
+    // Assemblage final
+    embergerChart.data.datasets = [...bgDatasets, ...winterLines, pointsDataset];
+    embergerChart.update();
+}
+
+function initMap() {
+    map = L.map('map').setView([34.0, 9.5], 6);
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri', crossOrigin: 'anonymous' });
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', crossOrigin: 'anonymous' });
+    satellite.addTo(map);
+    L.control.layers({ "Satellite": satellite, "Plan": osm }).addTo(map);
+    markersLayer = L.layerGroup().addTo(map);
+}
+
+async function geoLocate() {
+    const query = document.getElementById('stationName').value;
+    if(!query) { showAlert("Nom de ville manquant."); return; }
+    const btn = document.querySelector('button[onclick="geoLocate()"]');
+    const oldIcon = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        if (data && data.length > 0) {
+            const lat = data[0].lat; const lon = data[0].lon;
+            document.getElementById('lat').value = parseFloat(lat).toFixed(4); document.getElementById('lon').value = parseFloat(lon).toFixed(4);
+            try {
+                const elevResponse = await fetch(`https://api.open-meteo.com/v1/elevation?latitude=${lat}&longitude=${lon}`);
+                const elevData = await elevResponse.json();
+                if (elevData && elevData.elevation) document.getElementById('alt').value = Math.round(elevData.elevation[0]);
+            } catch(err) {}
+            map.setView([lat, lon], 10); L.marker([lat, lon]).addTo(map).bindPopup("📍 " + query).openPopup();
+        } else showAlert("Lieu introuvable.");
+    } catch (e) { showAlert("Erreur réseau."); } finally { btn.innerHTML = oldIcon; btn.disabled = false; }
+}
+
+// Fonction pour mettre à jour la carte manuellement depuis les coordonnées saisies
+function updateMapFromCoords() {
+    const lat = parseFloat(document.getElementById('lat').value);
+    const lon = parseFloat(document.getElementById('lon').value);
+    if(isNaN(lat) || isNaN(lon)) { showAlert("Coordonnées invalides."); return; }
+    
+    if(map) {
+        map.setView([lat, lon], 10);
+        // On n'ajoute pas de marqueur permanent ici pour ne pas polluer, 
+        // mais on peut ajouter un popup temporaire ou juste centrer.
+        L.popup()
+            .setLatLng([lat, lon])
+            .setContent("📍 Position actuelle")
+            .openOn(map);
+    }
+}
+
+function refreshMapMarkers() {
+    markersLayer.clearLayers(); markersMap = {};
+    stationsList.forEach(s => {
+        if (s.visible !== false && s.lat && s.lon && !isNaN(s.lat)) {
+             const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div style='background-color:${s.color}; width:16px; height:16px; border-radius:50%; border:2px solid white; box-shadow:0 0 5px black'></div>`, iconSize: [16, 16], iconAnchor: [8, 8] });
+            const marker = L.marker([s.lat, s.lon], {icon: customIcon}).addTo(markersLayer);
+            markersMap[s.id] = marker;
+            marker.bindTooltip(s.name, { permanent: true, direction: 'top', className: 'station-map-label', offset: [0, -10] });
+            marker.bindPopup(`<div style="text-align:center; min-width:150px"><h6 style="margin:0; color:#1e293b; font-weight:bold">${s.name}</h6><div style="margin:5px 0; padding:2px; background:${s.color}; color:${s.color===COULEURS.HUMIDE_SUP || s.color===COULEURS.SUB_HUMIDE || s.color===COULEURS.HUMIDE ? 'white' : '#333'}; font-size:0.8em; border-radius:3px;">${s.stage}</div><div style="font-size:0.9em">Q: <b>${s.Q.toFixed(1)}</b> | m: <b>${s.m}</b></div><div style="font-size:0.85em; font-style:italic; color:#666">Hiver ${s.winter}</div>${s.alt ? `<div style="font-size:0.85em; color:#333">Alt: <b>${s.alt} m</b></div>` : ''}${s.martonneData ? `<hr style='margin:4px 0'><div style="font-size:0.85em">Martonne: <b>${s.martonneData.val.toFixed(1)}</b></div>` : ''}</div>`);
+        }
+    });
+}
+
+function addStationToMap(station) { refreshMapMarkers(); }
+
+function resetForm() {
+    document.getElementById('stationName').value = ''; document.getElementById('lat').value = ''; document.getElementById('lon').value = ''; document.getElementById('alt').value = '';
+    document.getElementById('periodStart').value = ''; document.getElementById('periodEnd').value = ''; document.getElementById('input_P').value = ''; document.getElementById('input_M').value = '';
+    document.getElementById('input_m').value = ''; document.getElementById('input_T').value = ''; document.getElementById('labelPos').value = 'auto';
+    document.getElementById('displayQ').innerText = '-'; document.getElementById('displayStage').innerText = '-'; document.getElementById('displayVariant').innerText = 'Hiver : -';
+    document.getElementById('resMartonneRow').style.display = 'none'; toggleMartonneUI();
+    editingStationId = null;
+    const btn = document.getElementById('btn-action'); btn.innerHTML = '<i class="fas fa-calculator me-2"></i>CALCULER & AJOUTER'; btn.className = 'btn btn-primary w-100 mb-4 fw-bold py-3 text-uppercase shadow-sm';
+}
+
+function clearStations() { stationsList = []; renderTable(); refreshCharts(); refreshMapMarkers(); resetForm(); updateStationListUI(); }
+
+async function showVegetation(stationId) {
+    const station = stationsList.find(s => s.id === stationId);
+    if (!station || !station.lat) { showAlert("Coordonnées manquantes."); return; }
+    const modalBody = document.getElementById('vegListContent');
+    modalBody.innerHTML = '<div class="text-center py-3"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></div>';
+    vegModal.show();
+    const lat = parseFloat(station.lat); const lon = parseFloat(station.lon);
+    try {
+        const url = `https://api.gbif.org/v1/occurrence/search?decimalLatitude=${(lat-0.05).toFixed(4)},${(lat+0.05).toFixed(4)}&decimalLongitude=${(lon-0.05).toFixed(4)},${(lon+0.05).toFixed(4)}&kingdomKey=6&hasCoordinate=true&year=2000,2030&limit=20`;
+        const response = await fetch(url); const data = await response.json();
+        if (data.results && data.results.length > 0) {
+            const speciesMap = new Map();
+            data.results.forEach(rec => { if (rec.species && !speciesMap.has(rec.species)) speciesMap.set(rec.species, { name: rec.species, key: rec.speciesKey, family: rec.family || 'Inconnue' }); });
+            if(speciesMap.size===0) { modalBody.innerHTML = '<div class="text-center text-muted">Aucune espèce identifiée.</div>'; return; }
+            let html = '<ul class="list-unstyled mb-0">';
+            speciesMap.forEach(sp => {
+                html += `<li class="veg-list-item border-bottom py-2"><div class="d-flex justify-content-between align-items-center"><div><div class="fw-bold text-dark">${sp.name}</div><div class="small text-muted">${sp.family}</div></div><div class="btn-group btn-group-sm"><a href="https://www.gbif.org/species/${sp.key}" target="_blank" class="btn btn-outline-success"><i class="fas fa-globe"></i></a><button class="btn btn-outline-primary" onclick="getPlantDetails('${sp.name.replace(/'/g, "\\'")}', 'details-${sp.key}')"><i class="fas fa-info"></i></button></div></div><div id="details-${sp.key}" style="display:none"></div></li>`;
+            });
+            modalBody.innerHTML = html + '</ul>';
+        } else modalBody.innerHTML = '<div class="text-center text-muted">Aucune observation (GBIF).</div>';
+    } catch (e) { modalBody.innerHTML = '<div class="text-danger text-center">Erreur GBIF.</div>'; }
+}
+
+async function getPlantDetails(name, elId) {
+    const el = document.getElementById(elId);
+    if(el.style.display==='block') { el.style.display='none'; return; }
+    el.style.display='block'; el.innerHTML = '<small>Chargement...</small>';
+    try {
+        const res = await fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`);
+        if(res.ok) {
+            const d = await res.json();
+            el.innerHTML = `<div class="bg-white p-2 mt-2 rounded border small">${d.thumbnail ? `<img src="${d.thumbnail.source}" class="float-start me-2 rounded" width="50">` : ''}<p class="mb-1">${d.extract || 'Pas de description.'}</p><a href="${d.content_urls.desktop.page}" target="_blank" class="text-primary">Wikipedia</a><div class="clearfix"></div></div>`;
+        } else el.innerHTML = '<small class="text-muted">Pas de fiche Wiki.</small>';
+    } catch(e) { el.innerHTML = '<small class="text-danger">Erreur.</small>'; }
+}
+
+function openImportModal() { importModal.show(); }
+function triggerImport() { document.getElementById('importFile').click(); }
+function downloadTemplate() {
+    const ws = XLSX.utils.aoa_to_sheet([['Station', 'P', 'M', 'm', 'T', 'Lat', 'Lon', 'Alt', 'Debut', 'Fin'], ['Exemple Ville', 700, 32, 5, 18, 36.5, 10.2, 100, 1990, 2020]]);
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Modele"); XLSX.writeFile(wb, "modele_emberger.xlsx");
+}
+
+function handleFileImport(input) {
+    const file = input.files[0]; if (!file) return;
+    importModal.hide(); geocodingQueue = [];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        let arr = [];
+        if(file.name.endsWith('.json')) arr = JSON.parse(e.target.result);
+        else {
+            const wb = XLSX.read(new Uint8Array(e.target.result), {type: 'array'});
+            arr = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+        }
+        processImportData(arr, file.name.endsWith('.json'));
+    };
+    if(file.name.endsWith('.json')) reader.readAsText(file); else reader.readAsArrayBuffer(file);
+    input.value = '';
+}
+
+function processImportData(data, isJson) {
+    if(isJson && Array.isArray(data)) { stationsList = data; }
+    else {
+        data.forEach(row => {
+            const P = parseFloat(row['P']||row['p']), M = parseFloat(row['M']), m = parseFloat(row['m']);
+            if(!isNaN(P) && !isNaN(M) && !isNaN(m)) {
+                const meth = getCalcMethod();
+                const s = {
+                    id: Date.now()+Math.random(), name: row['Station']||row['Nom']||"Station",
+                    lat: row['Lat']||'', lon: row['Lon']||'', alt: row['Alt']||'',
+                    period: (row['Debut']&&row['Fin'])?`${row['Debut']}-${row['Fin']}`:'',
+                    P, M, m, Q: calculateQ(P,M,m,meth), T: row['T']||(M+m)/2,
+                    martonneData: calculateMartonne(P, row['T']||(M+m)/2),
+                    winter: determineWinterVariant(m), method: meth, labelPos: 'auto', visible: true
+                };
+                const stInfo = determineStage(s.Q, m); s.stage = stInfo.name; s.color = stInfo.color; s.stageRank = stInfo.rank;
+                stationsList.push(s);
+                if(!s.lat || !s.alt) geocodingQueue.push(s);
+            }
+        });
+    }
+    sortStations(); renderTable(); refreshCharts(); refreshMapMarkers(); updateStationListUI();
+    if(geocodingQueue.length > 0) {
+        showConfirm(`${geocodingQueue.length} stations sans coords/alt. Lancer recherche auto ?`, () => processGeocodingQueue());
+    }
+}
+
+function sortStations() { stationsList.sort((a,b) => { if(b.stageRank !== a.stageRank) return b.stageRank - a.stageRank; return b.Q - a.Q; }); }
+
+async function processGeocodingQueue() {
+    document.getElementById('geoProgress').style.display = 'block'; document.getElementById('geoTotal').innerText = geocodingQueue.length;
+    let cnt = 0;
+    for(const s of geocodingQueue) {
+        if(!s.lat) {
+            try {
+                const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(s.name)}`); const d = await r.json();
+                if(d.length){ s.lat=parseFloat(d[0].lat); s.lon=parseFloat(d[0].lon); await new Promise(r=>setTimeout(r,1100)); }
+            } catch(e){}
+        }
+        if(s.lat && !s.alt) {
+            try { const r = await fetch(`https://api.open-meteo.com/v1/elevation?latitude=${s.lat}&longitude=${s.lon}`); const d = await r.json(); if(d.elevation) s.alt=Math.round(d.elevation[0]); } catch(e){}
+        }
+        cnt++; document.getElementById('geoCount').innerText = cnt;
+    }
+    renderTable(); refreshMapMarkers(); document.getElementById('geoProgress').style.display = 'none'; showAlert("Terminé.");
+}
+
+function calculateAndAdd() {
+    const P = parseFloat(document.getElementById('input_P').value), M = parseFloat(document.getElementById('input_M').value), m = parseFloat(document.getElementById('input_m').value);
+    if (isNaN(P) || isNaN(M) || isNaN(m)) { showAlert("Valeurs invalides."); return; }
+    if (M <= m) { showAlert("M doit être > m"); return; }
+    
+    const meth = getCalcMethod();
+    const Q = calculateQ(P, M, m, meth);
+    const stInfo = determineStage(Q, m);
+    const w = determineWinterVariant(m);
+    
+    // Calcul Martonne : Seulement si la case est cochée ET que T est renseigné
+    let mart = null;
+    const isMartonneChecked = document.getElementById('checkMartonne').checked;
+    const tInputVal = document.getElementById('input_T').value;
+    let T = null;
+
+    if (isMartonneChecked) {
+        if (tInputVal.trim() !== "") {
+            T = parseFloat(tInputVal);
+            if (!isNaN(T)) {
+                mart = calculateMartonne(P, T);
+            }
+        } else {
+             // Si coché mais pas de valeur, on laisse mart à null (pas de calcul forcé)
+        }
+    }
+    
+    document.getElementById('displayQ').innerText = Q.toFixed(2); document.getElementById('displayQ').style.color = stInfo.color;
+    document.getElementById('displayStage').innerText = stInfo.name; document.getElementById('displayVariant').innerText = "Hiver : " + w;
+    
+    if(mart) { 
+        document.getElementById('resMartonneRow').style.display='block'; 
+        document.getElementById('displayI').innerText=mart.val.toFixed(2); 
+        document.getElementById('displayIClass').innerText=mart.class; 
+    } else {
+        document.getElementById('resMartonneRow').style.display='none';
+    }
+
+    const s = {
+        id: editingStationId || Date.now(),
+        name: document.getElementById('stationName').value || "Station "+(stationsList.length+1),
+        lat: document.getElementById('lat').value, lon: document.getElementById('lon').value, alt: document.getElementById('alt').value,
+        period: (document.getElementById('periodStart').value && document.getElementById('periodEnd').value) ? `${document.getElementById('periodStart').value}-${document.getElementById('periodEnd').value}` : '',
+        P, M, m, Q, T: (T !== null ? T : 0), martonneData: mart, stage: stInfo.name, color: stInfo.color, stageRank: stInfo.rank, winter: w, method: meth,
+        labelPos: document.getElementById('labelPos').value, visible: true
+    };
+
+    if(editingStationId) { const idx = stationsList.findIndex(x=>x.id===editingStationId); if(idx!==-1) { s.visible = stationsList[idx].visible; stationsList[idx]=s; resetForm(); } }
+    else { stationsList.push(s); if(s.lat) addStationToMap(s); }
+    
+    sortStations(); renderTable(); refreshCharts(); refreshMapMarkers(); updateStationListUI();
+}
+
+function editStation(id) {
+    const s = stationsList.find(x => x.id === id); if(!s) return;
+    editingStationId = id;
+    document.getElementById('stationName').value = s.name; document.getElementById('lat').value = s.lat; document.getElementById('lon').value = s.lon; document.getElementById('alt').value = s.alt;
+    document.getElementById('input_P').value = s.P; document.getElementById('input_M').value = s.M; document.getElementById('input_m').value = s.m; document.getElementById('labelPos').value = s.labelPos;
+    if(s.period) { const p = s.period.split('-'); document.getElementById('periodStart').value = p[0]; document.getElementById('periodEnd').value = p[1]; }
+    document.getElementById('input_T').value = (s.martonneData && s.T) ? s.T : ''; 
+    toggleMartonneUI();
+    const btn = document.getElementById('btn-action'); btn.innerHTML = '<i class="fas fa-save me-2"></i>METTRE À JOUR'; btn.className = 'btn btn-warning w-100 mb-4 fw-bold py-3 text-uppercase shadow-sm text-dark';
+    document.querySelector('.header-panel').scrollIntoView({behavior:'smooth'});
+}
+
+function deleteStation(id) {
+    showConfirm("Supprimer ?", () => {
+        stationsList = stationsList.filter(s => s.id !== id);
+        renderTable();
+        refreshCharts();
+        refreshMapMarkers();
+        if (editingStationId === id) resetForm();
+    });
+}
+
+function showCalculationDetails(id) {
+    const s = stationsList.find(x => x.id === id);
+    const html = `<h5 class="text-primary mb-3">${s.name}</h5><div class="calc-step mb-2"><strong>Q</strong> = ${s.Q.toFixed(2)} (<i>${s.method}</i>)<br>P=${s.P}, M=${s.M}, m=${s.m}</div>` + (s.martonneData ? `<div class="calc-step"><strong>Martonne</strong> = ${s.martonneData.val.toFixed(2)}<br>P=${s.P}, T=${s.T.toFixed(1)}</div>` : '');
+    document.getElementById('calcModalBody').innerHTML = html; calcModal.show();
+}
+
+function getRowHTML(s) {
+    return `<td class="text-center"><input type="checkbox" ${s.visible?'checked':''} onchange="toggleStationVisibility(${s.id}, this.checked)" class="form-check-input"></td>
+    <td><div class="fw-bold text-dark">${s.name}</div><div class="small text-muted">${s.period||''}</div></td>
+    <td class="fw-bold text-primary">${s.Q.toFixed(1)}</td>
+    <td><span class="badge" style="background-color:${s.color}; color:${['#FFFF00','#90EE90'].includes(s.color)?'#333':'#fff'}">${s.stage}</span></td>
+    <td class="text-end"><div class="btn-group"><button class="btn btn-sm btn-light text-success" onclick="showVegetation(${s.id})"><i class="fas fa-leaf"></i></button><button class="btn btn-sm btn-light text-warning" onclick="editStation(${s.id})"><i class="fas fa-pen"></i></button><button class="btn btn-sm btn-light text-danger" onclick="deleteStation(${s.id})"><i class="fas fa-times"></i></button></div></td>`;
+}
+
+function renderTable() { const b = document.querySelector('#stationsTable tbody'); b.innerHTML = ''; stationsList.forEach(s => { const tr = document.createElement('tr'); tr.id='row-'+s.id; tr.innerHTML=getRowHTML(s); b.appendChild(tr); }); }
+function toggleStationVisibility(id, c) { const s = stationsList.find(x=>x.id===id); if(s){ s.visible=c; refreshCharts(); refreshMapMarkers(); } }
+function toggleAllVisibility(c) { stationsList.forEach(s=>s.visible=c); document.querySelectorAll('#stationsTable input[type=checkbox]').forEach(i=>i.checked=c); refreshCharts(); refreshMapMarkers(); }
+
+function initiateExport(t) { if(stationsList.length===0){showAlert("Rien à exporter.");return;} currentExportType=t; exportModal.show(); }
+function confirmExport() {
+    exportModal.hide();
+    setTimeout(() => {
+        if(currentExportType==='json') exportJSON(); else if(currentExportType==='excel') exportExcel(); else exportPDF();
+    }, 500);
+}
+function exportJSON() { const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(stationsList)); a.download="emberger_session.json"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportExcel() { const ws=XLSX.utils.json_to_sheet(stationsList.map(s=>({Station:s.name, P:s.P, M:s.M, m:s.m, Q:s.Q.toFixed(2), Etage:s.stage}))); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Data"); XLSX.writeFile(wb,"emberger_export.xlsx"); }
+
+async function exportPDF() {
+    const { jsPDF } = window.jspdf; const doc = new jsPDF();
+    doc.setFillColor(30, 41, 59); doc.rect(0, 0, 210, 40, 'F');
+    
+    // Récupération du Titre Personnalisé (ou défaut)
+    const reportTitle = document.getElementById('reportTitleInput').value || "Rapport Bioclimatique";
+    
+    doc.setTextColor(255); doc.setFontSize(22); doc.text(reportTitle, 14, 25);
+    doc.setFontSize(10); doc.text(document.getElementById('authorName').value || "Utilisateur", 195, 25, {align:'right'});
+    
+    let yPos = 50;
+    const chart = document.getElementById('embergerChart');
+    if(chart) {
+        doc.setFontSize(14); doc.setTextColor(30, 41, 59); doc.text("1. Climagramme d'Emberger", 14, yPos); yPos += 10;
+        try { const chartImg = chart.toDataURL("image/png", 1.0); doc.addImage(chartImg, 'PNG', 15, yPos, 180, 100); yPos += 110; } catch(e) { console.error("Erreur chart export", e); }
+    }
+    if(yPos > 200) { doc.addPage(); yPos = 20; }
+    doc.setFontSize(14); doc.setTextColor(30, 41, 59); doc.text("2. Localisation Géographique", 14, yPos); yPos += 10;
+    try { const mapElement = document.getElementById('map'); const canvasMap = await html2canvas(mapElement, { useCORS: true, allowTaint: true, logging: false }); const mapImg = canvasMap.toDataURL('image/png'); doc.addImage(mapImg, 'PNG', 15, yPos, 180, 90); yPos += 100; } catch (err) { doc.setFontSize(10); doc.setTextColor(150); doc.text("(Carte non disponible à l'export - Restrictions navigateur)", 15, yPos + 10); yPos += 20; }
+    
+    if(yPos > 240) { doc.addPage(); yPos = 20; }
+    doc.setFontSize(14); doc.setTextColor(30, 41, 59); doc.text("3. Notes et Commentaires", 14, yPos); yPos += 10;
+    const comments = document.getElementById('reportComments').value;
+    doc.setFontSize(11); doc.setTextColor(0);
+    const commentsText = comments.trim() === "" ? "(Aucune note personnelle saisie pour ce rapport)" : comments;
+    const splitNotes = doc.splitTextToSize(commentsText, 180); doc.text(splitNotes, 14, yPos); yPos += (splitNotes.length * 7) + 15;
+
+    if(yPos > 240) { doc.addPage(); yPos = 20; }
+    doc.setFontSize(14); doc.setTextColor(30, 41, 59); doc.text("4. Données Détaillées", 14, yPos); yPos += 10;
+    const tableData = stationsList.map(s => [s.name + (s.period ? ` (${s.period})` : ''), s.P, s.M, s.m, s.Q.toFixed(2), s.stage, s.winter, s.alt || '-', s.martonneData ? s.martonneData.val.toFixed(1) : '-']);
+    doc.autoTable({ startY: yPos, head: [['Station', 'P', 'M', 'm', 'Q', 'Etage', 'Hiver', 'Alt', 'Martonne']], body: tableData, theme: 'striped', headStyles: { fillColor: [30, 41, 59] }, styles: { fontSize: 8 } });
+    
+    let finalY = doc.lastAutoTable.finalY + 15;
+    if(finalY > 220) { doc.addPage(); finalY = 20; }
+    doc.setFontSize(12); doc.setTextColor(30, 41, 59); doc.text("5. Formules de référence", 14, finalY); finalY += 8;
+    doc.setFontSize(9); doc.setTextColor(60);
+    doc.text("1. Emberger (Stewart) : Q2 = (3.43 * P) / (M - m)   [M, m en Celsius]", 20, finalY); finalY += 6;
+    doc.text("2. Emberger (Original) : Q = (2000 * P) / (M^2 - m^2)   [M, m en Kelvins]", 20, finalY); finalY += 6;
+    doc.text("3. Martonne : I = P / (T + 10)", 20, finalY); finalY += 12;
+    
+    if(finalY > 200) { doc.addPage(); finalY = 20; }
+    doc.setFontSize(12); doc.setTextColor(30, 41, 59); doc.text("6. Bibliographie", 14, finalY); finalY += 8;
+    const references = ["Allam, A., et al. (2019). Mediterranean specific climate classification. Hydrology and Earth System Sciences.", "Bagnouls, F., & Gaussen, H. (1953). Saison seche et indice xerothermique. Bull. Assoc. Geogr. Fr., 193-198.", "Charalampopoulos, I., et al. (2025). Analysis of De Martonne and Emberger indices. Lands.", "Chondrogianni, D.V., et al. (2024). Assessment of the Bioclimatic Index. Environment and Planning B.", "De Martonne, E. (1926). L'areisme et l'indice d'aridite. Annales de geographie, 35(194).", "Emberger, L. (1955). Une classification biogeographique des climats. Recueil des travaux, Montpellier.", "Lazoglou, G., et al. (2024). Identification of climate change hotspots. Scientific Reports, 14.", "Le Houerou, H.N. (1984). Climatic and edaphic factors. In: Mediterranean-type shrublands. Elsevier.", "Sauvage, C. (1963). Le coefficient pluviothermique d'Emberger au Maroc. Annales du Service Physique du Maroc."];
+    references.sort();
+    doc.setFontSize(8); doc.setTextColor(80);
+    references.forEach(ref => { if(finalY > 275) { doc.addPage(); finalY = 20; } doc.text("- " + ref, 14, finalY); finalY += 5; });
+    
+    const pageHeight = doc.internal.pageSize.height;
+    if(finalY > pageHeight - 30) doc.addPage();
+    doc.setDrawColor(200); doc.setFillColor(245, 245, 245); doc.rect(50, pageHeight - 20, 110, 10, 'FD');
+    doc.setFontSize(9); doc.setTextColor(50); doc.text("© 2026 Bioclimat et Écologie. Tous droits réservés. Brahim Jaziri", 105, pageHeight - 14, {align:'center'});
+    doc.save("rapport_bioclimat.pdf");
+}
+</script>
+</body>
+</html>
