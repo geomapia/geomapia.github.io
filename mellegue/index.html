@@ -33,6 +33,11 @@
       --text-main: #f8fafc;
       --text-soft: #cbd5e1;
       --red: #ef4444;
+      --green: #22c55e;
+      --linkedin: #0a66c2;
+      --facebook: #1877f2;
+      --xblack: #111827;
+      --whatsapp: #25d366;
     }
 
     * {
@@ -89,7 +94,8 @@
 
     .language-switch button,
     .map-button,
-    .analysis-controls button {
+    .analysis-controls button,
+    .share-button {
       border: none;
       border-radius: 999px;
       cursor: pointer;
@@ -114,6 +120,7 @@
     }
 
     .info-box,
+    .share-panel,
     .map-panel,
     .analysis-panel,
     .caption,
@@ -142,6 +149,85 @@
 
     .info-box strong {
       color: #93c5fd;
+    }
+
+    .share-panel {
+      margin-top: 0;
+      margin-bottom: 24px;
+      background: rgba(30,41,59,0.75);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 18px 20px;
+      line-height: 1.6;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+    }
+
+    .share-panel h2 {
+      margin: 0 0 12px 0;
+      color: #93c5fd;
+      font-size: 20px;
+    }
+
+    .share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .share-button {
+      color: white;
+      padding: 10px 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    .share-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .share-native {
+      background: var(--blue);
+      color: #0f172a;
+    }
+
+    .share-facebook {
+      background: var(--facebook);
+    }
+
+    .share-x {
+      background: var(--xblack);
+    }
+
+    .share-linkedin {
+      background: var(--linkedin);
+    }
+
+    .share-whatsapp {
+      background: var(--whatsapp);
+      color: #052e16;
+    }
+
+    .share-email {
+      background: #64748b;
+    }
+
+    .share-copy {
+      background: var(--green);
+      color: #052e16;
+    }
+
+    .share-status {
+      margin-top: 12px;
+      color: #fef3c7;
+      font-size: 14px;
+      font-weight: bold;
+      min-height: 20px;
     }
 
     .meta-grid {
@@ -480,6 +566,16 @@
       .analysis-controls input[type="range"] {
         width: 100%;
       }
+
+      .share-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .share-button {
+        justify-content: center;
+        width: 100%;
+      }
     }
 
     @media (max-width: 480px) {
@@ -526,6 +622,42 @@
         <strong>Objectif :</strong>
         comparer l’état du lit de l’oued avant et après l’intensification de l’écoulement, détecter les changements visibles et identifier les secteurs de berges inondés ou temporairement affectés par la montée des eaux.
       </p>
+    </section>
+
+    <section class="share-panel">
+      <h2 id="shareTitle">Partager cette application</h2>
+
+      <div class="share-buttons">
+        <button class="share-button share-native" onclick="nativeShare()" id="nativeShareButton">
+          📤 Partage direct
+        </button>
+
+        <button class="share-button share-facebook" onclick="shareToFacebook()" id="facebookShareButton">
+          Facebook
+        </button>
+
+        <button class="share-button share-x" onclick="shareToX()" id="xShareButton">
+          X / Twitter
+        </button>
+
+        <button class="share-button share-linkedin" onclick="shareToLinkedIn()" id="linkedinShareButton">
+          LinkedIn
+        </button>
+
+        <button class="share-button share-whatsapp" onclick="shareToWhatsApp()" id="whatsappShareButton">
+          WhatsApp
+        </button>
+
+        <button class="share-button share-email" onclick="shareByEmail()" id="emailShareButton">
+          E-mail
+        </button>
+
+        <button class="share-button share-copy" onclick="copyApplicationLink()" id="copyShareButton">
+          Copier le lien
+        </button>
+      </div>
+
+      <div class="share-status" id="shareStatus"></div>
     </section>
 
     <section class="meta-grid">
@@ -662,9 +794,149 @@
     const thresholdRange = document.getElementById("thresholdRange");
     const thresholdValue = document.getElementById("thresholdValue");
     const changeResult = document.getElementById("changeResult");
+    const shareStatus = document.getElementById("shareStatus");
 
     let isDragging = false;
     let currentLanguage = "fr";
+
+    const appUrl = "https://geomapia.github.io/mellegue/";
+    const appTitleFr = "Écoulement exceptionnel dans l’oued Mellègue";
+    const appTitleAr = "التدفّق الاستثنائي بوادي ملاق";
+    const shareTextFr = "Visualisation Sentinel-2 / Copernicus de l’écoulement exceptionnel dans l’oued Mellègue entre le 16 et le 18 juin 2026.";
+    const shareTextAr = "تصوّر باستعمال صور Sentinel-2 / Copernicus للتدفّق الاستثنائي في وادي ملاق بين 16 و18 جوان 2026.";
+
+    function getShareTitle() {
+      return currentLanguage === "ar" ? appTitleAr : appTitleFr;
+    }
+
+    function getShareText() {
+      return currentLanguage === "ar" ? shareTextAr : shareTextFr;
+    }
+
+    function showShareStatus(messageFr, messageAr) {
+      shareStatus.innerHTML = currentLanguage === "ar" ? messageAr : messageFr;
+      setTimeout(function () {
+        shareStatus.innerHTML = "";
+      }, 4500);
+    }
+
+    function trackShare(platform) {
+      if (typeof gtag === "function") {
+        gtag('event', 'share_click', {
+          app_name: 'GeomapIA_Mellegue',
+          platform: platform
+        });
+      }
+    }
+
+    function openShareWindow(url, platform) {
+      trackShare(platform);
+
+      const width = 720;
+      const height = 620;
+      const left = Math.round((window.screen.width - width) / 2);
+      const top = Math.round((window.screen.height - height) / 2);
+
+      const popup = window.open(
+        url,
+        "_blank",
+        `noopener,noreferrer,width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      if (!popup) {
+        window.location.href = url;
+      }
+    }
+
+    async function nativeShare() {
+      trackShare("native");
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: getShareTitle(),
+            text: getShareText(),
+            url: appUrl
+          });
+
+          showShareStatus(
+            "Partage effectué ou fenêtre de partage ouverte.",
+            "تم فتح نافذة المشاركة أو إتمام المشاركة."
+          );
+        } catch (error) {
+          showShareStatus(
+            "Partage annulé.",
+            "تم إلغاء المشاركة."
+          );
+        }
+      } else {
+        copyApplicationLink();
+      }
+    }
+
+    function shareToFacebook() {
+      const url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(appUrl);
+      openShareWindow(url, "facebook");
+    }
+
+    function shareToX() {
+      const url =
+        "https://twitter.com/intent/tweet?url=" +
+        encodeURIComponent(appUrl) +
+        "&text=" +
+        encodeURIComponent(getShareText());
+
+      openShareWindow(url, "x_twitter");
+    }
+
+    function shareToLinkedIn() {
+      const url =
+        "https://www.linkedin.com/sharing/share-offsite/?url=" +
+        encodeURIComponent(appUrl);
+
+      openShareWindow(url, "linkedin");
+    }
+
+    function shareToWhatsApp() {
+      const url =
+        "https://api.whatsapp.com/send?text=" +
+        encodeURIComponent(getShareText() + " " + appUrl);
+
+      openShareWindow(url, "whatsapp");
+    }
+
+    function shareByEmail() {
+      trackShare("email");
+
+      const subject = encodeURIComponent(getShareTitle());
+      const body = encodeURIComponent(getShareText() + "\n\n" + appUrl);
+
+      window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+    }
+
+    async function copyApplicationLink() {
+      trackShare("copy_link");
+
+      try {
+        await navigator.clipboard.writeText(appUrl);
+        showShareStatus(
+          "Lien copié dans le presse-papiers.",
+          "تم نسخ الرابط."
+        );
+      } catch (error) {
+        const tempInput = document.createElement("input");
+        tempInput.value = appUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        showShareStatus(
+          "Lien copié dans le presse-papiers.",
+          "تم نسخ الرابط."
+        );
+      }
+    }
 
     const startLat = 36.310394;
     const startLng = 8.698081;
@@ -889,6 +1161,15 @@
           comparer l’état du lit de l’oued avant et après l’intensification de l’écoulement, détecter les changements visibles et identifier les secteurs de berges inondés ou temporairement affectés par la montée des eaux.
         `,
 
+        shareTitle: "Partager cette application",
+        nativeShareButton: "📤 Partage direct",
+        facebookShareButton: "Facebook",
+        xShareButton: "X / Twitter",
+        linkedinShareButton: "LinkedIn",
+        whatsappShareButton: "WhatsApp",
+        emailShareButton: "E-mail",
+        copyShareButton: "Copier le lien",
+
         metaSensorTitle: "Capteur",
         metaSourceTitle: "Source",
         metaDate1Title: "Image 1",
@@ -958,6 +1239,15 @@
           مقارنة حالة مجرى الوادي قبل وبعد تكثّف التدفّق، والكشف عن التغيّرات المرئية، وإبراز المناطق التي غمرتها المياه أو تأثّرت مؤقتا بارتفاع منسوبها على ضفاف الوادي.
         `,
 
+        shareTitle: "مشاركة التطبيق",
+        nativeShareButton: "📤 مشاركة مباشرة",
+        facebookShareButton: "Facebook",
+        xShareButton: "X / Twitter",
+        linkedinShareButton: "LinkedIn",
+        whatsappShareButton: "WhatsApp",
+        emailShareButton: "البريد الإلكتروني",
+        copyShareButton: "نسخ الرابط",
+
         metaSensorTitle: "القمر / المستشعر",
         metaSourceTitle: "المصدر",
         metaDate1Title: "الصورة الأولى",
@@ -1021,6 +1311,15 @@
       document.getElementById("mainTitle").innerHTML = t.mainTitle;
       document.getElementById("mainSubtitle").innerHTML = t.mainSubtitle;
       document.getElementById("contextText").innerHTML = t.contextText;
+
+      document.getElementById("shareTitle").innerHTML = t.shareTitle;
+      document.getElementById("nativeShareButton").innerHTML = t.nativeShareButton;
+      document.getElementById("facebookShareButton").innerHTML = t.facebookShareButton;
+      document.getElementById("xShareButton").innerHTML = t.xShareButton;
+      document.getElementById("linkedinShareButton").innerHTML = t.linkedinShareButton;
+      document.getElementById("whatsappShareButton").innerHTML = t.whatsappShareButton;
+      document.getElementById("emailShareButton").innerHTML = t.emailShareButton;
+      document.getElementById("copyShareButton").innerHTML = t.copyShareButton;
 
       document.getElementById("metaSensorTitle").innerHTML = t.metaSensorTitle;
       document.getElementById("metaSourceTitle").innerHTML = t.metaSourceTitle;
