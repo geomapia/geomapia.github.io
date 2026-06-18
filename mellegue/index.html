@@ -25,37 +25,63 @@
 
   <style>
     :root {
-      --bg-main: #0f172a;
-      --bg-card: #1e293b;
+      --bg-main: #07111f;
+      --bg-card: rgba(30, 41, 59, 0.88);
       --bg-soft: #334155;
       --blue: #38bdf8;
       --blue-light: #dbeafe;
       --text-main: #f8fafc;
       --text-soft: #cbd5e1;
-      --red: #ef4444;
       --green: #22c55e;
+      --green-bright: #00ff66;
+      --red: #ef4444;
       --linkedin: #0a66c2;
       --facebook: #1877f2;
       --xblack: #111827;
       --whatsapp: #25d366;
+      --border-soft: rgba(255,255,255,0.13);
+      --shadow-card: 0 18px 45px rgba(0,0,0,0.32);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Arial, "Segoe UI", Tahoma, sans-serif;
-      background: var(--bg-main);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.22), transparent 32%),
+        radial-gradient(circle at top right, rgba(59,130,246,0.18), transparent 28%),
+        linear-gradient(180deg, #07111f 0%, #0f172a 45%, #020617 100%);
       color: var(--text-main);
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 75%);
+      z-index: -1;
+    }
+
     header {
-      padding: 30px 20px 34px;
+      padding: 34px 20px 38px;
       text-align: center;
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      background:
+        linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,64,175,0.82)),
+        radial-gradient(circle at 50% 0%, rgba(125,211,252,0.35), transparent 40%);
       border-bottom: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 16px 45px rgba(0,0,0,0.25);
     }
 
     .logo-box {
@@ -66,26 +92,33 @@
     }
 
     .logo-box img {
-      height: 86px;
-      max-width: 240px;
+      height: 90px;
+      max-width: 260px;
       object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.42));
     }
 
     header h1 {
       margin: 0;
-      font-size: 32px;
-      line-height: 1.3;
+      font-size: clamp(25px, 4vw, 40px);
+      line-height: 1.25;
+      letter-spacing: -0.5px;
     }
 
     header p {
-      margin-top: 12px;
+      margin: 12px auto 0;
+      max-width: 920px;
       color: var(--blue-light);
       font-size: 17px;
+      line-height: 1.6;
+    }
+
+    button, .share-button {
+      font-family: inherit;
     }
 
     .language-switch {
-      margin-top: 22px;
+      margin-top: 24px;
       display: flex;
       justify-content: center;
       gap: 10px;
@@ -95,7 +128,8 @@
     .language-switch button,
     .map-button,
     .analysis-controls button,
-    .share-button {
+    .share-button,
+    .zoom-btn {
       border: none;
       border-radius: 999px;
       cursor: pointer;
@@ -107,11 +141,13 @@
       border: 1px solid rgba(255,255,255,0.25);
       background: rgba(255,255,255,0.08);
       color: white;
-      padding: 9px 16px;
+      padding: 10px 18px;
+      backdrop-filter: blur(10px);
     }
 
     .language-switch button:hover {
       background: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
     }
 
     .language-switch button.active {
@@ -120,30 +156,32 @@
     }
 
     .info-box,
-    .share-panel,
     .map-panel,
     .analysis-panel,
     .caption,
-    .warning-box {
+    .warning-box,
+    .share-panel {
       width: 90%;
-      max-width: 1150px;
+      max-width: 1180px;
       margin-left: auto;
       margin-right: auto;
     }
 
     .info-box {
-      margin-top: 24px;
+      margin-top: 28px;
       margin-bottom: 24px;
       background: var(--bg-card);
+      border: 1px solid var(--border-soft);
       border-left: 5px solid var(--blue);
-      padding: 20px 22px;
-      border-radius: 12px;
-      line-height: 1.7;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      padding: 22px 24px;
+      border-radius: 20px;
+      line-height: 1.75;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(14px);
     }
 
     html[dir="rtl"] .info-box {
-      border-left: none;
+      border-left: 1px solid var(--border-soft);
       border-right: 5px solid var(--blue);
     }
 
@@ -151,21 +189,367 @@
       color: #93c5fd;
     }
 
-    .share-panel {
-      margin-top: 0;
-      margin-bottom: 24px;
-      background: rgba(30,41,59,0.75);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 14px;
-      padding: 18px 20px;
-      line-height: 1.6;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+    .meta-grid {
+      width: 90%;
+      max-width: 1180px;
+      margin: 0 auto 20px auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
-    .share-panel h2 {
-      margin: 0 0 12px 0;
+    .meta-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 16px 14px;
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.23);
+      backdrop-filter: blur(12px);
+    }
+
+    .meta-card .title {
       color: #93c5fd;
-      font-size: 20px;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .meta-card .value {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .labels {
+      width: 90%;
+      max-width: 1180px;
+      margin: 18px auto 10px auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .label {
+      background: rgba(51,65,85,0.92);
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .label.before {
+      color: #bfdbfe;
+    }
+
+    .label.after {
+      color: #fecaca;
+    }
+
+    .viewer {
+      position: relative;
+      width: 90%;
+      max-width: 1180px;
+      margin: 0 auto 26px auto;
+      overflow: hidden;
+      border-radius: 22px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.18);
+      background: #000;
+      user-select: none;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .viewer img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .after-image {
+      position: relative;
+      z-index: 1;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    .before-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .before-layer img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    .change-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      display: none;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    .slider-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: white;
+      z-index: 8;
+      transform: translateX(-50%);
+      cursor: ew-resize;
+      box-shadow: 0 0 12px rgba(0,0,0,0.7);
+    }
+
+    .slider-line::before {
+      content: "↔";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
+      text-align: center;
+      border-radius: 50%;
+      background: white;
+      color: #0f172a;
+      font-size: 23px;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(0,0,0,0.55);
+    }
+
+    .viewer-note {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      z-index: 9;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .viewer-note span {
+      background: rgba(15, 23, 42, 0.86);
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      backdrop-filter: blur(7px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .zoom-toolbar {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(15,23,42,0.78);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      padding: 7px;
+      backdrop-filter: blur(8px);
+    }
+
+    html[dir="rtl"] .zoom-toolbar {
+      right: auto;
+      left: 14px;
+    }
+
+    .zoom-btn {
+      width: 34px;
+      height: 34px;
+      background: rgba(255,255,255,0.12);
+      color: white;
+      font-size: 18px;
+    }
+
+    .zoom-btn:hover {
+      background: rgba(255,255,255,0.24);
+    }
+
+    .zoom-label {
+      min-width: 54px;
+      text-align: center;
+      color: #dbeafe;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .zoom-help {
+      width: 90%;
+      max-width: 1180px;
+      margin: -12px auto 24px;
+      color: #cbd5e1;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .analysis-panel,
+    .map-panel,
+    .share-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 22px;
+      padding: 20px 22px;
+      line-height: 1.65;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(14px);
+    }
+
+    .analysis-panel {
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .analysis-panel h2,
+    .map-panel h2,
+    .share-panel h2 {
+      margin-top: 0;
+      color: #93c5fd;
+      font-size: 22px;
+    }
+
+    .analysis-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .analysis-controls button {
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 11px 17px;
+    }
+
+    .analysis-controls button:hover {
+      background: #7dd3fc;
+      transform: translateY(-1px);
+    }
+
+    .analysis-controls .reset-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .analysis-controls .reset-btn:hover {
+      background: #f87171;
+    }
+
+    .analysis-controls input[type="range"] {
+      width: 210px;
+      accent-color: var(--green);
+    }
+
+    .threshold-value {
+      background: #334155;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-weight: bold;
+      color: #f8fafc;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .change-result {
+      margin-top: 15px;
+      color: #bbf7d0;
+      font-weight: bold;
+    }
+
+    .map-panel {
+      margin-top: 24px;
+      margin-bottom: 30px;
+    }
+
+    #esriMap {
+      width: 100%;
+      height: 520px;
+      border-radius: 18px;
+      margin-top: 15px;
+      border: 1px solid rgba(255,255,255,0.18);
+      overflow: hidden;
+      background: #000;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .map-button {
+      margin-top: 14px;
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 11px 17px;
+    }
+
+    .map-button:hover {
+      background: #7dd3fc;
+      transform: translateY(-1px);
+    }
+
+    .map-note {
+      margin-top: 12px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .leaflet-popup-content {
+      color: #111827;
+      line-height: 1.5;
+    }
+
+    .caption {
+      margin-top: 10px;
+      margin-bottom: 30px;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.75;
+      background: rgba(30,41,59,0.55);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .warning-box {
+      margin-bottom: 30px;
+      background: rgba(250, 204, 21, 0.11);
+      border: 1px solid rgba(250, 204, 21, 0.34);
+      color: #fef3c7;
+      border-radius: 18px;
+      padding: 16px 18px;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .share-panel {
+      margin-top: 20px;
+      margin-bottom: 34px;
     }
 
     .share-buttons {
@@ -177,13 +561,13 @@
 
     .share-button {
       color: white;
-      padding: 10px 15px;
+      padding: 11px 16px;
       display: inline-flex;
       align-items: center;
       gap: 7px;
       font-size: 14px;
       text-decoration: none;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.24);
     }
 
     .share-button:hover {
@@ -230,292 +614,14 @@
       min-height: 20px;
     }
 
-    .meta-grid {
-      width: 90%;
-      max-width: 1150px;
-      margin: 0 auto 18px auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .meta-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .meta-card .title {
-      color: #93c5fd;
-      font-size: 13px;
-      margin-bottom: 6px;
-    }
-
-    .meta-card .value {
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .labels {
-      width: 90%;
-      max-width: 1150px;
-      margin: 18px auto 10px auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 14px;
-    }
-
-    .label {
-      background: var(--bg-soft);
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-weight: bold;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-    }
-
-    .label.before {
-      color: #bfdbfe;
-    }
-
-    .label.after {
-      color: #fecaca;
-    }
-
-    .viewer {
-      position: relative;
-      width: 90%;
-      max-width: 1150px;
-      margin: 0 auto 24px auto;
-      overflow: hidden;
-      border-radius: 16px;
-      box-shadow: 0 0 35px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.18);
-      background: #000;
-      user-select: none;
-      touch-action: none;
-    }
-
-    .viewer img {
-      display: block;
-      width: 100%;
-      height: auto;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .after-image {
-      position: relative;
-      z-index: 1;
-    }
-
-    .before-image {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      clip-path: inset(0 50% 0 0);
-    }
-
-    .change-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 4;
-      pointer-events: none;
-      display: none;
-    }
-
-    .slider-line {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 4px;
-      height: 100%;
-      background: white;
-      z-index: 5;
-      transform: translateX(-50%);
-      cursor: ew-resize;
-    }
-
-    .slider-line::before {
-      content: "↔";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 46px;
-      height: 46px;
-      line-height: 46px;
-      text-align: center;
-      border-radius: 50%;
-      background: white;
-      color: #0f172a;
-      font-size: 22px;
-      font-weight: bold;
-      box-shadow: 0 0 16px rgba(0,0,0,0.45);
-    }
-
-    .viewer-note {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      right: 12px;
-      z-index: 6;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      pointer-events: none;
-    }
-
-    .viewer-note span {
-      background: rgba(15, 23, 42, 0.82);
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      backdrop-filter: blur(4px);
-    }
-
-    .analysis-panel {
-      margin-top: 20px;
-      margin-bottom: 30px;
-      background: #1e293b;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 14px;
-      padding: 18px 20px;
-      line-height: 1.6;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-    }
-
-    .analysis-panel h2,
-    .map-panel h2 {
-      margin-top: 0;
-      color: #93c5fd;
-      font-size: 21px;
-    }
-
-    .analysis-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-top: 14px;
-    }
-
-    .analysis-controls button {
-      background: #38bdf8;
-      color: #0f172a;
-      padding: 10px 16px;
-    }
-
-    .analysis-controls button:hover {
-      background: #7dd3fc;
-    }
-
-    .analysis-controls .reset-btn {
-      background: #ef4444;
-      color: white;
-    }
-
-    .analysis-controls .reset-btn:hover {
-      background: #f87171;
-    }
-
-    .analysis-controls input[type="range"] {
-      width: 190px;
-    }
-
-    .threshold-value {
-      background: #334155;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-weight: bold;
-      color: #f8fafc;
-    }
-
-    .change-result {
-      margin-top: 14px;
-      color: #fef3c7;
-      font-weight: bold;
-    }
-
-    .map-panel {
-      margin-top: 24px;
-      margin-bottom: 30px;
-      background: #1e293b;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 14px;
-      padding: 18px 20px;
-      line-height: 1.6;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-    }
-
-    #esriMap {
-      width: 100%;
-      height: 520px;
-      border-radius: 14px;
-      margin-top: 15px;
-      border: 1px solid rgba(255,255,255,0.18);
-      overflow: hidden;
-      background: #000;
-    }
-
-    .map-button {
-      margin-top: 12px;
-      background: #38bdf8;
-      color: #0f172a;
-      padding: 10px 16px;
-    }
-
-    .map-button:hover {
-      background: #7dd3fc;
-    }
-
-    .map-note {
-      margin-top: 12px;
-      color: #cbd5e1;
-      font-size: 14px;
-    }
-
-    .leaflet-popup-content {
-      color: #111827;
-      line-height: 1.5;
-    }
-
-    .caption {
-      margin-top: 10px;
-      margin-bottom: 30px;
-      color: var(--text-soft);
-      font-size: 14px;
-      line-height: 1.7;
-      background: rgba(30,41,59,0.55);
-      border-radius: 12px;
-      padding: 16px 18px;
-    }
-
-    .warning-box {
-      margin-bottom: 30px;
-      background: rgba(250, 204, 21, 0.12);
-      border: 1px solid rgba(250, 204, 21, 0.35);
-      color: #fef3c7;
-      border-radius: 12px;
-      padding: 15px 18px;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
     footer {
       text-align: center;
-      padding: 22px 15px;
-      background: #020617;
+      padding: 24px 15px;
+      background: rgba(2, 6, 23, 0.95);
       color: #94a3b8;
       font-size: 14px;
       line-height: 1.6;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     .creator-link {
@@ -530,16 +636,12 @@
     }
 
     @media (max-width: 800px) {
-      header h1 {
-        font-size: 23px;
-      }
-
       header p {
         font-size: 15px;
       }
 
       .logo-box img {
-        height: 70px;
+        height: 72px;
       }
 
       .meta-grid {
@@ -552,6 +654,16 @@
 
       .viewer-note {
         display: none;
+      }
+
+      .zoom-toolbar {
+        top: 10px;
+        right: 10px;
+      }
+
+      html[dir="rtl"] .zoom-toolbar {
+        right: auto;
+        left: 10px;
       }
 
       #esriMap {
@@ -624,42 +736,6 @@
       </p>
     </section>
 
-    <section class="share-panel">
-      <h2 id="shareTitle">Partager cette application</h2>
-
-      <div class="share-buttons">
-        <button class="share-button share-native" onclick="nativeShare()" id="nativeShareButton">
-          📤 Partage direct
-        </button>
-
-        <button class="share-button share-facebook" onclick="shareToFacebook()" id="facebookShareButton">
-          Facebook
-        </button>
-
-        <button class="share-button share-x" onclick="shareToX()" id="xShareButton">
-          X / Twitter
-        </button>
-
-        <button class="share-button share-linkedin" onclick="shareToLinkedIn()" id="linkedinShareButton">
-          LinkedIn
-        </button>
-
-        <button class="share-button share-whatsapp" onclick="shareToWhatsApp()" id="whatsappShareButton">
-          WhatsApp
-        </button>
-
-        <button class="share-button share-email" onclick="shareByEmail()" id="emailShareButton">
-          E-mail
-        </button>
-
-        <button class="share-button share-copy" onclick="copyApplicationLink()" id="copyShareButton">
-          Copier le lien
-        </button>
-      </div>
-
-      <div class="share-status" id="shareStatus"></div>
-    </section>
-
     <section class="meta-grid">
       <div class="meta-card">
         <div class="title" id="metaSensorTitle">Capteur</div>
@@ -694,15 +770,23 @@
         src="oued_mellegue_sentinel2_2026_06_18.jpg"
         alt="Image Sentinel-2 du 18 juin 2026">
 
-      <img
-        class="before-image"
-        id="beforeImage"
-        src="oued_mellegue_sentinel2_2026_06_16.jpg"
-        alt="Image Sentinel-2 du 16 juin 2026">
+      <div class="before-layer" id="beforeLayer">
+        <img
+          id="beforeImage"
+          src="oued_mellegue_sentinel2_2026_06_16.jpg"
+          alt="Image Sentinel-2 du 16 juin 2026">
+      </div>
 
       <canvas id="changeCanvas" class="change-canvas"></canvas>
 
       <div class="slider-line" id="sliderLine"></div>
+
+      <div class="zoom-toolbar">
+        <button class="zoom-btn" onclick="zoomOut()" title="Zoom arrière">−</button>
+        <span class="zoom-label" id="zoomLevelLabel">100%</span>
+        <button class="zoom-btn" onclick="zoomIn()" title="Zoom avant">+</button>
+        <button class="zoom-btn" onclick="resetZoom()" title="Réinitialiser">⟲</button>
+      </div>
 
       <div class="viewer-note">
         <span id="leftNote">16 juin 2026</span>
@@ -710,11 +794,15 @@
       </div>
     </section>
 
+    <div class="zoom-help" id="zoomHelp">
+      Zoom : utilisez la molette de la souris. Pour déplacer l’image zoomée : maintenez Ctrl puis glissez avec la souris.
+    </div>
+
     <section class="analysis-panel">
       <h2 id="changeTitle">Détection automatique des changements</h2>
 
       <p id="changeDescription">
-        Cette fonction compare les deux images Sentinel-2 pixel par pixel et met en évidence, en rouge, les zones ayant connu une modification visuelle importante entre le 16 juin 2026 et le 18 juin 2026.
+        Cette fonction compare les deux images Sentinel-2 pixel par pixel et met en évidence, en vert, les zones ayant connu une modification visuelle importante entre le 16 juin 2026 et le 18 juin 2026.
       </p>
 
       <div class="analysis-controls">
@@ -775,6 +863,42 @@
       Elle ne constitue pas un système d’alerte hydrologique et ne remplace pas les communiqués officiels des autorités compétentes.
     </section>
 
+    <section class="share-panel">
+      <h2 id="shareTitle">Partager cette application</h2>
+
+      <div class="share-buttons">
+        <button class="share-button share-native" onclick="nativeShare()" id="nativeShareButton">
+          📤 Partage direct
+        </button>
+
+        <button class="share-button share-facebook" onclick="shareToFacebook()" id="facebookShareButton">
+          Facebook
+        </button>
+
+        <button class="share-button share-x" onclick="shareToX()" id="xShareButton">
+          X / Twitter
+        </button>
+
+        <button class="share-button share-linkedin" onclick="shareToLinkedIn()" id="linkedinShareButton">
+          LinkedIn
+        </button>
+
+        <button class="share-button share-whatsapp" onclick="shareToWhatsApp()" id="whatsappShareButton">
+          WhatsApp
+        </button>
+
+        <button class="share-button share-email" onclick="shareByEmail()" id="emailShareButton">
+          E-mail
+        </button>
+
+        <button class="share-button share-copy" onclick="copyApplicationLink()" id="copyShareButton">
+          Copier le lien
+        </button>
+      </div>
+
+      <div class="share-status" id="shareStatus"></div>
+    </section>
+
   </main>
 
   <footer id="footerText">
@@ -787,6 +911,7 @@
 
   <script>
     const viewer = document.getElementById("viewer");
+    const beforeLayer = document.getElementById("beforeLayer");
     const beforeImage = document.getElementById("beforeImage");
     const afterImage = document.getElementById("afterImage");
     const sliderLine = document.getElementById("sliderLine");
@@ -795,15 +920,357 @@
     const thresholdValue = document.getElementById("thresholdValue");
     const changeResult = document.getElementById("changeResult");
     const shareStatus = document.getElementById("shareStatus");
+    const zoomLevelLabel = document.getElementById("zoomLevelLabel");
 
     let isDragging = false;
+    let interactionMode = null;
     let currentLanguage = "fr";
+
+    let zoomScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let lastPanX = 0;
+    let lastPanY = 0;
+    let startPointerX = 0;
+    let startPointerY = 0;
+
+    const minZoom = 1;
+    const maxZoom = 6;
 
     const appUrl = "https://geomapia.github.io/mellegue/";
     const appTitleFr = "Écoulement exceptionnel dans l’oued Mellègue";
     const appTitleAr = "التدفّق الاستثنائي بوادي ملاق";
     const shareTextFr = "Visualisation Sentinel-2 / Copernicus de l’écoulement exceptionnel dans l’oued Mellègue entre le 16 et le 18 juin 2026.";
     const shareTextAr = "تصوّر باستعمال صور Sentinel-2 / Copernicus للتدفّق الاستثنائي في وادي ملاق بين 16 و18 جوان 2026.";
+
+    function resizeBeforeImage() {
+      const rect = viewer.getBoundingClientRect();
+      beforeImage.style.width = rect.width + "px";
+      beforeImage.style.height = rect.height + "px";
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function clampPan() {
+      const rect = viewer.getBoundingClientRect();
+
+      if (zoomScale <= 1) {
+        panX = 0;
+        panY = 0;
+        return;
+      }
+
+      const scaledWidth = rect.width * zoomScale;
+      const scaledHeight = rect.height * zoomScale;
+
+      const minPanX = rect.width - scaledWidth;
+      const minPanY = rect.height - scaledHeight;
+
+      panX = clamp(panX, minPanX, 0);
+      panY = clamp(panY, minPanY, 0);
+    }
+
+    function applyZoomTransform() {
+      resizeBeforeImage();
+
+      const transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+
+      afterImage.style.transform = transform;
+      beforeImage.style.transform = transform;
+      changeCanvas.style.transform = transform;
+
+      zoomLevelLabel.innerHTML = Math.round(zoomScale * 100) + "%";
+    }
+
+    function zoomAt(clientX, clientY, factor) {
+      const rect = viewer.getBoundingClientRect();
+      const mouseX = clientX - rect.left;
+      const mouseY = clientY - rect.top;
+
+      const oldZoom = zoomScale;
+      const newZoom = clamp(oldZoom * factor, minZoom, maxZoom);
+
+      if (newZoom === oldZoom) return;
+
+      panX = mouseX - ((mouseX - panX) / oldZoom) * newZoom;
+      panY = mouseY - ((mouseY - panY) / oldZoom) * newZoom;
+
+      zoomScale = newZoom;
+      clampPan();
+      applyZoomTransform();
+
+      if (typeof gtag === "function") {
+        gtag('event', 'image_zoom', {
+          app_name: 'GeomapIA_Mellegue',
+          zoom_level: Math.round(zoomScale * 100)
+        });
+      }
+    }
+
+    function zoomIn() {
+      const rect = viewer.getBoundingClientRect();
+      zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 1.25);
+    }
+
+    function zoomOut() {
+      const rect = viewer.getBoundingClientRect();
+      zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 0.8);
+    }
+
+    function resetZoom() {
+      zoomScale = 1;
+      panX = 0;
+      panY = 0;
+      applyZoomTransform();
+
+      if (typeof gtag === "function") {
+        gtag('event', 'image_zoom_reset', {
+          app_name: 'GeomapIA_Mellegue'
+        });
+      }
+    }
+
+    viewer.addEventListener("wheel", function(e) {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.12 : 0.88;
+      zoomAt(e.clientX, e.clientY, factor);
+    }, { passive: false });
+
+    function moveSlider(clientX) {
+      const rect = viewer.getBoundingClientRect();
+      let x = clientX - rect.left;
+
+      if (x < 0) x = 0;
+      if (x > rect.width) x = rect.width;
+
+      const percent = (x / rect.width) * 100;
+
+      beforeLayer.style.width = percent + "%";
+      sliderLine.style.left = percent + "%";
+    }
+
+    viewer.addEventListener("pointerdown", function(e) {
+      isDragging = true;
+      viewer.setPointerCapture(e.pointerId);
+
+      if ((e.ctrlKey && zoomScale > 1) || e.button === 1) {
+        interactionMode = "pan";
+        startPointerX = e.clientX;
+        startPointerY = e.clientY;
+        lastPanX = panX;
+        lastPanY = panY;
+        viewer.style.cursor = "grabbing";
+      } else {
+        interactionMode = "swipe";
+        moveSlider(e.clientX);
+      }
+    });
+
+    viewer.addEventListener("pointermove", function(e) {
+      if (!isDragging) return;
+
+      if (interactionMode === "pan") {
+        panX = lastPanX + (e.clientX - startPointerX);
+        panY = lastPanY + (e.clientY - startPointerY);
+        clampPan();
+        applyZoomTransform();
+      } else {
+        moveSlider(e.clientX);
+      }
+    });
+
+    viewer.addEventListener("pointerup", function() {
+      isDragging = false;
+      interactionMode = null;
+      viewer.style.cursor = "crosshair";
+    });
+
+    viewer.addEventListener("pointerleave", function() {
+      isDragging = false;
+      interactionMode = null;
+      viewer.style.cursor = "crosshair";
+    });
+
+    window.addEventListener("resize", function() {
+      resizeBeforeImage();
+      clampPan();
+      applyZoomTransform();
+      setTimeout(function () {
+        esriMap.invalidateSize();
+      }, 250);
+    });
+
+    thresholdRange.addEventListener("input", function () {
+      thresholdValue.textContent = thresholdRange.value;
+    });
+
+    function detectChanges() {
+      if (!afterImage.complete || !beforeImage.complete) {
+        changeResult.innerHTML = currentLanguage === "ar"
+          ? "الصور لم تُحمّل بالكامل بعد."
+          : "Les images ne sont pas encore totalement chargées.";
+        return;
+      }
+
+      const width = afterImage.naturalWidth;
+      const height = afterImage.naturalHeight;
+
+      if (width === 0 || height === 0) {
+        changeResult.innerHTML = currentLanguage === "ar"
+          ? "تعذر قراءة أبعاد الصور."
+          : "Impossible de lire les dimensions des images.";
+        return;
+      }
+
+      changeCanvas.width = width;
+      changeCanvas.height = height;
+
+      const canvasBefore = document.createElement("canvas");
+      const canvasAfter = document.createElement("canvas");
+
+      canvasBefore.width = width;
+      canvasBefore.height = height;
+      canvasAfter.width = width;
+      canvasAfter.height = height;
+
+      const ctxBefore = canvasBefore.getContext("2d", { willReadFrequently: true });
+      const ctxAfter = canvasAfter.getContext("2d", { willReadFrequently: true });
+      const ctxChange = changeCanvas.getContext("2d");
+
+      ctxBefore.drawImage(beforeImage, 0, 0, width, height);
+      ctxAfter.drawImage(afterImage, 0, 0, width, height);
+
+      const beforeData = ctxBefore.getImageData(0, 0, width, height);
+      const afterData = ctxAfter.getImageData(0, 0, width, height);
+      const changeData = ctxChange.createImageData(width, height);
+
+      const threshold = Number(thresholdRange.value);
+      let changedPixels = 0;
+      const totalPixels = width * height;
+
+      for (let i = 0; i < beforeData.data.length; i += 4) {
+        const r1 = beforeData.data[i];
+        const g1 = beforeData.data[i + 1];
+        const b1 = beforeData.data[i + 2];
+
+        const r2 = afterData.data[i];
+        const g2 = afterData.data[i + 1];
+        const b2 = afterData.data[i + 2];
+
+        const diff =
+          Math.abs(r1 - r2) +
+          Math.abs(g1 - g2) +
+          Math.abs(b1 - b2);
+
+        if (diff > threshold * 3) {
+          changeData.data[i] = 0;
+          changeData.data[i + 1] = 255;
+          changeData.data[i + 2] = 90;
+          changeData.data[i + 3] = 190;
+          changedPixels++;
+        } else {
+          changeData.data[i + 3] = 0;
+        }
+      }
+
+      ctxChange.putImageData(changeData, 0, 0);
+      changeCanvas.style.display = "block";
+      applyZoomTransform();
+
+      const percentage = ((changedPixels / totalPixels) * 100).toFixed(2);
+
+      changeResult.innerHTML = currentLanguage === "ar"
+        ? `تم رصد تغيّرات بصرية في حوالي ${percentage}% من مساحة الصورة.`
+        : `Des changements visuels ont été détectés sur environ ${percentage}% de la surface de l’image.`;
+
+      if (typeof gtag === "function") {
+        gtag('event', 'change_detection', {
+          app_name: 'GeomapIA_Mellegue',
+          threshold_value: threshold,
+          changed_area_percent: percentage
+        });
+      }
+    }
+
+    function resetChanges() {
+      const ctxChange = changeCanvas.getContext("2d");
+      ctxChange.clearRect(0, 0, changeCanvas.width, changeCanvas.height);
+      changeCanvas.style.display = "none";
+
+      changeResult.innerHTML = currentLanguage === "ar"
+        ? "تم إخفاء طبقة التغيّرات."
+        : "La couche de changements a été masquée.";
+
+      if (typeof gtag === "function") {
+        gtag('event', 'hide_changes', {
+          app_name: 'GeomapIA_Mellegue'
+        });
+      }
+    }
+
+    const startLat = 36.310394;
+    const startLng = 8.698081;
+
+    const esriMap = L.map("esriMap", {
+      center: [startLat, startLng],
+      zoom: 15,
+      zoomControl: true
+    });
+
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution: "Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        maxZoom: 19
+      }
+    ).addTo(esriMap);
+
+    const startMarker = L.marker([startLat, startLng]).addTo(esriMap);
+
+    L.circleMarker([startLat, startLng], {
+      radius: 9,
+      color: "#38bdf8",
+      fillColor: "#38bdf8",
+      fillOpacity: 0.5,
+      weight: 2
+    }).addTo(esriMap);
+
+    function getPopupContent(language) {
+      if (language === "ar") {
+        return `
+          <div dir="rtl">
+            <strong>نقطة انطلاق التدفّق</strong><br>
+            سدّ ملاق / وادي ملاق<br>
+            36.310394° شمالا، 8.698081° شرقا
+          </div>
+        `;
+      }
+
+      return `
+        <strong>Point de départ de l’écoulement</strong><br>
+        Barrage de Mellègue / Oued Mellègue<br>
+        36.310394° N, 8.698081° E
+      `;
+    }
+
+    startMarker.bindPopup(getPopupContent("fr")).openPopup();
+
+    function goToStartPoint() {
+      esriMap.setView([startLat, startLng], 15);
+      startMarker.openPopup();
+
+      if (typeof gtag === "function") {
+        gtag('event', 'map_start_point_click', {
+          app_name: 'GeomapIA_Mellegue'
+        });
+      }
+    }
+
+    setTimeout(function () {
+      esriMap.invalidateSize();
+    }, 500);
 
     function getShareTitle() {
       return currentLanguage === "ar" ? appTitleAr : appTitleFr;
@@ -938,211 +1405,6 @@
       }
     }
 
-    const startLat = 36.310394;
-    const startLng = 8.698081;
-
-    const esriMap = L.map("esriMap", {
-      center: [startLat, startLng],
-      zoom: 15,
-      zoomControl: true
-    });
-
-    L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      {
-        attribution: "Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        maxZoom: 19
-      }
-    ).addTo(esriMap);
-
-    const startMarker = L.marker([startLat, startLng]).addTo(esriMap);
-
-    L.circleMarker([startLat, startLng], {
-      radius: 9,
-      color: "#38bdf8",
-      fillColor: "#38bdf8",
-      fillOpacity: 0.5,
-      weight: 2
-    }).addTo(esriMap);
-
-    function getPopupContent(language) {
-      if (language === "ar") {
-        return `
-          <div dir="rtl">
-            <strong>نقطة انطلاق التدفّق</strong><br>
-            سدّ ملاق / وادي ملاق<br>
-            36.310394° شمالا، 8.698081° شرقا
-          </div>
-        `;
-      }
-
-      return `
-        <strong>Point de départ de l’écoulement</strong><br>
-        Barrage de Mellègue / Oued Mellègue<br>
-        36.310394° N, 8.698081° E
-      `;
-    }
-
-    startMarker.bindPopup(getPopupContent("fr")).openPopup();
-
-    function goToStartPoint() {
-      esriMap.setView([startLat, startLng], 15);
-      startMarker.openPopup();
-
-      if (typeof gtag === "function") {
-        gtag('event', 'map_start_point_click', {
-          app_name: 'GeomapIA_Mellegue'
-        });
-      }
-    }
-
-    setTimeout(function () {
-      esriMap.invalidateSize();
-    }, 500);
-
-    function moveSlider(clientX) {
-      const rect = viewer.getBoundingClientRect();
-      let x = clientX - rect.left;
-
-      if (x < 0) x = 0;
-      if (x > rect.width) x = rect.width;
-
-      const percent = (x / rect.width) * 100;
-
-      beforeImage.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-      sliderLine.style.left = percent + "%";
-    }
-
-    viewer.addEventListener("pointerdown", function(e) {
-      isDragging = true;
-      viewer.setPointerCapture(e.pointerId);
-      moveSlider(e.clientX);
-    });
-
-    viewer.addEventListener("pointermove", function(e) {
-      if (isDragging) {
-        moveSlider(e.clientX);
-      }
-    });
-
-    viewer.addEventListener("pointerup", function() {
-      isDragging = false;
-    });
-
-    viewer.addEventListener("pointerleave", function() {
-      isDragging = false;
-    });
-
-    thresholdRange.addEventListener("input", function () {
-      thresholdValue.textContent = thresholdRange.value;
-    });
-
-    function detectChanges() {
-      if (!afterImage.complete || !beforeImage.complete) {
-        changeResult.innerHTML = currentLanguage === "ar"
-          ? "الصور لم تُحمّل بالكامل بعد."
-          : "Les images ne sont pas encore totalement chargées.";
-        return;
-      }
-
-      const width = afterImage.naturalWidth;
-      const height = afterImage.naturalHeight;
-
-      if (width === 0 || height === 0) {
-        changeResult.innerHTML = currentLanguage === "ar"
-          ? "تعذر قراءة أبعاد الصور."
-          : "Impossible de lire les dimensions des images.";
-        return;
-      }
-
-      changeCanvas.width = width;
-      changeCanvas.height = height;
-
-      const canvasBefore = document.createElement("canvas");
-      const canvasAfter = document.createElement("canvas");
-
-      canvasBefore.width = width;
-      canvasBefore.height = height;
-      canvasAfter.width = width;
-      canvasAfter.height = height;
-
-      const ctxBefore = canvasBefore.getContext("2d", { willReadFrequently: true });
-      const ctxAfter = canvasAfter.getContext("2d", { willReadFrequently: true });
-      const ctxChange = changeCanvas.getContext("2d");
-
-      ctxBefore.drawImage(beforeImage, 0, 0, width, height);
-      ctxAfter.drawImage(afterImage, 0, 0, width, height);
-
-      const beforeData = ctxBefore.getImageData(0, 0, width, height);
-      const afterData = ctxAfter.getImageData(0, 0, width, height);
-      const changeData = ctxChange.createImageData(width, height);
-
-      const threshold = Number(thresholdRange.value);
-      let changedPixels = 0;
-      const totalPixels = width * height;
-
-      for (let i = 0; i < beforeData.data.length; i += 4) {
-        const r1 = beforeData.data[i];
-        const g1 = beforeData.data[i + 1];
-        const b1 = beforeData.data[i + 2];
-
-        const r2 = afterData.data[i];
-        const g2 = afterData.data[i + 1];
-        const b2 = afterData.data[i + 2];
-
-        const diff =
-          Math.abs(r1 - r2) +
-          Math.abs(g1 - g2) +
-          Math.abs(b1 - b2);
-
-        if (diff > threshold * 3) {
-          changeData.data[i] = 255;
-          changeData.data[i + 1] = 0;
-          changeData.data[i + 2] = 0;
-          changeData.data[i + 3] = 175;
-          changedPixels++;
-        } else {
-          changeData.data[i] = 0;
-          changeData.data[i + 1] = 0;
-          changeData.data[i + 2] = 0;
-          changeData.data[i + 3] = 0;
-        }
-      }
-
-      ctxChange.putImageData(changeData, 0, 0);
-      changeCanvas.style.display = "block";
-
-      const percentage = ((changedPixels / totalPixels) * 100).toFixed(2);
-
-      changeResult.innerHTML = currentLanguage === "ar"
-        ? `تم رصد تغيّرات بصرية في حوالي ${percentage}% من مساحة الصورة.`
-        : `Des changements visuels ont été détectés sur environ ${percentage}% de la surface de l’image.`;
-
-      if (typeof gtag === "function") {
-        gtag('event', 'change_detection', {
-          app_name: 'GeomapIA_Mellegue',
-          threshold_value: threshold,
-          changed_area_percent: percentage
-        });
-      }
-    }
-
-    function resetChanges() {
-      const ctxChange = changeCanvas.getContext("2d");
-      ctxChange.clearRect(0, 0, changeCanvas.width, changeCanvas.height);
-      changeCanvas.style.display = "none";
-
-      changeResult.innerHTML = currentLanguage === "ar"
-        ? "تم إخفاء طبقة التغيّرات."
-        : "La couche de changements a été masquée.";
-
-      if (typeof gtag === "function") {
-        gtag('event', 'hide_changes', {
-          app_name: 'GeomapIA_Mellegue'
-        });
-      }
-    }
-
     const translations = {
       fr: {
         dir: "ltr",
@@ -1161,15 +1423,6 @@
           comparer l’état du lit de l’oued avant et après l’intensification de l’écoulement, détecter les changements visibles et identifier les secteurs de berges inondés ou temporairement affectés par la montée des eaux.
         `,
 
-        shareTitle: "Partager cette application",
-        nativeShareButton: "📤 Partage direct",
-        facebookShareButton: "Facebook",
-        xShareButton: "X / Twitter",
-        linkedinShareButton: "LinkedIn",
-        whatsappShareButton: "WhatsApp",
-        emailShareButton: "E-mail",
-        copyShareButton: "Copier le lien",
-
         metaSensorTitle: "Capteur",
         metaSourceTitle: "Source",
         metaDate1Title: "Image 1",
@@ -1183,9 +1436,11 @@
         leftNote: "16 juin 2026",
         rightNote: "18 juin 2026",
 
+        zoomHelp: "Zoom : utilisez la molette de la souris. Pour déplacer l’image zoomée : maintenez Ctrl puis glissez avec la souris.",
+
         changeTitle: "Détection automatique des changements",
         changeDescription: `
-          Cette fonction compare les deux images Sentinel-2 pixel par pixel et met en évidence, en rouge, les zones ayant connu une modification visuelle importante entre le 16 juin 2026 et le 18 juin 2026.
+          Cette fonction compare les deux images Sentinel-2 pixel par pixel et met en évidence, en vert, les zones ayant connu une modification visuelle importante entre le 16 juin 2026 et le 18 juin 2026.
         `,
         thresholdLabel: "Seuil de détection :",
         detectButton: "Détecter les changements",
@@ -1213,6 +1468,15 @@
           Elle ne constitue pas un système d’alerte hydrologique et ne remplace pas les communiqués officiels des autorités compétentes.
         `,
 
+        shareTitle: "Partager cette application",
+        nativeShareButton: "📤 Partage direct",
+        facebookShareButton: "Facebook",
+        xShareButton: "X / Twitter",
+        linkedinShareButton: "LinkedIn",
+        whatsappShareButton: "WhatsApp",
+        emailShareButton: "E-mail",
+        copyShareButton: "Copier le lien",
+
         footerText: `
           Application créée par
           <a class="creator-link" href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener noreferrer">
@@ -1239,15 +1503,6 @@
           مقارنة حالة مجرى الوادي قبل وبعد تكثّف التدفّق، والكشف عن التغيّرات المرئية، وإبراز المناطق التي غمرتها المياه أو تأثّرت مؤقتا بارتفاع منسوبها على ضفاف الوادي.
         `,
 
-        shareTitle: "مشاركة التطبيق",
-        nativeShareButton: "📤 مشاركة مباشرة",
-        facebookShareButton: "Facebook",
-        xShareButton: "X / Twitter",
-        linkedinShareButton: "LinkedIn",
-        whatsappShareButton: "WhatsApp",
-        emailShareButton: "البريد الإلكتروني",
-        copyShareButton: "نسخ الرابط",
-
         metaSensorTitle: "القمر / المستشعر",
         metaSourceTitle: "المصدر",
         metaDate1Title: "الصورة الأولى",
@@ -1261,9 +1516,11 @@
         leftNote: "16 جوان 2026",
         rightNote: "18 جوان 2026",
 
+        zoomHelp: "للتكبير استعمل عجلة الفأرة. لتحريك الصورة بعد التكبير اضغط Ctrl واسحب بالفأرة.",
+
         changeTitle: "الكشف الآلي عن التغيّرات",
         changeDescription: `
-          تقوم هذه الوظيفة بمقارنة صورتي Sentinel-2 بكسلا ببكسل، وتُبرز باللون الأحمر المناطق التي عرفت تغيّرا بصريا واضحا بين 16 جوان 2026 و18 جوان 2026.
+          تقوم هذه الوظيفة بمقارنة صورتي Sentinel-2 بكسلا ببكسل، وتُبرز باللون الأخضر المناطق التي عرفت تغيّرا بصريا واضحا بين 16 جوان 2026 و18 جوان 2026.
         `,
         thresholdLabel: "عتبة الكشف:",
         detectButton: "كشف التغيّرات",
@@ -1291,6 +1548,15 @@
           كما أنه لا يمثّل نظام إنذار هيدرولوجي ولا يعوّض البلاغات الرسمية الصادرة عن السلطات المختصّة.
         `,
 
+        shareTitle: "مشاركة التطبيق",
+        nativeShareButton: "📤 مشاركة مباشرة",
+        facebookShareButton: "Facebook",
+        xShareButton: "X / Twitter",
+        linkedinShareButton: "LinkedIn",
+        whatsappShareButton: "WhatsApp",
+        emailShareButton: "البريد الإلكتروني",
+        copyShareButton: "نسخ الرابط",
+
         footerText: `
           تطبيق من إنجاز
           <a class="creator-link" href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener noreferrer">
@@ -1312,15 +1578,6 @@
       document.getElementById("mainSubtitle").innerHTML = t.mainSubtitle;
       document.getElementById("contextText").innerHTML = t.contextText;
 
-      document.getElementById("shareTitle").innerHTML = t.shareTitle;
-      document.getElementById("nativeShareButton").innerHTML = t.nativeShareButton;
-      document.getElementById("facebookShareButton").innerHTML = t.facebookShareButton;
-      document.getElementById("xShareButton").innerHTML = t.xShareButton;
-      document.getElementById("linkedinShareButton").innerHTML = t.linkedinShareButton;
-      document.getElementById("whatsappShareButton").innerHTML = t.whatsappShareButton;
-      document.getElementById("emailShareButton").innerHTML = t.emailShareButton;
-      document.getElementById("copyShareButton").innerHTML = t.copyShareButton;
-
       document.getElementById("metaSensorTitle").innerHTML = t.metaSensorTitle;
       document.getElementById("metaSourceTitle").innerHTML = t.metaSourceTitle;
       document.getElementById("metaDate1Title").innerHTML = t.metaDate1Title;
@@ -1332,6 +1589,8 @@
       document.getElementById("afterLabel").innerHTML = t.afterLabel;
       document.getElementById("leftNote").innerHTML = t.leftNote;
       document.getElementById("rightNote").innerHTML = t.rightNote;
+
+      document.getElementById("zoomHelp").innerHTML = t.zoomHelp;
 
       document.getElementById("changeTitle").innerHTML = t.changeTitle;
       document.getElementById("changeDescription").innerHTML = t.changeDescription;
@@ -1346,6 +1605,16 @@
 
       document.getElementById("captionText").innerHTML = t.captionText;
       document.getElementById("warningText").innerHTML = t.warningText;
+
+      document.getElementById("shareTitle").innerHTML = t.shareTitle;
+      document.getElementById("nativeShareButton").innerHTML = t.nativeShareButton;
+      document.getElementById("facebookShareButton").innerHTML = t.facebookShareButton;
+      document.getElementById("xShareButton").innerHTML = t.xShareButton;
+      document.getElementById("linkedinShareButton").innerHTML = t.linkedinShareButton;
+      document.getElementById("whatsappShareButton").innerHTML = t.whatsappShareButton;
+      document.getElementById("emailShareButton").innerHTML = t.emailShareButton;
+      document.getElementById("copyShareButton").innerHTML = t.copyShareButton;
+
       document.getElementById("footerText").innerHTML = t.footerText;
 
       startMarker.setPopupContent(getPopupContent(language));
@@ -1368,6 +1637,11 @@
         esriMap.invalidateSize();
       }, 250);
     }
+
+    window.addEventListener("load", function () {
+      resizeBeforeImage();
+      applyZoomTransform();
+    });
   </script>
 
 </body>
