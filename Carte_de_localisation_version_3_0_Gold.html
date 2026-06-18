@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <!-- Google Analytics -->
+<!-- Google Analytics - GeomapIA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  function gtag(){ dataLayer.push(arguments); }
 
+  gtag('js', new Date());
   gtag('config', 'G-KE3JVWHSFS');
+
+  /* Ouverture de l'application */
+  gtag('event', 'application_open', {
+    app_name: 'GeomapIA_Bioclimat'
+  });
+
+  /* Suivi des clics importants */
+  document.addEventListener('DOMContentLoaded', function () {
+
+    function trackClick(selector, eventName, label) {
+      const element = document.querySelector(selector);
+      if (element) {
+        element.addEventListener('click', function () {
+          gtag('event', eventName, {
+            app_name: 'GeomapIA_Carte_Localisation_3_0_Gold',
+            button_name: label
+          });
+        });
+      }
+    }
+
+    trackClick('#btnImportGeojson', 'import_geojson', 'Importer GeoJSON');
+    trackClick('#btnExportPdf', 'export_pdf', 'Exporter PDF');
+    trackClick('#btnAtlas', 'atlas_generated', 'Générer Atlas');
+    trackClick('#btnZoomInset', 'zoom_inset_created', 'Créer encart de zoom');
+
+  });
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
