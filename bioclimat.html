@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
+<!-- Google Analytics - GeomapIA -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
 
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-KE3JVWHSFS');
 
-        gtag('js', new Date());
+  /* Ouverture de l'application */
+  gtag('event', 'application_open', {
+    app_name: 'GeomapIA_Bioclimat'
+  });
 
-        gtag('config', 'G-KE3JVWHSFS');
+  /* Suivi des clics importants */
+  document.addEventListener('DOMContentLoaded', function () {
 
-        gtag('event', 'application_open', {
-            app_name: 'Bioclimat'
+    function trackClick(selector, eventName, label) {
+      const element = document.querySelector(selector);
+      if (element) {
+        element.addEventListener('click', function () {
+          gtag('event', eventName, {
+            app_name: 'GeomapIA_Bioclimat',
+            button_name: label
+          });
         });
-    </script>
+      }
+    }
+
+    trackClick('#btnImportGeojson', 'import_geojson', 'Importer GeoJSON');
+    trackClick('#btnExportPdf', 'export_pdf', 'Exporter PDF');
+    trackClick('#btnAtlas', 'atlas_generated', 'Générer Atlas');
+    trackClick('#btnZoomInset', 'zoom_inset_created', 'Créer encart de zoom');
+
+  });
+</script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
