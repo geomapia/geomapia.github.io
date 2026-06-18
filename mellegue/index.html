@@ -1,1 +1,1081 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Oued Mellègue — Sentinel-2 Swipe Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Google Analytics - GeomapIA -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+
+    gtag('js', new Date());
+    gtag('config', 'G-KE3JVWHSFS');
+
+    gtag('event', 'application_open', {
+      app_name: 'GeomapIA_Mellegue'
+    });
+  </script>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --bg-soft: #334155;
+      --blue: #38bdf8;
+      --blue-light: #dbeafe;
+      --text-main: #f8fafc;
+      --text-soft: #cbd5e1;
+      --red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+    }
+
+    header {
+      padding: 30px 20px 34px;
+      text-align: center;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .logo-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .logo-box img {
+      height: 86px;
+      max-width: 240px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    header p {
+      margin-top: 12px;
+      color: var(--blue-light);
+      font-size: 17px;
+    }
+
+    .language-switch {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .language-switch button,
+    .map-button,
+    .analysis-controls button {
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .language-switch button {
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      padding: 9px 16px;
+    }
+
+    .language-switch button:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .language-switch button.active {
+      background: white;
+      color: #0f172a;
+    }
+
+    .info-box,
+    .map-panel,
+    .analysis-panel,
+    .caption,
+    .warning-box {
+      width: 90%;
+      max-width: 1150px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .info-box {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      background: var(--bg-card);
+      border-left: 5px solid var(--blue);
+      padding: 20px 22px;
+      border-radius: 12px;
+      line-height: 1.7;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    html[dir="rtl"] .info-box {
+      border-left: none;
+      border-right: 5px solid var(--blue);
+    }
+
+    .info-box strong {
+      color: #93c5fd;
+    }
+
+    .meta-grid {
+      width: 90%;
+      max-width: 1150px;
+      margin: 0 auto 18px auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .meta-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .meta-card .title {
+      color: #93c5fd;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .meta-card .value {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .labels {
+      width: 90%;
+      max-width: 1150px;
+      margin: 18px auto 10px auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .label {
+      background: var(--bg-soft);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: bold;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    .label.before {
+      color: #bfdbfe;
+    }
+
+    .label.after {
+      color: #fecaca;
+    }
+
+    .viewer {
+      position: relative;
+      width: 90%;
+      max-width: 1150px;
+      margin: 0 auto 24px auto;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 0 35px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.18);
+      background: #000;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .viewer img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .after-image {
+      position: relative;
+      z-index: 1;
+    }
+
+    .before-image {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      clip-path: inset(0 50% 0 0);
+    }
+
+    .change-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      display: none;
+    }
+
+    .slider-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: white;
+      z-index: 5;
+      transform: translateX(-50%);
+      cursor: ew-resize;
+    }
+
+    .slider-line::before {
+      content: "↔";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px;
+      height: 46px;
+      line-height: 46px;
+      text-align: center;
+      border-radius: 50%;
+      background: white;
+      color: #0f172a;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 0 16px rgba(0,0,0,0.45);
+    }
+
+    .viewer-note {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      z-index: 6;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .viewer-note span {
+      background: rgba(15, 23, 42, 0.82);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      backdrop-filter: blur(4px);
+    }
+
+    .analysis-panel {
+      margin-top: 20px;
+      margin-bottom: 30px;
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 18px 20px;
+      line-height: 1.6;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .analysis-panel h2,
+    .map-panel h2 {
+      margin-top: 0;
+      color: #93c5fd;
+      font-size: 21px;
+    }
+
+    .analysis-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .analysis-controls button {
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 10px 16px;
+    }
+
+    .analysis-controls button:hover {
+      background: #7dd3fc;
+    }
+
+    .analysis-controls .reset-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .analysis-controls .reset-btn:hover {
+      background: #f87171;
+    }
+
+    .analysis-controls input[type="range"] {
+      width: 190px;
+    }
+
+    .threshold-value {
+      background: #334155;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: bold;
+      color: #f8fafc;
+    }
+
+    .change-result {
+      margin-top: 14px;
+      color: #fef3c7;
+      font-weight: bold;
+    }
+
+    .map-panel {
+      margin-top: 24px;
+      margin-bottom: 30px;
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 18px 20px;
+      line-height: 1.6;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    #esriMap {
+      width: 100%;
+      height: 520px;
+      border-radius: 14px;
+      margin-top: 15px;
+      border: 1px solid rgba(255,255,255,0.18);
+      overflow: hidden;
+      background: #000;
+    }
+
+    .map-button {
+      margin-top: 12px;
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 10px 16px;
+    }
+
+    .map-button:hover {
+      background: #7dd3fc;
+    }
+
+    .map-note {
+      margin-top: 12px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .leaflet-popup-content {
+      color: #111827;
+      line-height: 1.5;
+    }
+
+    .caption {
+      margin-top: 10px;
+      margin-bottom: 30px;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+      background: rgba(30,41,59,0.55);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .warning-box {
+      margin-bottom: 30px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      color: #fef3c7;
+      border-radius: 12px;
+      padding: 15px 18px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px 15px;
+      background: #020617;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .creator-link {
+      color: #93c5fd;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .creator-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 800px) {
+      header h1 {
+        font-size: 23px;
+      }
+
+      header p {
+        font-size: 15px;
+      }
+
+      .logo-box img {
+        height: 70px;
+      }
+
+      .meta-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .labels {
+        flex-direction: column;
+      }
+
+      .viewer-note {
+        display: none;
+      }
+
+      #esriMap {
+        height: 420px;
+      }
+
+      .analysis-controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .analysis-controls input[type="range"] {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #esriMap {
+        height: 360px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo-box">
+      <img src="../IA.png" alt="Logo GeomapIA">
+    </div>
+
+    <h1 id="mainTitle">Écoulement exceptionnel dans l’oued Mellègue</h1>
+
+    <p id="mainSubtitle">
+      Comparaison Sentinel-2 / Copernicus entre le 16 juin 2026 et le 18 juin 2026
+    </p>
+
+    <div class="language-switch">
+      <button id="btnFr" class="active" onclick="setLanguage('fr')">Français</button>
+      <button id="btnAr" onclick="setLanguage('ar')">العربية</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="info-box">
+      <p id="contextText">
+        <strong>Contexte :</strong>
+        cette application permet de visualiser l’évolution rapide de l’écoulement dans l’oued Mellègue, en Tunisie, à la suite d’un incident hydraulique au niveau du barrage de Mellègue.
+        <br>
+        <strong>Données utilisées :</strong>
+        images Sentinel-2 issues du programme Copernicus, acquises le 16 juin 2026 et le 18 juin 2026.
+        <br>
+        <strong>Objectif :</strong>
+        comparer l’état du lit de l’oued avant et après l’intensification de l’écoulement, détecter les changements visibles et identifier les secteurs de berges inondés ou temporairement affectés par la montée des eaux.
+      </p>
+    </section>
+
+    <section class="meta-grid">
+      <div class="meta-card">
+        <div class="title" id="metaSensorTitle">Capteur</div>
+        <div class="value">Sentinel-2</div>
+      </div>
+
+      <div class="meta-card">
+        <div class="title" id="metaSourceTitle">Source</div>
+        <div class="value">Copernicus</div>
+      </div>
+
+      <div class="meta-card">
+        <div class="title" id="metaDate1Title">Image 1</div>
+        <div class="value" id="metaDate1Value">16 juin 2026</div>
+      </div>
+
+      <div class="meta-card">
+        <div class="title" id="metaDate2Title">Image 2</div>
+        <div class="value" id="metaDate2Value">18 juin 2026</div>
+      </div>
+    </section>
+
+    <div class="labels">
+      <div class="label before" id="beforeLabel">Sentinel-2 — 16 juin 2026</div>
+      <div class="label after" id="afterLabel">Sentinel-2 — 18 juin 2026</div>
+    </div>
+
+    <section class="viewer" id="viewer">
+      <img
+        class="after-image"
+        id="afterImage"
+        src="images/oued_mellegue_sentinel2_2026_06_18.jpg"
+        alt="Image Sentinel-2 du 18 juin 2026">
+
+      <img
+        class="before-image"
+        id="beforeImage"
+        src="images/oued_mellegue_sentinel2_2026_06_16.jpg"
+        alt="Image Sentinel-2 du 16 juin 2026">
+
+      <canvas id="changeCanvas" class="change-canvas"></canvas>
+
+      <div class="slider-line" id="sliderLine"></div>
+
+      <div class="viewer-note">
+        <span id="leftNote">16 juin 2026</span>
+        <span id="rightNote">18 juin 2026</span>
+      </div>
+    </section>
+
+    <section class="analysis-panel">
+      <h2 id="changeTitle">Détection automatique des changements</h2>
+
+      <p id="changeDescription">
+        Cette fonction compare les deux images Sentinel-2 pixel par pixel et met en évidence, en rouge, les zones ayant connu une modification visuelle importante entre le 16 juin 2026 et le 18 juin 2026.
+      </p>
+
+      <div class="analysis-controls">
+        <label id="thresholdLabel" for="thresholdRange">Seuil de détection :</label>
+
+        <input
+          type="range"
+          id="thresholdRange"
+          min="10"
+          max="120"
+          value="45">
+
+        <span class="threshold-value" id="thresholdValue">45</span>
+
+        <button onclick="detectChanges()" id="detectButton">
+          Détecter les changements
+        </button>
+
+        <button onclick="resetChanges()" id="resetButton" class="reset-btn">
+          Masquer les changements
+        </button>
+      </div>
+
+      <div class="change-result" id="changeResult">
+        Aucun calcul effectué.
+      </div>
+    </section>
+
+    <section class="map-panel">
+      <h2 id="mapTitle">Localisation satellite de l’oued Mellègue</h2>
+
+      <p id="mapDescription">
+        Cette carte permet de visualiser le secteur du barrage de Mellègue et le point de départ de l’écoulement dans l’oued Mellègue sur une image satellite ESRI.
+      </p>
+
+      <div id="esriMap"></div>
+
+      <button class="map-button" onclick="goToStartPoint()" id="mapButton">
+        Revenir au point de départ
+      </button>
+
+      <div class="map-note" id="mapNote">
+        Point de départ approximatif : 36.310394° N, 8.698081° E.
+      </div>
+    </section>
+
+    <section class="caption" id="captionText">
+      Déplacez le curseur horizontalement pour comparer les deux images Sentinel-2.
+      La partie gauche affiche la situation du 16 juin 2026, tandis que la partie droite montre la situation du 18 juin 2026.
+      Cette comparaison permet d’observer l’extension de l’eau dans le lit de l’oued Mellègue et sur certaines berges affectées par l’écoulement exceptionnel.
+      <br><br>
+      Source des données : Sentinel-2 / Copernicus — Fond cartographique : ESRI World Imagery — Traitement et visualisation : GeoMP-IA / Brahim Jaziri.
+    </section>
+
+    <section class="warning-box" id="warningText">
+      Cette application est un outil de visualisation géographique et de sensibilisation.
+      La détection automatique des changements repose sur une comparaison visuelle des pixels et ne remplace pas une analyse hydrologique complète fondée sur des indices spectraux comme le NDWI.
+      Elle ne constitue pas un système d’alerte hydrologique et ne remplace pas les communiqués officiels des autorités compétentes.
+    </section>
+
+  </main>
+
+  <footer id="footerText">
+    Application créée par
+    <a class="creator-link" href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener noreferrer">
+      Brahim Jaziri
+    </a>
+    — GeoMP-IA / GeomapIA
+  </footer>
+
+  <script>
+    const viewer = document.getElementById("viewer");
+    const beforeImage = document.getElementById("beforeImage");
+    const afterImage = document.getElementById("afterImage");
+    const sliderLine = document.getElementById("sliderLine");
+    const changeCanvas = document.getElementById("changeCanvas");
+    const thresholdRange = document.getElementById("thresholdRange");
+    const thresholdValue = document.getElementById("thresholdValue");
+    const changeResult = document.getElementById("changeResult");
+
+    let isDragging = false;
+    let currentLanguage = "fr";
+
+    const startLat = 36.310394;
+    const startLng = 8.698081;
+
+    const esriMap = L.map("esriMap", {
+      center: [startLat, startLng],
+      zoom: 15,
+      zoomControl: true
+    });
+
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution: "Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        maxZoom: 19
+      }
+    ).addTo(esriMap);
+
+    const startMarker = L.marker([startLat, startLng]).addTo(esriMap);
+
+    L.circleMarker([startLat, startLng], {
+      radius: 9,
+      color: "#38bdf8",
+      fillColor: "#38bdf8",
+      fillOpacity: 0.5,
+      weight: 2
+    }).addTo(esriMap);
+
+    function getPopupContent(language) {
+      if (language === "ar") {
+        return `
+          <div dir="rtl">
+            <strong>نقطة انطلاق التدفّق</strong><br>
+            سدّ ملاق / وادي ملاق<br>
+            36.310394° شمالا، 8.698081° شرقا
+          </div>
+        `;
+      }
+
+      return `
+        <strong>Point de départ de l’écoulement</strong><br>
+        Barrage de Mellègue / Oued Mellègue<br>
+        36.310394° N, 8.698081° E
+      `;
+    }
+
+    startMarker.bindPopup(getPopupContent("fr")).openPopup();
+
+    function goToStartPoint() {
+      esriMap.setView([startLat, startLng], 15);
+      startMarker.openPopup();
+
+      if (typeof gtag === "function") {
+        gtag('event', 'map_start_point_click', {
+          app_name: 'GeomapIA_Mellegue'
+        });
+      }
+    }
+
+    setTimeout(function () {
+      esriMap.invalidateSize();
+    }, 500);
+
+    function moveSlider(clientX) {
+      const rect = viewer.getBoundingClientRect();
+      let x = clientX - rect.left;
+
+      if (x < 0) x = 0;
+      if (x > rect.width) x = rect.width;
+
+      const percent = (x / rect.width) * 100;
+
+      beforeImage.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+      sliderLine.style.left = percent + "%";
+    }
+
+    viewer.addEventListener("pointerdown", function(e) {
+      isDragging = true;
+      viewer.setPointerCapture(e.pointerId);
+      moveSlider(e.clientX);
+    });
+
+    viewer.addEventListener("pointermove", function(e) {
+      if (isDragging) {
+        moveSlider(e.clientX);
+      }
+    });
+
+    viewer.addEventListener("pointerup", function() {
+      isDragging = false;
+    });
+
+    viewer.addEventListener("pointerleave", function() {
+      isDragging = false;
+    });
+
+    thresholdRange.addEventListener("input", function () {
+      thresholdValue.textContent = thresholdRange.value;
+    });
+
+    function detectChanges() {
+      if (!afterImage.complete || !beforeImage.complete) {
+        changeResult.innerHTML = currentLanguage === "ar"
+          ? "الصور لم تُحمّل بالكامل بعد."
+          : "Les images ne sont pas encore totalement chargées.";
+        return;
+      }
+
+      const width = afterImage.naturalWidth;
+      const height = afterImage.naturalHeight;
+
+      if (width === 0 || height === 0) {
+        changeResult.innerHTML = currentLanguage === "ar"
+          ? "تعذر قراءة أبعاد الصور."
+          : "Impossible de lire les dimensions des images.";
+        return;
+      }
+
+      changeCanvas.width = width;
+      changeCanvas.height = height;
+
+      const canvasBefore = document.createElement("canvas");
+      const canvasAfter = document.createElement("canvas");
+
+      canvasBefore.width = width;
+      canvasBefore.height = height;
+      canvasAfter.width = width;
+      canvasAfter.height = height;
+
+      const ctxBefore = canvasBefore.getContext("2d", { willReadFrequently: true });
+      const ctxAfter = canvasAfter.getContext("2d", { willReadFrequently: true });
+      const ctxChange = changeCanvas.getContext("2d");
+
+      ctxBefore.drawImage(beforeImage, 0, 0, width, height);
+      ctxAfter.drawImage(afterImage, 0, 0, width, height);
+
+      const beforeData = ctxBefore.getImageData(0, 0, width, height);
+      const afterData = ctxAfter.getImageData(0, 0, width, height);
+      const changeData = ctxChange.createImageData(width, height);
+
+      const threshold = Number(thresholdRange.value);
+      let changedPixels = 0;
+      const totalPixels = width * height;
+
+      for (let i = 0; i < beforeData.data.length; i += 4) {
+        const r1 = beforeData.data[i];
+        const g1 = beforeData.data[i + 1];
+        const b1 = beforeData.data[i + 2];
+
+        const r2 = afterData.data[i];
+        const g2 = afterData.data[i + 1];
+        const b2 = afterData.data[i + 2];
+
+        const diff =
+          Math.abs(r1 - r2) +
+          Math.abs(g1 - g2) +
+          Math.abs(b1 - b2);
+
+        if (diff > threshold * 3) {
+          changeData.data[i] = 255;
+          changeData.data[i + 1] = 0;
+          changeData.data[i + 2] = 0;
+          changeData.data[i + 3] = 175;
+          changedPixels++;
+        } else {
+          changeData.data[i] = 0;
+          changeData.data[i + 1] = 0;
+          changeData.data[i + 2] = 0;
+          changeData.data[i + 3] = 0;
+        }
+      }
+
+      ctxChange.putImageData(changeData, 0, 0);
+      changeCanvas.style.display = "block";
+
+      const percentage = ((changedPixels / totalPixels) * 100).toFixed(2);
+
+      changeResult.innerHTML = currentLanguage === "ar"
+        ? `تم رصد تغيّرات بصرية في حوالي ${percentage}% من مساحة الصورة.`
+        : `Des changements visuels ont été détectés sur environ ${percentage}% de la surface de l’image.`;
+
+      if (typeof gtag === "function") {
+        gtag('event', 'change_detection', {
+          app_name: 'GeomapIA_Mellegue',
+          threshold_value: threshold,
+          changed_area_percent: percentage
+        });
+      }
+    }
+
+    function resetChanges() {
+      const ctxChange = changeCanvas.getContext("2d");
+      ctxChange.clearRect(0, 0, changeCanvas.width, changeCanvas.height);
+      changeCanvas.style.display = "none";
+
+      changeResult.innerHTML = currentLanguage === "ar"
+        ? "تم إخفاء طبقة التغيّرات."
+        : "La couche de changements a été masquée.";
+
+      if (typeof gtag === "function") {
+        gtag('event', 'hide_changes', {
+          app_name: 'GeomapIA_Mellegue'
+        });
+      }
+    }
+
+    const translations = {
+      fr: {
+        dir: "ltr",
+        lang: "fr",
+        mainTitle: "Écoulement exceptionnel dans l’oued Mellègue",
+        mainSubtitle: "Comparaison Sentinel-2 / Copernicus entre le 16 juin 2026 et le 18 juin 2026",
+
+        contextText: `
+          <strong>Contexte :</strong>
+          cette application permet de visualiser l’évolution rapide de l’écoulement dans l’oued Mellègue, en Tunisie, à la suite d’un incident hydraulique au niveau du barrage de Mellègue.
+          <br>
+          <strong>Données utilisées :</strong>
+          images Sentinel-2 issues du programme Copernicus, acquises le 16 juin 2026 et le 18 juin 2026.
+          <br>
+          <strong>Objectif :</strong>
+          comparer l’état du lit de l’oued avant et après l’intensification de l’écoulement, détecter les changements visibles et identifier les secteurs de berges inondés ou temporairement affectés par la montée des eaux.
+        `,
+
+        metaSensorTitle: "Capteur",
+        metaSourceTitle: "Source",
+        metaDate1Title: "Image 1",
+        metaDate2Title: "Image 2",
+        metaDate1Value: "16 juin 2026",
+        metaDate2Value: "18 juin 2026",
+
+        beforeLabel: "Sentinel-2 — 16 juin 2026",
+        afterLabel: "Sentinel-2 — 18 juin 2026",
+
+        leftNote: "16 juin 2026",
+        rightNote: "18 juin 2026",
+
+        changeTitle: "Détection automatique des changements",
+        changeDescription: `
+          Cette fonction compare les deux images Sentinel-2 pixel par pixel et met en évidence, en rouge, les zones ayant connu une modification visuelle importante entre le 16 juin 2026 et le 18 juin 2026.
+        `,
+        thresholdLabel: "Seuil de détection :",
+        detectButton: "Détecter les changements",
+        resetButton: "Masquer les changements",
+        changeResultDefault: "Aucun calcul effectué.",
+
+        mapTitle: "Localisation satellite de l’oued Mellègue",
+        mapDescription: `
+          Cette carte permet de visualiser le secteur du barrage de Mellègue et le point de départ de l’écoulement dans l’oued Mellègue sur une image satellite ESRI.
+        `,
+        mapButton: "Revenir au point de départ",
+        mapNote: "Point de départ approximatif : 36.310394° N, 8.698081° E.",
+
+        captionText: `
+          Déplacez le curseur horizontalement pour comparer les deux images Sentinel-2.
+          La partie gauche affiche la situation du 16 juin 2026, tandis que la partie droite montre la situation du 18 juin 2026.
+          Cette comparaison permet d’observer l’extension de l’eau dans le lit de l’oued Mellègue et sur certaines berges affectées par l’écoulement exceptionnel.
+          <br><br>
+          Source des données : Sentinel-2 / Copernicus — Fond cartographique : ESRI World Imagery — Traitement et visualisation : GeoMP-IA / Brahim Jaziri.
+        `,
+
+        warningText: `
+          Cette application est un outil de visualisation géographique et de sensibilisation.
+          La détection automatique des changements repose sur une comparaison visuelle des pixels et ne remplace pas une analyse hydrologique complète fondée sur des indices spectraux comme le NDWI.
+          Elle ne constitue pas un système d’alerte hydrologique et ne remplace pas les communiqués officiels des autorités compétentes.
+        `,
+
+        footerText: `
+          Application créée par
+          <a class="creator-link" href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener noreferrer">
+            Brahim Jaziri
+          </a>
+          — GeoMP-IA / GeomapIA
+        `
+      },
+
+      ar: {
+        dir: "rtl",
+        lang: "ar",
+        mainTitle: "التدفّق الاستثنائي بوادي ملاق",
+        mainSubtitle: "مقارنة بين صور Sentinel-2 / Copernicus بتاريخ 16 جوان 2026 و18 جوان 2026",
+
+        contextText: `
+          <strong>السياق:</strong>
+          يتيح هذا التطبيق متابعة التطوّر السريع للتدفّق المائي بوادي ملاق في تونس، إثر حادث هيدروليكي على مستوى سدّ ملاق.
+          <br>
+          <strong>المعطيات المستعملة:</strong>
+          صور Sentinel-2 من برنامج Copernicus، ملتقطة بتاريخ 16 جوان 2026 و18 جوان 2026.
+          <br>
+          <strong>الهدف:</strong>
+          مقارنة حالة مجرى الوادي قبل وبعد تكثّف التدفّق، والكشف عن التغيّرات المرئية، وإبراز المناطق التي غمرتها المياه أو تأثّرت مؤقتا بارتفاع منسوبها على ضفاف الوادي.
+        `,
+
+        metaSensorTitle: "القمر / المستشعر",
+        metaSourceTitle: "المصدر",
+        metaDate1Title: "الصورة الأولى",
+        metaDate2Title: "الصورة الثانية",
+        metaDate1Value: "16 جوان 2026",
+        metaDate2Value: "18 جوان 2026",
+
+        beforeLabel: "Sentinel-2 — 16 جوان 2026",
+        afterLabel: "Sentinel-2 — 18 جوان 2026",
+
+        leftNote: "16 جوان 2026",
+        rightNote: "18 جوان 2026",
+
+        changeTitle: "الكشف الآلي عن التغيّرات",
+        changeDescription: `
+          تقوم هذه الوظيفة بمقارنة صورتي Sentinel-2 بكسلا ببكسل، وتُبرز باللون الأحمر المناطق التي عرفت تغيّرا بصريا واضحا بين 16 جوان 2026 و18 جوان 2026.
+        `,
+        thresholdLabel: "عتبة الكشف:",
+        detectButton: "كشف التغيّرات",
+        resetButton: "إخفاء التغيّرات",
+        changeResultDefault: "لم يتم إجراء أي حساب بعد.",
+
+        mapTitle: "الموقع الفضائي لوادي ملاق",
+        mapDescription: `
+          تتيح هذه الخريطة عرض قطاع سدّ ملاق ونقطة انطلاق التدفّق في وادي ملاق باستعمال صورة فضائية من ESRI.
+        `,
+        mapButton: "العودة إلى نقطة الانطلاق",
+        mapNote: "نقطة الانطلاق التقريبية: 36.310394° شمالا، 8.698081° شرقا.",
+
+        captionText: `
+          حرّك المؤشر أفقيا للمقارنة بين صورتي Sentinel-2.
+          يعرض الجزء الأيسر وضعية يوم 16 جوان 2026، بينما يعرض الجزء الأيمن وضعية يوم 18 جوان 2026.
+          تسمح هذه المقارنة بملاحظة امتداد المياه داخل مجرى وادي ملاق وعلى بعض الضفاف المتأثرة بالتدفّق الاستثنائي.
+          <br><br>
+          مصدر المعطيات: Sentinel-2 / Copernicus — الخلفية الخرائطية: ESRI World Imagery — المعالجة والتصوّر: GeoMP-IA / Brahim Jaziri.
+        `,
+
+        warningText: `
+          هذا التطبيق أداة للتصوّر الجغرافي والتحسيس.
+          يعتمد الكشف الآلي عن التغيّرات على مقارنة بصرية بين البكسلات، ولا يعوّض تحليلا هيدرولوجيا كاملا باستعمال مؤشرات طيفية مثل NDWI.
+          كما أنه لا يمثّل نظام إنذار هيدرولوجي ولا يعوّض البلاغات الرسمية الصادرة عن السلطات المختصّة.
+        `,
+
+        footerText: `
+          تطبيق من إنجاز
+          <a class="creator-link" href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener noreferrer">
+            Brahim Jaziri
+          </a>
+          — GeoMP-IA / GeomapIA
+        `
+      }
+    };
+
+    function setLanguage(language) {
+      const t = translations[language];
+      currentLanguage = language;
+
+      document.documentElement.lang = t.lang;
+      document.documentElement.dir = t.dir;
+
+      document.getElementById("mainTitle").innerHTML = t.mainTitle;
+      document.getElementById("mainSubtitle").innerHTML = t.mainSubtitle;
+      document.getElementById("contextText").innerHTML = t.contextText;
+
+      document.getElementById("metaSensorTitle").innerHTML = t.metaSensorTitle;
+      document.getElementById("metaSourceTitle").innerHTML = t.metaSourceTitle;
+      document.getElementById("metaDate1Title").innerHTML = t.metaDate1Title;
+      document.getElementById("metaDate2Title").innerHTML = t.metaDate2Title;
+      document.getElementById("metaDate1Value").innerHTML = t.metaDate1Value;
+      document.getElementById("metaDate2Value").innerHTML = t.metaDate2Value;
+
+      document.getElementById("beforeLabel").innerHTML = t.beforeLabel;
+      document.getElementById("afterLabel").innerHTML = t.afterLabel;
+      document.getElementById("leftNote").innerHTML = t.leftNote;
+      document.getElementById("rightNote").innerHTML = t.rightNote;
+
+      document.getElementById("changeTitle").innerHTML = t.changeTitle;
+      document.getElementById("changeDescription").innerHTML = t.changeDescription;
+      document.getElementById("thresholdLabel").innerHTML = t.thresholdLabel;
+      document.getElementById("detectButton").innerHTML = t.detectButton;
+      document.getElementById("resetButton").innerHTML = t.resetButton;
+
+      document.getElementById("mapTitle").innerHTML = t.mapTitle;
+      document.getElementById("mapDescription").innerHTML = t.mapDescription;
+      document.getElementById("mapButton").innerHTML = t.mapButton;
+      document.getElementById("mapNote").innerHTML = t.mapNote;
+
+      document.getElementById("captionText").innerHTML = t.captionText;
+      document.getElementById("warningText").innerHTML = t.warningText;
+      document.getElementById("footerText").innerHTML = t.footerText;
+
+      startMarker.setPopupContent(getPopupContent(language));
+
+      if (changeCanvas.style.display !== "block") {
+        changeResult.innerHTML = t.changeResultDefault;
+      }
+
+      document.getElementById("btnFr").classList.toggle("active", language === "fr");
+      document.getElementById("btnAr").classList.toggle("active", language === "ar");
+
+      if (typeof gtag === "function") {
+        gtag('event', 'language_switch', {
+          app_name: 'GeomapIA_Mellegue',
+          language: language
+        });
+      }
+
+      setTimeout(function () {
+        esriMap.invalidateSize();
+      }, 250);
+    }
+  </script>
+
+</body>
+</html>
