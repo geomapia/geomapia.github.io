@@ -7,7 +7,6 @@
 
   <!-- Google Analytics - GeomapIA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
-
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
@@ -20,13 +19,8 @@
     });
   </script>
 
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  >
-
-  <!-- Leaflet JS -->
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
@@ -504,7 +498,7 @@
 
   <header>
     <div class="logo-box">
-      <img src="../IA.png" alt="Logo GeomapIA">
+      <img src="IA.png" alt="Logo GeomapIA">
     </div>
 
     <h1 id="mainTitle">Écoulement exceptionnel dans l’oued Mellègue</h1>
@@ -565,13 +559,13 @@
       <img
         class="after-image"
         id="afterImage"
-        src="images/oued_mellegue_sentinel2_2026_06_18.jpg"
+        src="oued_mellegue_sentinel2_2026_06_18.jpg"
         alt="Image Sentinel-2 du 18 juin 2026">
 
       <img
         class="before-image"
         id="beforeImage"
-        src="images/oued_mellegue_sentinel2_2026_06_16.jpg"
+        src="oued_mellegue_sentinel2_2026_06_16.jpg"
         alt="Image Sentinel-2 du 16 juin 2026">
 
       <canvas id="changeCanvas" class="change-canvas"></canvas>
