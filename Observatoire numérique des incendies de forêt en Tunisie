@@ -5,9 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Observatoire numérique des incendies de forêt en Tunisie</title>
 <meta name="description" content="Plateforme Incendie — Tell Septentrional Tunisien 2002/2023. Système d'Information Géographique & Business Intelligence." />
+<!-- Anti-flash : applique le thème sauvegardé avant le rendu de la page -->
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) { /* ignore */ }
+  })();
+</script>
 <style>
   /* =========================================================
-     PALETTE GLOBALE
+     PALETTE GLOBALE — MODE SOMBRE (par défaut)
      ========================================================= */
   :root {
     --bg-principal:   #1a2e1a;
@@ -20,6 +31,41 @@
     --border-soft:    rgba(159, 225, 203, 0.15);
     --card-bg:        rgba(255, 255, 255, 0.03);
     --shadow-orange:  0 8px 30px rgba(255, 69, 0, 0.25);
+    /* Surfaces glassmorphism */
+    --glass-bg:       rgba(13, 26, 13, 0.85);
+    --hero-bg1:       #0d1a0d;
+    --hero-bg2:       #1a2e1a;
+    --map-bg1:        #0d1a0d;
+    --map-bg2:        #1a2e1a;
+    --footer-border:  rgba(159, 225, 203, 0.15);
+    --grid-overlay:   rgba(159, 225, 203, 0.06);
+    --preview-glow:   rgba(255, 69, 0, 0.35);
+    --iframe-bg:      #0d1a0d;
+  }
+
+  /* =========================================================
+     PALETTE — MODE CLAIR
+     ========================================================= */
+  html[data-theme="light"] {
+    --bg-principal:   #f4f7f2;
+    --bg-secondaire:  #ffffff;
+    --bg-troisieme:   #eef3ea;
+    --accent-orange:  #d63900;
+    --accent-orange-2:#ff5a1f;
+    --text-clair:     #2f5139;
+    --text-blanc:     #122214;
+    --border-soft:    rgba(47, 81, 57, 0.15);
+    --card-bg:        rgba(47, 81, 57, 0.04);
+    --shadow-orange:  0 8px 30px rgba(214, 57, 0, 0.18);
+    --glass-bg:       rgba(255, 255, 255, 0.88);
+    --hero-bg1:       #eaf2e6;
+    --hero-bg2:       #f7faf4;
+    --map-bg1:        #e6efe1;
+    --map-bg2:        #f4f8f1;
+    --footer-border:  rgba(47, 81, 57, 0.15);
+    --grid-overlay:   rgba(47, 81, 57, 0.08);
+    --preview-glow:   rgba(214, 57, 0, 0.25);
+    --iframe-bg:      #ffffff;
   }
 
   /* =========================================================
@@ -45,11 +91,36 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    background: rgba(13, 26, 13, 0.85);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-soft);
   }
+  /* Bouton bascule thème clair / sombre */
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-soft);
+    color: var(--text-clair);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+    transform: rotate(20deg);
+  }
+  .theme-toggle svg { width: 18px; height: 18px; }
+  .theme-toggle .icon-sun  { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  html[data-theme="light"] .theme-toggle .icon-sun  { display: block; }
+  html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   nav.topbar .nav-inner {
     max-width: 1400px;
     margin: 0 auto;
@@ -134,9 +205,9 @@
   header.hero {
     min-height: 100vh;
     background:
-      radial-gradient(ellipse at top right, rgba(255, 69, 0, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom left, rgba(159, 225, 203, 0.06) 0%, transparent 55%),
-      linear-gradient(135deg, #0d1a0d 0%, #1a2e1a 100%);
+      radial-gradient(ellipse at top right, var(--preview-glow) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, var(--grid-overlay) 0%, transparent 55%),
+      linear-gradient(135deg, var(--hero-bg1) 0%, var(--hero-bg2) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,8 +221,8 @@
     position: absolute;
     inset: 0;
     background-image:
-      repeating-linear-gradient(0deg, rgba(159,225,203,0.025) 0 1px, transparent 1px 60px),
-      repeating-linear-gradient(90deg, rgba(159,225,203,0.025) 0 1px, transparent 1px 60px);
+      repeating-linear-gradient(0deg, var(--grid-overlay) 0 1px, transparent 1px 60px),
+      repeating-linear-gradient(90deg, var(--grid-overlay) 0 1px, transparent 1px 60px);
     pointer-events: none;
   }
   .hero-content { max-width: 900px; position: relative; z-index: 2; }
@@ -327,7 +398,7 @@
     height: 720px;
     border: 0;
     border-radius: 14px;
-    background: var(--bg-secondaire);
+    background: var(--iframe-bg);
     display: block;
   }
   .dashboard-meta {
@@ -355,78 +426,7 @@
   }
 
   /* =========================================================
-     SECTION 4 — CARTES
-     ========================================================= */
-  section.maps { background: var(--bg-principal); border-top: 1px solid var(--border-soft); }
-  .maps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin-top: 1rem;
-  }
-  .map-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-soft);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.35s ease;
-    cursor: pointer;
-  }
-  .map-card:hover { transform: translateY(-6px); border-color: var(--accent-orange); box-shadow: var(--shadow-orange); }
-  .map-preview {
-    height: 240px;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(255, 69, 0, 0.35) 0%, transparent 30%),
-      radial-gradient(circle at 70% 60%, rgba(255, 69, 0, 0.25) 0%, transparent 25%),
-      radial-gradient(circle at 50% 75%, rgba(255, 165, 0, 0.2) 0%, transparent 20%),
-      linear-gradient(135deg, #0d1a0d 0%, #1a2e1a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .map-preview::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, rgba(159,225,203,0.06) 0 1px, transparent 1px 40px),
-      repeating-linear-gradient(90deg, rgba(159,225,203,0.06) 0 1px, transparent 1px 40px);
-  }
-  .map-preview.burned {
-    background:
-      radial-gradient(circle at 50% 50%, rgba(80, 40, 20, 0.5) 0%, transparent 50%),
-      linear-gradient(135deg, #1a1208 0%, #2a1a0d 100%);
-  }
-  .map-preview .symbol {
-    position: relative;
-    z-index: 2;
-    color: var(--accent-orange);
-    filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6));
-  }
-  .map-preview .symbol svg { width: 80px; height: 80px; }
-  .map-info { padding: 1.5rem 1.8rem; }
-  .map-info h3 {
-    color: var(--text-blanc);
-    font-size: 1.25rem;
-    margin-bottom: 0.4rem;
-    font-weight: 700;
-  }
-  .map-info p { color: var(--text-clair); font-size: 0.92rem; opacity: 0.85; margin-bottom: 1rem; }
-  .map-info .map-cta {
-    color: var(--accent-orange);
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: gap 0.25s ease;
-  }
-  .map-card:hover .map-cta { gap: 0.8rem; }
-
-  /* =========================================================
-     SECTION 5 — CONTACT / SOURCES
+     SECTION 4 — CONTACT / SOURCES
      ========================================================= */
   section.contact {
     background: var(--bg-secondaire);
@@ -447,6 +447,53 @@
     opacity: 0.9;
   }
   .contact-mention .year { color: var(--accent-orange); font-weight: 600; }
+
+  /* Bloc encadrants / partenaires */
+  .supervisors-block {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+  }
+  .supervisors-block h4 {
+    color: var(--text-clair);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+  .supervisors-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .supervisors-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    color: var(--text-blanc);
+    padding: 0.7rem 1.3rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    text-decoration: none;
+  }
+  .supervisors-list a:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-orange);
+  }
+  .supervisors-list a .link-icon {
+    color: var(--accent-orange);
+    display: inline-flex;
+    transition: color 0.25s ease;
+  }
+  .supervisors-list a .link-icon svg { width: 16px; height: 16px; }
+  .supervisors-list a:hover .link-icon { color: var(--text-blanc); }
   .sources-block {
     max-width: 900px;
     margin: 0 auto 3rem;
@@ -477,12 +524,12 @@
   }
   .sources-list span:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
   footer {
-    border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--footer-border);
     padding: 1.5rem 1.5rem;
     text-align: center;
     color: var(--text-clair);
     font-size: 0.82rem;
-    opacity: 0.65;
+    opacity: 0.75;
   }
   footer a { color: var(--accent-orange); }
 
@@ -494,7 +541,7 @@
       position: fixed;
       top: 56px; right: 0;
       flex-direction: column;
-      background: rgba(13, 26, 13, 0.97);
+      background: var(--glass-bg);
       width: 70%;
       height: calc(100vh - 56px);
       padding: 2rem 1.5rem;
@@ -530,9 +577,31 @@
       <li><a href="#accueil">Accueil</a></li>
       <li><a href="#apropos">À propos</a></li>
       <li><a href="#tableau-de-bord">Tableau de bord</a></li>
-      <li><a href="#cartes">Cartes</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="Basculer entre mode clair et sombre"
+      title="Basculer le thème">
+      <!-- Icône lune (visible en mode clair pour repasser en sombre) -->
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <!-- Icône soleil (visible en mode sombre pour passer en clair) -->
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="1"  x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1"  y1="12" x2="3"  y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+        <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
     <button class="burger" id="burger" aria-label="Menu">&#9776;</button>
   </div>
 </nav>
@@ -543,7 +612,7 @@
 <header class="hero" id="accueil">
   <div class="hero-content">
     <span class="hero-tag">SIG &amp; Business Intelligence</span>
-    <h1>Plateforme <span class="accent">Incendie</span></h1>
+    <h1>Observatoire numérique <span class="accent">des incendies de forêt</span> en Tunisie</h1>
     <p class="subtitle">Tell Septentrional Tunisien — 2002/2023</p>
     <p class="desc">Système d'Information Géographique &amp; Business Intelligence</p>
     <a href="#tableau-de-bord" class="hero-btn">Explorer le tableau de bord &#8594;</a>
@@ -659,52 +728,6 @@
 </section>
 
 <!-- ============================================================
-     SECTION 4 — CARTES
-     ============================================================ -->
-<section class="maps section-pad" id="cartes">
-  <div class="container">
-    <div class="section-subtitle">Cartographie thématique</div>
-    <h2 class="section-title">Cartes interactives</h2>
-    <div class="section-divider"></div>
-
-    <div class="maps-grid">
-      <!-- Carte 1 : Nombre d'incendies -->
-      <div class="map-card">
-        <div class="map-preview">
-          <div class="symbol">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="map-info">
-          <h3>Nombre d'incendies</h3>
-          <p>Distribution spatiale des foyers par gouvernorat sur la période 2002–2023. Intensité représentée par gradient chromatique orange–rouge.</p>
-          <span class="map-cta">Voir la carte &#8594;</span>
-        </div>
-      </div>
-
-      <!-- Carte 2 : Surfaces brûlées -->
-      <div class="map-card">
-        <div class="map-preview burned">
-          <div class="symbol">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2c-1 3-4 5-4 9 0 3.31 1.79 6 4 6s4-2.69 4-6c0-1.5-.5-2.5-1-3.5C13 7 14 4 12 2zM7 14c-2 1-3 3-3 5 0 1.66 1.34 3 3 3h10c1.66 0 3-1.34 3-3 0-2-1-4-3-5-1 2-3 3-5 3s-4-1-5-3z" opacity="0.85"/>
-              <path d="M9 18c0 1 .5 2 1.5 2h3c1 0 1.5-1 1.5-2" stroke="#FF4500" stroke-width="0.8" fill="none"/>
-            </svg>
-          </div>
-        </div>
-        <div class="map-info">
-          <h3>Surfaces brûlées (ha)</h3>
-          <p>Cartographie des superficies touchées en hectares par gouvernorat. Analyse des secteurs les plus vulnérables et des tendances interannuelles.</p>
-          <span class="map-cta">Voir la carte &#8594;</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
      SECTION 5 — CONTACT / SOURCES
      ============================================================ -->
 <section class="contact" id="contact">
@@ -713,10 +736,35 @@
     <h2 class="section-title">Réalisation &amp; Sources</h2>
     <div class="section-divider"></div>
 
-    <div class="contact-author">WESLATI Amani</div>
+    <div class="contact-author">Amani Weslati</div>
     <p class="contact-mention">
       Mastère Géomatique, Environnement et Aménagement — FSHST <span class="year">2026</span>
     </p>
+
+    <div class="supervisors-block">
+      <h4>Encadrant &amp; Partenaire</h4>
+      <div class="supervisors-list">
+        <a href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener" title="Page de Pr. Brahim JAZIRI">
+          <span class="link-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <span>Pr. Brahim JAZIRI</span>
+        </a>
+        <a href="https://geomapia.github.io/" target="_blank" rel="noopener" title="Site de GeomapIA">
+          <span class="link-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+              <line x1="8" y1="2" x2="8" y2="18"/>
+              <line x1="16" y1="6" x2="16" y2="22"/>
+            </svg>
+          </span>
+          <span>GeomapIA</span>
+        </a>
+      </div>
+    </div>
 
     <div class="sources-block">
       <h4>Sources des données</h4>
@@ -742,6 +790,29 @@
   const navMenu = document.getElementById('navMenu');
   burger.addEventListener('click', () => navMenu.classList.toggle('open'));
   navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navMenu.classList.remove('open')));
+
+  // ===== Bascule mode clair / sombre =====
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      // dark = valeur par défaut (pas d'attribut OU data-theme="dark")
+      if (root.getAttribute('data-theme') === 'light') {
+        root.removeAttribute('data-theme');
+      } else {
+        root.setAttribute('data-theme', 'dark');
+      }
+    }
+    try { localStorage.setItem('theme', theme); } catch (e) {}
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    applyTheme(current === 'light' ? 'dark' : 'light');
+  });
 
   // S'assurer que l'iFrame Power BI occupe toujours la pleine largeur de la page web
   function fitPowerBIToViewport() {
