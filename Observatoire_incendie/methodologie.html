@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Méthodologie — Observatoire des incendies de forêt</title>
+<meta name="description" content="Méthodologie d'analyse géospatiale et de traitement des données pour l'observatoire des incendies en Tunisie." />
+
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<style>
+  /* =========================================================
+     PALETTE GLOBALE — MODE CLAIR (par défaut)
+     ========================================================= */
+  :root {
+    --bg-principal:   #f4f7f2;
+    --bg-secondaire:  #ffffff;
+    --bg-troisieme:   #eef3ea;
+    --accent-orange:  #d63900;
+    --accent-orange-2:#ff5a1f;
+    --text-clair:     #2f5139;
+    --text-blanc:     #122214;
+    --border-soft:    rgba(47, 81, 57, 0.15);
+    --card-bg:        rgba(47, 81, 57, 0.04);
+    --shadow-orange:  0 8px 30px rgba(214, 57, 0, 0.18);
+    --glass-bg:       rgba(255, 255, 255, 0.88);
+    --hero-bg1:       #eaf2e6;
+    --hero-bg2:       #f7faf4;
+    --footer-border:  rgba(47, 81, 57, 0.15);
+    --grid-overlay:   rgba(47, 81, 57, 0.08);
+  }
+
+  /* =========================================================
+     PALETTE — MODE SOMBRE
+     ========================================================= */
+  html[data-theme="dark"] {
+    --bg-principal:   #1a2e1a;
+    --bg-secondaire:  #0d1a0d;
+    --bg-troisieme:   #15281a;
+    --accent-orange:  #FF4500;
+    --accent-orange-2:#ff6a33;
+    --text-clair:     #9FE1CB;
+    --text-blanc:     #FFFFFF;
+    --border-soft:    rgba(159, 225, 203, 0.15);
+    --card-bg:        rgba(255, 255, 255, 0.03);
+    --shadow-orange:  0 8px 30px rgba(255, 69, 0, 0.25);
+    --glass-bg:       rgba(13, 26, 13, 0.85);
+    --hero-bg1:       #0d1a0d;
+    --hero-bg2:       #1a2e1a;
+    --footer-border:  rgba(159, 225, 203, 0.15);
+    --grid-overlay:   rgba(159, 225, 203, 0.06);
+  }
+
+  /* RESET & BASE */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif;
+    background-color: var(--bg-principal);
+    color: var(--text-clair);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  
+  /* NAVIGATION */
+  nav.topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--glass-bg); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .theme-toggle {
+    background: transparent; border: 1px solid var(--border-soft);
+    color: var(--text-clair); width: 40px; height: 40px;
+    border-radius: 50%; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; transition: all 0.3s;
+  }
+  .theme-toggle:hover { border-color: var(--accent-orange); color: var(--accent-orange); transform: rotate(20deg); }
+  .theme-toggle svg { width: 18px; height: 18px; }
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+  html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+  nav.topbar .nav-inner {
+    max-width: 1400px; margin: 0 auto; padding: 0.9rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  nav.topbar .brand { color: var(--text-blanc); font-weight: 700; display: flex; gap: 0.5rem; }
+  nav.topbar .brand .flame { color: var(--accent-orange); }
+  nav.topbar ul { list-style: none; display: flex; gap: 1.8rem; }
+  nav.topbar ul li a { color: var(--text-clair); font-weight: 500; position: relative; transition: color 0.25s; }
+  nav.topbar ul li a::after {
+    content: ''; position: absolute; left: 0; bottom: -2px;
+    height: 2px; width: 0; background: var(--accent-orange); transition: width 0.3s;
+  }
+  nav.topbar ul li a:hover { color: var(--text-blanc); }
+  nav.topbar ul li a:hover::after { width: 100%; }
+  
+  /* LAYOUTS */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+  .page-header {
+    padding: 10rem 1.5rem 4rem;
+    background: linear-gradient(135deg, var(--hero-bg1), var(--hero-bg2));
+    text-align: center; border-bottom: 1px solid var(--border-soft);
+  }
+  .page-title { color: var(--text-blanc); font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+  .page-subtitle { color: var(--accent-orange); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+  
+  /* CONTENT STYLES */
+  .content-section { padding: 4rem 0; }
+  .method-step {
+    background: var(--bg-secondaire);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+    position: relative;
+    overflow: hidden;
+  }
+  .method-step::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--accent-orange);
+  }
+  .step-number {
+    display: inline-block; background: rgba(214, 57, 0, 0.1); color: var(--accent-orange);
+    padding: 0.3rem 1rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;
+  }
+  .method-step h3 { color: var(--text-blanc); font-size: 1.5rem; margin-bottom: 1rem; }
+  .method-step p { margin-bottom: 1rem; opacity: 0.9; }
+  .method-step ul { list-style-position: inside; margin-bottom: 1rem; opacity: 0.9; }
+  .method-step ul li { margin-bottom: 0.5rem; }
+  
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--footer-border); padding: 1.5rem; text-align: center;
+    color: var(--text-clair); font-size: 0.82rem; opacity: 0.75;
+  }
+  footer a { color: var(--accent-orange); }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="nav-inner">
+    <div class="brand">
+      <span class="flame">&#128293;</span>
+      <span>Observatoire Incendies</span>
+    </div>
+    <ul id="navMenu">
+      <li><a href="index.html#accueil">Accueil</a></li>
+      <li><a href="methodologie.html">Méthodologie</a></li>
+      <li><a href="index.html#apropos">À propos</a></li>
+      <li><a href="index.html#tableau-de-bord">Tableau de bord</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="page-header">
+  <p class="page-subtitle">Approche scientifique & technique</p>
+  <h1 class="page-title">Méthodologie de l'Observatoire</h1>
+</header>
+
+<section class="content-section">
+  <div class="container">
+    
+    <div class="method-step">
+      <div class="step-number">Étape 01</div>
+      <h3>Acquisition des données spatiales et historiques</h3>
+      <p>L'élaboration de ce système d'information repose sur la collecte croisée de données issues de sources nationales et internationales pour la période allant de 2002 à 2023 :</p>
+      <ul>
+        <li><strong>Données institutionnelles :</strong> Rapports de la Direction Générale des Forêts (DGF) et données météorologiques de l'INM.</li>
+        <li><strong>Télédétection :</strong> Exploitation des bases de données de la NASA (système FIRMS pour les points de chaleur actifs) et du programme européen Copernicus.</li>
+      </ul>
+    </div>
+
+    <div class="method-step">
+      <div class="step-number">Étape 02</div>
+      <h3>Traitement géospatial et analyse diachronique</h3>
+      <p>Afin de cartographier l'évolution de la sévérité des feux dans le Tell Septentrional, des flux de travail géospatiaux spécifiques ont été mis en place :</p>
+      <ul>
+        <li>Utilisation de <strong>Google Earth Engine (GEE)</strong> et <strong>QGIS</strong> pour le traitement massif d'images satellitaires (Landsat et Sentinel-2).</li>
+        <li>Calcul des indices spectraux, notamment le NBR (Normalized Burn Ratio) et le dNBR pour quantifier les surfaces brûlées de l'occupation du sol.</li>
+        <li>Croisement spatial avec les limites administratives des 7 gouvernorats étudiés.</li>
+      </ul>
+    </div>
+
+    <div class="method-step">
+      <div class="step-number">Étape 03</div>
+      <h3>Business Intelligence et intégration Power BI</h3>
+      <p>La dernière phase consiste à transformer les résultats géospatiaux complexes en indicateurs d'aide à la décision :</p>
+      <ul>
+        <li>Modélisation des données relationnelles pour lier les attributs spatiaux, temporels et météorologiques.</li>
+        <li>Création de visualisations interactives via <strong>Power BI</strong> (séries temporelles, dynamiques saisonnières, répartition par gouvernorat).</li>
+        <li>Déploiement du tableau de bord en mode intégré (Embedded) directement sur l'interface web pour une accessibilité publique et institutionnelle.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Observatoire numérique des incendies de forêt en Tunisie — Amani Weslati &middot;
+  Supervision : Pr. Brahim JAZIRI
+</footer>
+
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      if (root.getAttribute('data-theme') === 'dark') {
+        root.removeAttribute('data-theme');
+      } else {
+        root.setAttribute('data-theme', 'light');
+      }
+    }
+    try { localStorage.setItem('theme', theme); } catch (e) {}
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    applyTheme(current === 'light' ? 'dark' : 'light');
+  });
+</script>
+</body>
+</html>
