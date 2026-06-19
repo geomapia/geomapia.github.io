@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Observatoire numérique des incendies de forêt en Tunisie</title>
+<meta name="description" content="Plateforme Incendie — Tell Septentrional Tunisien 2002/2023. Système d'Information Géographique & Business Intelligence." />
+<style>
+  /* =========================================================
+     PALETTE GLOBALE
+     ========================================================= */
+  :root {
+    --bg-principal:   #1a2e1a;
+    --bg-secondaire:  #0d1a0d;
+    --bg-troisieme:   #15281a;
+    --accent-orange:  #FF4500;
+    --accent-orange-2:#ff6a33;
+    --text-clair:     #9FE1CB;
+    --text-blanc:     #FFFFFF;
+    --border-soft:    rgba(159, 225, 203, 0.15);
+    --card-bg:        rgba(255, 255, 255, 0.03);
+    --shadow-orange:  0 8px 30px rgba(255, 69, 0, 0.25);
+  }
+
+  /* =========================================================
+     RESET & BASE
+     ========================================================= */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif;
+    background-color: var(--bg-principal);
+    color: var(--text-clair);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  section { width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+
+  /* =========================================================
+     NAVIGATION
+     ========================================================= */
+  nav.topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13, 26, 13, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  nav.topbar .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  nav.topbar .brand {
+    color: var(--text-blanc);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  nav.topbar .brand .flame { color: var(--accent-orange); }
+  nav.topbar ul {
+    list-style: none;
+    display: flex;
+    gap: 1.8rem;
+    align-items: center;
+  }
+  nav.topbar ul li a {
+    color: var(--text-clair);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.4rem 0;
+    position: relative;
+    transition: color 0.25s ease;
+  }
+  nav.topbar ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    height: 2px; width: 0;
+    background: var(--accent-orange);
+    transition: width 0.3s ease;
+  }
+  nav.topbar ul li a:hover { color: var(--text-blanc); }
+  nav.topbar ul li a:hover::after { width: 100%; }
+  .burger { display: none; font-size: 1.6rem; color: var(--text-blanc); cursor: pointer; background: none; border: none; }
+
+  /* =========================================================
+     LAYOUTS GÉNÉRIQUES
+     ========================================================= */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .section-pad { padding: 6rem 0; }
+  .section-title {
+    color: var(--text-blanc);
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+  }
+  .section-subtitle {
+    color: var(--accent-orange);
+    text-align: center;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 3rem;
+    font-weight: 600;
+  }
+  .section-divider {
+    width: 80px; height: 4px;
+    background: var(--accent-orange);
+    margin: 0 auto 3rem;
+    border-radius: 2px;
+  }
+
+  /* =========================================================
+     SECTION 1 — HEADER / ACCUEIL
+     ========================================================= */
+  header.hero {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at top right, rgba(255, 69, 0, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(159, 225, 203, 0.06) 0%, transparent 55%),
+      linear-gradient(135deg, #0d1a0d 0%, #1a2e1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7rem 1.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(159,225,203,0.025) 0 1px, transparent 1px 60px),
+      repeating-linear-gradient(90deg, rgba(159,225,203,0.025) 0 1px, transparent 1px 60px);
+    pointer-events: none;
+  }
+  .hero-content { max-width: 900px; position: relative; z-index: 2; }
+  .hero-tag {
+    display: inline-block;
+    color: var(--accent-orange);
+    border: 1px solid var(--accent-orange);
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .hero-content h1 {
+    color: var(--text-blanc);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    letter-spacing: -1.5px;
+  }
+  .hero-content h1 .accent { color: var(--accent-orange); }
+  .hero-content .subtitle {
+    color: var(--text-clair);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .hero-content .desc {
+    color: var(--text-clair);
+    opacity: 0.85;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-btn {
+    display: inline-block;
+    background: var(--accent-orange);
+    color: var(--text-blanc);
+    padding: 1rem 2.2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-orange);
+    transition: all 0.3s ease;
+    border: 2px solid var(--accent-orange);
+  }
+  .hero-btn:hover {
+    background: transparent;
+    color: var(--accent-orange);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(255, 69, 0, 0.4);
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+  }
+  .hero-stats .stat-num {
+    color: var(--accent-orange);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .hero-stats .stat-lbl {
+    color: var(--text-clair);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* =========================================================
+     SECTION 2 — À PROPOS
+     ========================================================= */
+  section.about {
+    background: var(--bg-troisieme);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  .about-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent-orange), transparent);
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .about-card:hover { transform: translateY(-6px); border-color: var(--accent-orange); }
+  .about-card:hover::before { opacity: 1; }
+  .about-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 69, 0, 0.12);
+    color: var(--accent-orange);
+  }
+  .about-icon svg { width: 32px; height: 32px; }
+  .about-card h3 {
+    color: var(--text-blanc);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  .about-card p {
+    color: var(--text-clair);
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+  .about-card p strong { color: var(--accent-orange); font-weight: 700; }
+
+  /* =========================================================
+     SECTION 3 — TABLEAU DE BORD
+     ========================================================= */
+  section.dashboard { background: var(--bg-secondaire); }
+  .dashboard-intro {
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+    color: var(--text-clair);
+    font-size: 1.05rem;
+    opacity: 0.9;
+  }
+  .dashboard-frame-wrap {
+    background: var(--bg-principal);
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 0.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .dashboard-frame-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 18px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent-orange), transparent 40%, transparent 60%, var(--text-clair));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  /* L'iFrame occupe toute la largeur de la page web */
+  .dashboard-frame-wrap iframe {
+    width: 100%;
+    width: 100vw;
+    max-width: 100% !important;
+    height: 720px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--bg-secondaire);
+    display: block;
+  }
+  .dashboard-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-clair);
+    opacity: 0.8;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .dashboard-meta .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-orange);
+    margin-right: 0.4rem;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  /* =========================================================
+     SECTION 4 — CARTES
+     ========================================================= */
+  section.maps { background: var(--bg-principal); border-top: 1px solid var(--border-soft); }
+  .maps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  .map-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    cursor: pointer;
+  }
+  .map-card:hover { transform: translateY(-6px); border-color: var(--accent-orange); box-shadow: var(--shadow-orange); }
+  .map-preview {
+    height: 240px;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255, 69, 0, 0.35) 0%, transparent 30%),
+      radial-gradient(circle at 70% 60%, rgba(255, 69, 0, 0.25) 0%, transparent 25%),
+      radial-gradient(circle at 50% 75%, rgba(255, 165, 0, 0.2) 0%, transparent 20%),
+      linear-gradient(135deg, #0d1a0d 0%, #1a2e1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(159,225,203,0.06) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(159,225,203,0.06) 0 1px, transparent 1px 40px);
+  }
+  .map-preview.burned {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(80, 40, 20, 0.5) 0%, transparent 50%),
+      linear-gradient(135deg, #1a1208 0%, #2a1a0d 100%);
+  }
+  .map-preview .symbol {
+    position: relative;
+    z-index: 2;
+    color: var(--accent-orange);
+    filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6));
+  }
+  .map-preview .symbol svg { width: 80px; height: 80px; }
+  .map-info { padding: 1.5rem 1.8rem; }
+  .map-info h3 {
+    color: var(--text-blanc);
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+  }
+  .map-info p { color: var(--text-clair); font-size: 0.92rem; opacity: 0.85; margin-bottom: 1rem; }
+  .map-info .map-cta {
+    color: var(--accent-orange);
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.25s ease;
+  }
+  .map-card:hover .map-cta { gap: 0.8rem; }
+
+  /* =========================================================
+     SECTION 5 — CONTACT / SOURCES
+     ========================================================= */
+  section.contact {
+    background: var(--bg-secondaire);
+    border-top: 1px solid var(--border-soft);
+    padding: 5rem 0 3rem;
+    text-align: center;
+  }
+  .contact-author {
+    color: var(--text-blanc);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .contact-mention {
+    color: var(--text-clair);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+  }
+  .contact-mention .year { color: var(--accent-orange); font-weight: 600; }
+  .sources-block {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+  }
+  .sources-block h4 {
+    color: var(--text-clair);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+  .sources-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  .sources-list span {
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    color: var(--text-clair);
+    padding: 0.5rem 1.1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+  .sources-list span:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+  footer {
+    border-top: 1px solid var(--border-soft);
+    padding: 1.5rem 1.5rem;
+    text-align: center;
+    color: var(--text-clair);
+    font-size: 0.82rem;
+    opacity: 0.65;
+  }
+  footer a { color: var(--accent-orange); }
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+  @media (max-width: 768px) {
+    nav.topbar ul {
+      position: fixed;
+      top: 56px; right: 0;
+      flex-direction: column;
+      background: rgba(13, 26, 13, 0.97);
+      width: 70%;
+      height: calc(100vh - 56px);
+      padding: 2rem 1.5rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    nav.topbar ul.open { transform: translateX(0); }
+    .burger { display: block; }
+    .hero-stats { gap: 1.5rem; }
+    .dashboard-frame-wrap iframe { height: 540px; }
+    .section-pad { padding: 4rem 0; }
+  }
+  @media (max-width: 480px) {
+    .dashboard-frame-wrap iframe { height: 420px; }
+    nav.topbar .brand { font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="topbar">
+  <div class="nav-inner">
+    <div class="brand">
+      <span class="flame">&#128293;</span>
+      <span>Observatoire Incendies — Tunisie</span>
+    </div>
+    <ul id="navMenu">
+      <li><a href="#accueil">Accueil</a></li>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#tableau-de-bord">Tableau de bord</a></li>
+      <li><a href="#cartes">Cartes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     SECTION 1 — HEADER / ACCUEIL
+     ============================================================ -->
+<header class="hero" id="accueil">
+  <div class="hero-content">
+    <span class="hero-tag">SIG &amp; Business Intelligence</span>
+    <h1>Plateforme <span class="accent">Incendie</span></h1>
+    <p class="subtitle">Tell Septentrional Tunisien — 2002/2023</p>
+    <p class="desc">Système d'Information Géographique &amp; Business Intelligence</p>
+    <a href="#tableau-de-bord" class="hero-btn">Explorer le tableau de bord &#8594;</a>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">7</div>
+        <div class="stat-lbl">Gouvernorats</div>
+      </div>
+      <div>
+        <div class="stat-num">2002–2023</div>
+        <div class="stat-lbl">Période d'étude</div>
+      </div>
+      <div>
+        <div class="stat-num">22</div>
+        <div class="stat-lbl">Années analysées</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SECTION 2 — À PROPOS
+     ============================================================ -->
+<section class="about section-pad" id="apropos">
+  <div class="container">
+    <div class="section-subtitle">Contexte du projet</div>
+    <h2 class="section-title">À propos du projet</h2>
+    <div class="section-divider"></div>
+
+    <div class="about-grid">
+      <!-- Carte 1 : Zone d'étude -->
+      <div class="about-card">
+        <div class="about-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+            <line x1="8" y1="2" x2="8" y2="18"/>
+            <line x1="16" y1="6" x2="16" y2="22"/>
+          </svg>
+        </div>
+        <h3>Zone d'étude</h3>
+        <p><strong>7 gouvernorats</strong> du Tell Septentrional Tunisien couverts par l'analyse spatiale des incendies de forêt.</p>
+      </div>
+
+      <!-- Carte 2 : Base de données -->
+      <div class="about-card">
+        <div class="about-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+        </div>
+        <h3>Base de données</h3>
+        <p>Séries temporelles <strong>2015–2023</strong> issues de sources satellitaires et institutionnelles nationales.</p>
+      </div>
+
+      <!-- Carte 3 : Tableau de bord -->
+      <div class="about-card">
+        <div class="about-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <h3>Tableau de bord</h3>
+        <p><strong>Power BI interactif</strong> : analyse spatio-temporelle des feux, surfaces brûlées et dynamiques saisonnières.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — TABLEAU DE BORD
+     ============================================================ -->
+<section class="dashboard section-pad" id="tableau-de-bord">
+  <div class="container">
+    <div class="section-subtitle">Power BI Embedded</div>
+    <h2 class="section-title">Tableau de bord interactif</h2>
+    <div class="section-divider"></div>
+
+    <p class="dashboard-intro">
+      Visualisation dynamique des données d'incendies de forêt du Tell Septentrional Tunisien.
+      Filtrez par gouvernorat, par année et par type d'occupation du sol pour explorer l'évolution
+      spatio-temporelle des feux et des surfaces brûlées entre 2002 et 2023.
+    </p>
+
+    <div class="dashboard-frame-wrap">
+      <div class="dashboard-meta">
+        <span><span class="dot"></span>Dashboard Power BI — Connexion en direct</span>
+        <span>Maj : 2023 &middot; Source : DGF / FIRMS / Copernicus</span>
+      </div>
+
+      <!-- ========================================================
+           IFRAME POWER BI
+           Remplacez l'URL src ci-dessous par le lien "integrate"
+           de votre rapport Power BI (Publish to web).
+           Dans Power BI Service : Fichier > Intégrer un rapport >
+           Site web ou portail > Copier le lien d'intégration.
+           ======================================================== -->
+      <iframe
+        id="powerbi-frame"
+        title="Dashboard Power BI — Incendies de forêt Tunisie"
+        src="https://app.powerbi.com/view?r=eyJrIjoiREPLACE_WITH_YOUR_POWER_BI_EMBED_ID&pkey=YOUR_REPORT_ID"
+        loading="lazy"
+        allowfullscreen="true"
+        webkitallowfullscreen="true"
+        mozallowfullscreen="true">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — CARTES
+     ============================================================ -->
+<section class="maps section-pad" id="cartes">
+  <div class="container">
+    <div class="section-subtitle">Cartographie thématique</div>
+    <h2 class="section-title">Cartes interactives</h2>
+    <div class="section-divider"></div>
+
+    <div class="maps-grid">
+      <!-- Carte 1 : Nombre d'incendies -->
+      <div class="map-card">
+        <div class="map-preview">
+          <div class="symbol">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="map-info">
+          <h3>Nombre d'incendies</h3>
+          <p>Distribution spatiale des foyers par gouvernorat sur la période 2002–2023. Intensité représentée par gradient chromatique orange–rouge.</p>
+          <span class="map-cta">Voir la carte &#8594;</span>
+        </div>
+      </div>
+
+      <!-- Carte 2 : Surfaces brûlées -->
+      <div class="map-card">
+        <div class="map-preview burned">
+          <div class="symbol">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2c-1 3-4 5-4 9 0 3.31 1.79 6 4 6s4-2.69 4-6c0-1.5-.5-2.5-1-3.5C13 7 14 4 12 2zM7 14c-2 1-3 3-3 5 0 1.66 1.34 3 3 3h10c1.66 0 3-1.34 3-3 0-2-1-4-3-5-1 2-3 3-5 3s-4-1-5-3z" opacity="0.85"/>
+              <path d="M9 18c0 1 .5 2 1.5 2h3c1 0 1.5-1 1.5-2" stroke="#FF4500" stroke-width="0.8" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="map-info">
+          <h3>Surfaces brûlées (ha)</h3>
+          <p>Cartographie des superficies touchées en hectares par gouvernorat. Analyse des secteurs les plus vulnérables et des tendances interannuelles.</p>
+          <span class="map-cta">Voir la carte &#8594;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — CONTACT / SOURCES
+     ============================================================ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-subtitle">Contact &amp; Crédits</div>
+    <h2 class="section-title">Réalisation &amp; Sources</h2>
+    <div class="section-divider"></div>
+
+    <div class="contact-author">WESLATI Amani</div>
+    <p class="contact-mention">
+      Mastère Géomatique, Environnement et Aménagement — FSHST <span class="year">2026</span>
+    </p>
+
+    <div class="sources-block">
+      <h4>Sources des données</h4>
+      <div class="sources-list">
+        <span>DGF</span>
+        <span>FIRMS</span>
+        <span>Copernicus</span>
+        <span>IFPN</span>
+        <span>INM</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 Observatoire numérique des incendies de forêt en Tunisie — WESLATI Amani &middot;
+    Hébergé sur <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>
+  </footer>
+</section>
+
+<script>
+  // Menu burger (mobile)
+  const burger = document.getElementById('burger');
+  const navMenu = document.getElementById('navMenu');
+  burger.addEventListener('click', () => navMenu.classList.toggle('open'));
+  navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navMenu.classList.remove('open')));
+
+  // S'assurer que l'iFrame Power BI occupe toujours la pleine largeur de la page web
+  function fitPowerBIToViewport() {
+    const frame = document.getElementById('powerbi-frame');
+    if (!frame) return;
+    // Largeur = largeur du conteneur parent (pleine largeur de la page)
+    const wrap = frame.parentElement;
+    const w = wrap.clientWidth - 16; // padding interne
+    frame.style.width = '100%';
+    frame.style.maxWidth = 'none';
+    frame.style.minWidth = '0';
+    // Hauteur adaptative pour un bon ratio de lecture
+    const h = Math.max(540, Math.min(900, Math.round(window.innerHeight * 0.78)));
+    frame.style.height = h + 'px';
+  }
+  window.addEventListener('load', fitPowerBIToViewport);
+  window.addEventListener('resize', fitPowerBIToViewport);
+</script>
+
+</body>
+</html>
