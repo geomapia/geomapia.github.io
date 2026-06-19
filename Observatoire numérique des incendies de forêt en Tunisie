@@ -10,17 +10,42 @@
   (function () {
     try {
       var saved = localStorage.getItem('theme');
-      if (saved === 'light' || saved === 'dark') {
-        document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
       }
     } catch (e) { /* ignore */ }
   })();
 </script>
 <style>
   /* =========================================================
-     PALETTE GLOBALE — MODE SOMBRE (par défaut)
+     PALETTE GLOBALE — MODE CLAIR (par défaut)
      ========================================================= */
   :root {
+    --bg-principal:   #f4f7f2;
+    --bg-secondaire:  #ffffff;
+    --bg-troisieme:   #eef3ea;
+    --accent-orange:  #d63900;
+    --accent-orange-2:#ff5a1f;
+    --text-clair:     #2f5139;
+    --text-blanc:     #122214;
+    --border-soft:    rgba(47, 81, 57, 0.15);
+    --card-bg:        rgba(47, 81, 57, 0.04);
+    --shadow-orange:  0 8px 30px rgba(214, 57, 0, 0.18);
+    --glass-bg:       rgba(255, 255, 255, 0.88);
+    --hero-bg1:       #eaf2e6;
+    --hero-bg2:       #f7faf4;
+    --map-bg1:        #e6efe1;
+    --map-bg2:        #f4f8f1;
+    --footer-border:  rgba(47, 81, 57, 0.15);
+    --grid-overlay:   rgba(47, 81, 57, 0.08);
+    --preview-glow:   rgba(214, 57, 0, 0.25);
+    --iframe-bg:      #ffffff;
+  }
+
+  /* =========================================================
+     PALETTE — MODE SOMBRE
+     ========================================================= */
+  html[data-theme="dark"] {
     --bg-principal:   #1a2e1a;
     --bg-secondaire:  #0d1a0d;
     --bg-troisieme:   #15281a;
@@ -41,31 +66,6 @@
     --grid-overlay:   rgba(159, 225, 203, 0.06);
     --preview-glow:   rgba(255, 69, 0, 0.35);
     --iframe-bg:      #0d1a0d;
-  }
-
-  /* =========================================================
-     PALETTE — MODE CLAIR
-     ========================================================= */
-  html[data-theme="light"] {
-    --bg-principal:   #f4f7f2;
-    --bg-secondaire:  #ffffff;
-    --bg-troisieme:   #eef3ea;
-    --accent-orange:  #d63900;
-    --accent-orange-2:#ff5a1f;
-    --text-clair:     #2f5139;
-    --text-blanc:     #122214;
-    --border-soft:    rgba(47, 81, 57, 0.15);
-    --card-bg:        rgba(47, 81, 57, 0.04);
-    --shadow-orange:  0 8px 30px rgba(214, 57, 0, 0.18);
-    --glass-bg:       rgba(255, 255, 255, 0.88);
-    --hero-bg1:       #eaf2e6;
-    --hero-bg2:       #f7faf4;
-    --map-bg1:        #e6efe1;
-    --map-bg2:        #f4f8f1;
-    --footer-border:  rgba(47, 81, 57, 0.15);
-    --grid-overlay:   rgba(47, 81, 57, 0.08);
-    --preview-glow:   rgba(214, 57, 0, 0.25);
-    --iframe-bg:      #ffffff;
   }
 
   /* =========================================================
@@ -119,8 +119,8 @@
   .theme-toggle svg { width: 18px; height: 18px; }
   .theme-toggle .icon-sun  { display: none; }
   .theme-toggle .icon-moon { display: block; }
-  html[data-theme="light"] .theme-toggle .icon-sun  { display: block; }
-  html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+  html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   nav.topbar .nav-inner {
     max-width: 1400px;
     margin: 0 auto;
@@ -585,11 +585,11 @@
       type="button"
       aria-label="Basculer entre mode clair et sombre"
       title="Basculer le thème">
-      <!-- Icône lune (visible en mode clair pour repasser en sombre) -->
+      <!-- Icône lune (visible en mode clair pour passer en sombre) -->
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
-      <!-- Icône soleil (visible en mode sombre pour passer en clair) -->
+      <!-- Icône soleil (visible en mode sombre pour repasser en clair) -->
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="1"  x2="12" y2="3"/>
@@ -736,13 +736,13 @@
     <h2 class="section-title">Réalisation &amp; Sources</h2>
     <div class="section-divider"></div>
 
-    <div class="contact-author">WESLATI Amani</div>
+    <div class="contact-author">Amani Weslati</div>
     <p class="contact-mention">
       Mastère Géomatique, Environnement et Aménagement — FSHST <span class="year">2026</span>
     </p>
 
     <div class="supervisors-block">
-      <h4>Encadrant &amp; Partenaire</h4>
+      <h4>Supervision &amp; Partenaire</h4>
       <div class="supervisors-list">
         <a href="https://brahimjaziri.jimdofree.com/" target="_blank" rel="noopener" title="Page de Pr. Brahim JAZIRI">
           <span class="link-icon" aria-hidden="true">
@@ -779,7 +779,7 @@
   </div>
 
   <footer>
-    &copy; 2026 Observatoire numérique des incendies de forêt en Tunisie — WESLATI Amani &middot;
+    &copy; 2026 Observatoire numérique des incendies de forêt en Tunisie — Amani Weslati &middot;
     Hébergé sur <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>
   </footer>
 </section>
@@ -796,21 +796,21 @@
   const root = document.documentElement;
 
   function applyTheme(theme) {
-    if (theme === 'light') {
-      root.setAttribute('data-theme', 'light');
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
     } else {
-      // dark = valeur par défaut (pas d'attribut OU data-theme="dark")
-      if (root.getAttribute('data-theme') === 'light') {
+      // light = valeur par défaut (pas d'attribut OU data-theme="light")
+      if (root.getAttribute('data-theme') === 'dark') {
         root.removeAttribute('data-theme');
       } else {
-        root.setAttribute('data-theme', 'dark');
+        root.setAttribute('data-theme', 'light');
       }
     }
     try { localStorage.setItem('theme', theme); } catch (e) {}
   }
 
   themeToggle.addEventListener('click', () => {
-    const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     applyTheme(current === 'light' ? 'dark' : 'light');
   });
 
