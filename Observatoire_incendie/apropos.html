@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Méthodologie — Observatoire des incendies</title>
-<meta name="description" content="Méthodologie de collecte, traitement SIG et visualisation Power BI." />
+<title>À propos du projet — Observatoire des incendies</title>
+<meta name="description" content="À propos du projet — Observatoire numérique des incendies de forêt en Tunisie." />
 <script>
   // Appliquer le thème choisi avant le chargement complet de la page
   (function () {
@@ -752,9 +752,9 @@
     </a>
     <ul id="navMenu">
       <li><a href="index.html" class="">Le projet</a></li>
-      <li><a href="apropos.html" class="">À propos du projet</a></li>
+      <li><a href="apropos.html" class="active">À propos du projet</a></li>
       <li><a href="tableau-de-bord.html" class="">Tableau de bord</a></li>
-      <li><a href="methodologie.html" class="active">Méthodologie</a></li>
+      <li><a href="methodologie.html" class="">Méthodologie</a></li>
       <li><a href="contact.html" class="">Contact</a></li>
     </ul>
     <div class="nav-actions">
@@ -768,39 +768,45 @@
 </nav>
 <header class="page-hero">
   <div class="hero-content">
-    <span class="hero-tag">Démarche scientifique</span>
-    <h1>Méthodologie</h1>
-    <p class="subtitle">Sources, traitements SIG, structuration des données et visualisation BI</p>
+    <span class="hero-tag">Contexte du projet</span>
+    <h1>À propos du projet</h1>
+    <p class="subtitle">Observatoire numérique des incendies de forêt en Tunisie</p>
   </div>
 </header>
 
 <section class="about section-pad">
   <div class="container">
-    <div class="section-subtitle">Chaîne de traitement</div>
-    <h2 class="section-title">De la donnée brute au tableau de bord</h2>
+    <div class="section-subtitle">Présentation</div>
+    <h2 class="section-title">Un outil d’analyse territoriale des incendies</h2>
     <div class="section-divider"></div>
-    <p class="lead-text">La méthodologie repose sur l’intégration de données institutionnelles et satellitaires, leur normalisation spatiale et temporelle, puis leur valorisation sous forme de cartes et d’indicateurs interactifs.</p>
+    <p class="lead-text">La plateforme vise à centraliser, cartographier et visualiser les données relatives aux incendies de forêt dans le Tell Septentrional Tunisien, afin de faciliter la lecture des tendances spatiales et temporelles.</p>
 
-    <div class="step-list">
-      <div class="step-item"><div class="step-number">1</div><div><h3>Collecte des données</h3><p>Compilation des données relatives aux incendies de forêt, aux surfaces brûlées, aux limites administratives et aux variables environnementales utiles à l’analyse.</p></div></div>
-      <div class="step-item"><div class="step-number">2</div><div><h3>Nettoyage et harmonisation</h3><p>Vérification des doublons, correction des champs attributaires, homogénéisation des noms de gouvernorats et structuration chronologique de la base.</p></div></div>
-      <div class="step-item"><div class="step-number">3</div><div><h3>Traitements SIG</h3><p>Jointures spatiales, agrégations par gouvernorat, calcul des surfaces touchées et préparation des couches cartographiques exploitables dans le tableau de bord.</p></div></div>
-      <div class="step-item"><div class="step-number">4</div><div><h3>Analyse spatio-temporelle</h3><p>Étude de l’évolution annuelle, saisonnière et territoriale des incendies afin d’identifier les zones les plus exposées et les périodes critiques.</p></div></div>
-      <div class="step-item"><div class="step-number">5</div><div><h3>Visualisation Power BI</h3><p>Création d’indicateurs dynamiques, de filtres interactifs, de cartes thématiques et de graphiques permettant l’exploration des données.</p></div></div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
+        <h3>Zone d'étude</h3><p><strong>7 gouvernorats</strong> du Tell Septentrional Tunisien couverts par l'analyse spatiale des incendies de forêt.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <h3>Base de données</h3><p>Séries temporelles issues de sources satellitaires et institutionnelles nationales.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>Tableau de bord</h3><p><strong>Power BI interactif</strong> pour analyser les feux, les surfaces brûlées et les dynamiques saisonnières.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="dashboard section-pad">
+<section class="maps section-pad">
   <div class="container">
-    <div class="section-subtitle">Sources utilisées</div>
-    <h2 class="section-title">Données mobilisées</h2>
+    <div class="section-subtitle">Objectifs</div>
+    <h2 class="section-title">Ce que permet l’observatoire</h2>
     <div class="section-divider"></div>
     <div class="content-grid">
-      <article class="info-card"><h3>DGF</h3><p>Données nationales relatives aux incendies de forêt et aux superficies touchées.</p></article>
-      <article class="info-card"><h3>FIRMS</h3><p>Détection satellitaire des points chauds et appui à l’analyse spatiale des foyers.</p></article>
-      <article class="info-card"><h3>Copernicus</h3><p>Référentiels et produits satellitaires pour l’analyse environnementale.</p></article>
-      <article class="info-card"><h3>INM / IFPN</h3><p>Données complémentaires pour contextualiser les dynamiques territoriales et climatiques.</p></article>
+      <article class="info-card"><h3>Suivre l’évolution</h3><p>Comparer les incendies selon les années, les saisons et les gouvernorats.</p></article>
+      <article class="info-card"><h3>Identifier les zones sensibles</h3><p>Repérer les territoires où les foyers et les surfaces brûlées sont les plus importants.</p></article>
+      <article class="info-card"><h3>Aider à la décision</h3><p>Mettre à disposition une lecture visuelle claire pour la gestion, la prévention et la communication.</p></article>
     </div>
   </div>
 </section>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Méthodologie — Observatoire des incendies</title>
-<meta name="description" content="Méthodologie de collecte, traitement SIG et visualisation Power BI." />
+<title>Tableau de bord — Observatoire des incendies</title>
+<meta name="description" content="Dashboard Power BI interactif des incendies de forêt." />
 <script>
   // Appliquer le thème choisi avant le chargement complet de la page
   (function () {
@@ -753,8 +753,8 @@
     <ul id="navMenu">
       <li><a href="index.html" class="">Le projet</a></li>
       <li><a href="apropos.html" class="">À propos du projet</a></li>
-      <li><a href="tableau-de-bord.html" class="">Tableau de bord</a></li>
-      <li><a href="methodologie.html" class="active">Méthodologie</a></li>
+      <li><a href="tableau-de-bord.html" class="active">Tableau de bord</a></li>
+      <li><a href="methodologie.html" class="">Méthodologie</a></li>
       <li><a href="contact.html" class="">Contact</a></li>
     </ul>
     <div class="nav-actions">
@@ -768,39 +768,33 @@
 </nav>
 <header class="page-hero">
   <div class="hero-content">
-    <span class="hero-tag">Démarche scientifique</span>
-    <h1>Méthodologie</h1>
-    <p class="subtitle">Sources, traitements SIG, structuration des données et visualisation BI</p>
+    <span class="hero-tag">Power BI Embedded</span>
+    <h1>Tableau de bord interactif</h1>
+    <p class="subtitle">Visualisation dynamique des incendies de forêt</p>
   </div>
 </header>
 
-<section class="about section-pad">
+<section class="dashboard section-pad">
   <div class="container">
-    <div class="section-subtitle">Chaîne de traitement</div>
-    <h2 class="section-title">De la donnée brute au tableau de bord</h2>
+    <div class="section-subtitle">Dashboard</div>
+    <h2 class="section-title">Explorer les données</h2>
     <div class="section-divider"></div>
-    <p class="lead-text">La méthodologie repose sur l’intégration de données institutionnelles et satellitaires, leur normalisation spatiale et temporelle, puis leur valorisation sous forme de cartes et d’indicateurs interactifs.</p>
-
-    <div class="step-list">
-      <div class="step-item"><div class="step-number">1</div><div><h3>Collecte des données</h3><p>Compilation des données relatives aux incendies de forêt, aux surfaces brûlées, aux limites administratives et aux variables environnementales utiles à l’analyse.</p></div></div>
-      <div class="step-item"><div class="step-number">2</div><div><h3>Nettoyage et harmonisation</h3><p>Vérification des doublons, correction des champs attributaires, homogénéisation des noms de gouvernorats et structuration chronologique de la base.</p></div></div>
-      <div class="step-item"><div class="step-number">3</div><div><h3>Traitements SIG</h3><p>Jointures spatiales, agrégations par gouvernorat, calcul des surfaces touchées et préparation des couches cartographiques exploitables dans le tableau de bord.</p></div></div>
-      <div class="step-item"><div class="step-number">4</div><div><h3>Analyse spatio-temporelle</h3><p>Étude de l’évolution annuelle, saisonnière et territoriale des incendies afin d’identifier les zones les plus exposées et les périodes critiques.</p></div></div>
-      <div class="step-item"><div class="step-number">5</div><div><h3>Visualisation Power BI</h3><p>Création d’indicateurs dynamiques, de filtres interactifs, de cartes thématiques et de graphiques permettant l’exploration des données.</p></div></div>
+    <p class="dashboard-intro">Visualisation dynamique des données d'incendies de forêt du Tell Septentrional Tunisien. Filtrez par gouvernorat, par année et par type d'occupation du sol pour explorer l'évolution spatio-temporelle des feux et des surfaces brûlées entre 2002 et 2023.</p>
+    <div class="dashboard-frame-wrap">
+      <div class="dashboard-meta"><span><span class="dot"></span>Dashboard Power BI — Connexion en direct</span><span>Maj : 2023 &middot; Source : DGF / FIRMS / Copernicus</span></div>
+      <iframe id="powerbi-frame" title="Dashboard Power BI — Incendies de forêt Tunisie" src="https://app.powerbi.com/view?r=eyJrIjoiREPLACE_WITH_YOUR_POWER_BI_EMBED_ID&pkey=YOUR_REPORT_ID" loading="lazy" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
     </div>
   </div>
 </section>
 
-<section class="dashboard section-pad">
+<section class="maps section-pad">
   <div class="container">
-    <div class="section-subtitle">Sources utilisées</div>
-    <h2 class="section-title">Données mobilisées</h2>
+    <div class="section-subtitle">Cartographie thématique</div>
+    <h2 class="section-title">Cartes associées</h2>
     <div class="section-divider"></div>
-    <div class="content-grid">
-      <article class="info-card"><h3>DGF</h3><p>Données nationales relatives aux incendies de forêt et aux superficies touchées.</p></article>
-      <article class="info-card"><h3>FIRMS</h3><p>Détection satellitaire des points chauds et appui à l’analyse spatiale des foyers.</p></article>
-      <article class="info-card"><h3>Copernicus</h3><p>Référentiels et produits satellitaires pour l’analyse environnementale.</p></article>
-      <article class="info-card"><h3>INM / IFPN</h3><p>Données complémentaires pour contextualiser les dynamiques territoriales et climatiques.</p></article>
+    <div class="maps-grid">
+      <div class="map-card"><div class="map-preview"><div class="symbol"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg></div></div><div class="map-info"><h3>Nombre d'incendies</h3><p>Distribution spatiale des foyers par gouvernorat sur la période 2002–2023.</p></div></div>
+      <div class="map-card"><div class="map-preview burned"><div class="symbol"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9 0 3.31 1.79 6 4 6s4-2.69 4-6c0-1.5-.5-2.5-1-3.5C13 7 14 4 12 2zM7 14c-2 1-3 3-3 5 0 1.66 1.34 3 3 3h10c1.66 0 3-1.34 3-3 0-2-1-4-3-5-1 2-3 3-5 3s-4-1-5-3z" opacity="0.85"/></svg></div></div><div class="map-info"><h3>Surfaces brûlées</h3><p>Cartographie des superficies touchées en hectares et analyse des secteurs vulnérables.</p></div></div>
     </div>
   </div>
 </section>
