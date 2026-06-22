@@ -99,9 +99,27 @@
     white-space: nowrap;
   }
 
-  .brand span:first-child {
-    color: var(--accent);
-  }
+  .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.site-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 4px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  transition: 0.25s ease;
+}
+
+.site-logo:hover {
+  transform: scale(1.05);
+}
 
   .nav-links {
     list-style: none;
@@ -521,7 +539,15 @@
     .brand {
       font-size: 0.85rem;
     }
+.site-logo {
+  width: 42px;
+  height: 42px;
+  padding: 3px;
+}
 
+.nav-actions {
+  gap: 0.45rem;
+}
     .zone-grid {
       grid-template-columns: 1fr;
     }
@@ -558,7 +584,26 @@
     <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
 </nav>
+<nav class="topbar">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span>Observatoire Incendies — Tunisie</span>
+    </a>
 
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Le projet</a></li>
+      <li><a href="tableau-de-bord.html">Tableau de bord</a></li>
+      <li><a href="methodologie.html">Méthodologie</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <img src="logo-fdf.jfif" alt="Forest Data Fire Tunisia" class="site-logo">
+      <button class="theme-btn" id="themeToggle" type="button">🌙 Mode sombre</button>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
 <header class="hero">
   <div class="hero-content">
     <span class="hero-tag">SIG & Business Intelligence</span>
