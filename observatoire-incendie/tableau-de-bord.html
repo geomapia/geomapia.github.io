@@ -44,7 +44,7 @@
     --accent-light: #e85a2a;
     --border: rgba(24, 75, 42, 0.18);
     --shadow: 0 18px 45px rgba(40, 80, 50, 0.13);
-    --nav-bg: rgba(255, 255, 255, 0.92);
+    --nav-bg: rgba(255, 255, 255, 0.94);
   }
 
   * {
@@ -82,7 +82,7 @@
   .nav-inner {
     max-width: 1280px;
     margin: auto;
-    padding: 0.9rem 1.5rem;
+    padding: 0.65rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,74 +93,26 @@
     color: var(--text-main);
     font-weight: 800;
     font-size: 1rem;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    white-space: nowrap;
   }
-.brand {
-  color: var(--text-main);
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
 
-.brand-logo {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
-  padding: 4px;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-  transition: 0.25s ease;
-}
+  .brand-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 4px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    transition: 0.25s ease;
+  }
 
-.brand-logo:hover {
-  transform: scale(1.05);
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}.brand {
-  color: var(--text-main);
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.brand-logo {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
-  padding: 4px;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-  transition: 0.25s ease;
-}
-
-.brand-logo:hover {
-  transform: scale(1.05);
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-  .brand span:first-child {
-    color: var(--accent);
+  .brand-logo:hover {
+    transform: scale(1.05);
   }
 
   .nav-links {
@@ -191,6 +143,12 @@
     width: 100%;
     height: 2px;
     background: var(--accent);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
   }
 
   .theme-btn {
@@ -452,20 +410,6 @@
     display: block;
   }
 
-  .note-box {
-    margin-top: 1.4rem;
-    background: var(--bg-card);
-    border: 1px dashed var(--border);
-    border-radius: 18px;
-    padding: 1.2rem 1.4rem;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
-
-  .note-box strong {
-    color: var(--accent);
-  }
-
   .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -545,6 +489,25 @@
     font-size: 0.9rem;
   }
 
+  @media (max-width: 1100px) {
+    .nav-inner {
+      gap: 0.7rem;
+    }
+
+    .nav-links {
+      gap: 1rem;
+    }
+
+    .brand {
+      font-size: 0.9rem;
+    }
+
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
   @media (max-width: 980px) {
     .kpi-grid,
     .grid-2,
@@ -558,10 +521,10 @@
 
     .nav-links {
       position: fixed;
-      top: 64px;
+      top: 82px;
       right: 0;
       width: 72%;
-      height: calc(100vh - 64px);
+      height: calc(100vh - 82px);
       background: var(--nav-bg);
       flex-direction: column;
       align-items: flex-start;
@@ -587,7 +550,17 @@
 
   @media (max-width: 600px) {
     .brand {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      max-width: 190px;
+      white-space: normal;
+      line-height: 1.2;
+      gap: 0.5rem;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      padding: 3px;
     }
 
     .kpi-grid,
@@ -706,11 +679,6 @@
         <span>Sources : DGF / FIRMS / Copernicus / INM</span>
       </div>
 
-      <!-- 
-        Remplacez l’URL ci-dessous par le lien d’intégration Power BI.
-        Dans Power BI Service :
-        Fichier > Intégrer le rapport > Site web ou portail > Copier le lien iframe.
-      -->
       <iframe
         title="Dashboard Power BI — Incendies de forêt en Tunisie"
         src="https://app.powerbi.com/view?r=REPLACE_WITH_YOUR_POWER_BI_LINK"
@@ -718,8 +686,7 @@
         allowfullscreen="true">
       </iframe>
     </div>
-
-   </div>
+  </div>
 </section>
 
 <section class="section">
