@@ -27,7 +27,6 @@
     --text-soft: #9FE1CB;
     --text-muted: rgba(159, 225, 203, 0.78);
     --accent: #ff4500;
-    --accent-light: #ff6a33;
     --border: rgba(159, 225, 203, 0.18);
     --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
     --nav-bg: rgba(13, 26, 13, 0.92);
@@ -36,15 +35,14 @@
   html[data-theme="light"] {
     --bg-main: #f3faf5;
     --bg-secondary: #eaf5ee;
-    --bg-card: rgba(255, 255, 255, 0.8);
+    --bg-card: rgba(255, 255, 255, 0.82);
     --text-main: #102514;
     --text-soft: #285c3a;
     --text-muted: #4a6f58;
     --accent: #ff4500;
-    --accent-light: #e85a2a;
     --border: rgba(24, 75, 42, 0.18);
     --shadow: 0 18px 45px rgba(40, 80, 50, 0.13);
-    --nav-bg: rgba(255, 255, 255, 0.92);
+    --nav-bg: rgba(255, 255, 255, 0.94);
   }
 
   * {
@@ -82,7 +80,7 @@
   .nav-inner {
     max-width: 1280px;
     margin: auto;
-    padding: 0.9rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,33 +91,8 @@
     color: var(--text-main);
     font-weight: 800;
     font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
     white-space: nowrap;
   }
-
-  .nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.site-logo {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
-  padding: 4px;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-  transition: 0.25s ease;
-}
-
-.site-logo:hover {
-  transform: scale(1.05);
-}
 
   .nav-links {
     list-style: none;
@@ -149,6 +122,28 @@
     width: 100%;
     height: 2px;
     background: var(--accent);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .site-logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 4px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    transition: 0.25s ease;
+  }
+
+  .site-logo:hover {
+    transform: scale(1.05);
   }
 
   .theme-btn {
@@ -495,6 +490,25 @@
     font-size: 0.9rem;
   }
 
+  @media (max-width: 1050px) {
+    .nav-inner {
+      gap: 0.7rem;
+    }
+
+    .nav-links {
+      gap: 1rem;
+    }
+
+    .brand {
+      font-size: 0.9rem;
+    }
+
+    .site-logo {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
   @media (max-width: 920px) {
     .grid-2,
     .objectives-grid,
@@ -508,10 +522,10 @@
 
     .nav-links {
       position: fixed;
-      top: 64px;
+      top: 70px;
       right: 0;
       width: 72%;
-      height: calc(100vh - 64px);
+      height: calc(100vh - 70px);
       background: var(--nav-bg);
       flex-direction: column;
       align-items: flex-start;
@@ -537,17 +551,22 @@
 
   @media (max-width: 520px) {
     .brand {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
+      max-width: 145px;
+      white-space: normal;
+      line-height: 1.2;
     }
-.site-logo {
-  width: 42px;
-  height: 42px;
-  padding: 3px;
-}
 
-.nav-actions {
-  gap: 0.45rem;
-}
+    .site-logo {
+      width: 42px;
+      height: 42px;
+      padding: 3px;
+    }
+
+    .nav-actions {
+      gap: 0.45rem;
+    }
+
     .zone-grid {
       grid-template-columns: 1fr;
     }
@@ -569,25 +588,7 @@
 <nav class="topbar">
   <div class="nav-inner">
     <a class="brand" href="index.html">
-      <span>🔥</span>
-      <span>Observatoire Incendies — Tunisie</span>
-    </a>
-
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="active">Le projet</a></li>
-      <li><a href="tableau-de-bord.html">Tableau de bord</a></li>
-      <li><a href="methodologie.html">Méthodologie</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-
-    <button class="theme-btn" id="themeToggle" type="button">🌙 Mode sombre</button>
-    <button class="burger" id="burger" aria-label="Menu">☰</button>
-  </div>
-</nav>
-<nav class="topbar">
-  <div class="nav-inner">
-    <a class="brand" href="index.html">
-      <span>Observatoire Incendies — Tunisie</span>
+      Observatoire Incendies — Tunisie
     </a>
 
     <ul class="nav-links" id="navLinks">
@@ -604,6 +605,7 @@
     </div>
   </div>
 </nav>
+
 <header class="hero">
   <div class="hero-content">
     <span class="hero-tag">SIG & Business Intelligence</span>
@@ -823,7 +825,6 @@
   themeToggle.addEventListener("click", () => {
     const current = document.documentElement.getAttribute("data-theme");
     const next = current === "light" ? "dark" : "light";
-
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("theme-incendie", next);
     updateThemeButton(next);
