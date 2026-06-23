@@ -281,7 +281,7 @@
         }
 
         textarea {
-            min-height: 150px;
+            min-height: 170px;
             resize: vertical;
         }
 
@@ -340,10 +340,6 @@
             margin: 0 auto 1.4rem;
             color: #dbeafe;
         }
-
-        /* =========================
-           FOOTER GEOMAP IA
-        ========================= */
 
         .geomap-footer {
             margin-top: 4rem;
@@ -660,7 +656,7 @@
                 <i class="fas fa-envelope"></i>
                 <h3>E-mail principal</h3>
                 <p>Pour les questions relatives à Geomap IA, aux applications et aux ressources.</p>
-                <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
+                <a href="mailto:geomapia.ia@gmail.com">geomapia.ia@gmail.com</a>
             </div>
 
             <div class="contact-card">
@@ -684,15 +680,15 @@
 
         <div class="form-card">
             <p class="form-note">
-                Ce formulaire fonctionne sans serveur : il ouvre automatiquement votre logiciel de messagerie
-                avec le message pré-rempli.
+                Ce formulaire est connecté à Formspree. Après validation, le message sera envoyé à l’adresse associée au formulaire.
             </p>
 
-            <form class="contact-form" onsubmit="sendContactMail(event)">
+            <form class="contact-form" action="https://formspree.io/f/xlgydqdl" method="POST">
+
                 <div class="form-row">
                     <div>
                         <label for="name">Nom</label>
-                        <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                        <input type="text" id="name" name="Nom" placeholder="Votre nom" required>
                     </div>
 
                     <div>
@@ -703,25 +699,29 @@
 
                 <div>
                     <label for="subject">Sujet</label>
-                    <input type="text" id="subject" name="subject" placeholder="Sujet du message" required>
+                    <input type="text" id="subject" name="Sujet" placeholder="Sujet du message" required>
                 </div>
 
                 <div>
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" placeholder="Écrivez votre message ici..." required></textarea>
+                    <textarea id="message" name="Message" placeholder="Écrivez votre message ici..." required></textarea>
                 </div>
+
+                <input type="hidden" name="_subject" value="Nouveau message depuis Geomap IA">
+                <input type="hidden" name="_language" value="fr">
 
                 <div class="form-actions">
                     <button type="submit" class="btn secondary">
                         <i class="fas fa-paper-plane"></i>
-                        Ouvrir l’e-mail
+                        Envoyer le message
                     </button>
 
-                    <a href="mailto:geomap.ia.contact@gmail.com" class="btn">
+                    <a href="mailto:geomapia.ia@gmail.com" class="btn">
                         <i class="fas fa-envelope"></i>
                         Écrire directement
                     </a>
                 </div>
+
             </form>
         </div>
     </section>
@@ -733,7 +733,7 @@
             d’interface ou demander l’ajout d’une ressource de test.
         </p>
 
-        <a href="mailto:geomap.ia.contact@gmail.com?subject=Suggestion%20pour%20Geomap%20IA&body=Bonjour,%0D%0A%0D%0AJe souhaite proposer une amélioration pour Geomap IA.%0D%0A%0D%0A"
+        <a href="mailto:geomapia.ia@gmail.com?subject=Suggestion%20pour%20Geomap%20IA&body=Bonjour,%0D%0A%0D%0AJe souhaite proposer une amélioration pour Geomap IA.%0D%0A%0D%0A"
            class="btn secondary">
             <i class="fas fa-comment-dots"></i>
             Envoyer une suggestion
@@ -821,7 +821,7 @@
 
                 <p>
                     <strong>Contact :</strong>
-                    <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
+                    <a href="mailto:geomapia.ia@gmail.com">geomapia.ia@gmail.com</a>
                     /
                     <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
                 </p>
@@ -836,7 +836,7 @@
 
                 <p><strong>Responsabilité :</strong> malgré le soin apporté au développement des applications, Geomap IA ne garantit pas l’absence totale d’erreurs techniques, de bugs ou d’inexactitudes. Les résultats produits doivent être vérifiés avant tout usage scientifique, professionnel ou décisionnel.</p>
 
-                <p><strong>Données personnelles :</strong> le site ne demande pas d’inscription et ne collecte pas directement de données personnelles via un formulaire. Les liens de contact par e-mail ouvrent le logiciel de messagerie de l’utilisateur.</p>
+                <p><strong>Données personnelles :</strong> les informations saisies dans le formulaire de contact sont transmises via Formspree afin de permettre la réception du message. Aucun espace membre ni inscription n’est proposé sur ce site.</p>
 
                 <p><strong>Statistiques de consultation :</strong> le site peut utiliser des outils de mesure d’audience afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
             </div>
@@ -875,24 +875,6 @@
         } else {
             message.textContent = "Copiez ce lien : https://geomapia.github.io/";
         }
-    }
-
-    function sendContactMail(event) {
-        event.preventDefault();
-
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const subject = document.getElementById("subject").value.trim();
-        const message = document.getElementById("message").value.trim();
-
-        const mailSubject = encodeURIComponent("Contact Geomap IA — " + subject);
-        const mailBody = encodeURIComponent(
-            "Nom : " + name + "\n" +
-            "E-mail : " + email + "\n\n" +
-            "Message :\n" + message
-        );
-
-        window.location.href = "mailto:geomap.ia.contact@gmail.com?subject=" + mailSubject + "&body=" + mailBody;
     }
 </script>
 
