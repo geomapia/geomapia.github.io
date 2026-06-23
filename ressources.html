@@ -21,7 +21,6 @@
             --dark: #0f172a;
             --muted: #64748b;
             --success: #16a34a;
-            --warning: #f59e0b;
         }
 
         * {
@@ -84,6 +83,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .nav-links a {
@@ -112,6 +112,7 @@
         header {
             background:
                 radial-gradient(circle at top left, rgba(187, 225, 250, 0.20), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(50, 130, 184, 0.22), transparent 35%),
                 linear-gradient(135deg, #0f4c75, #1b262c);
             color: white;
             padding: 4.5rem 1rem;
@@ -128,7 +129,7 @@
 
         header h1 {
             margin: 0;
-            font-size: 2.4rem;
+            font-size: clamp(2rem, 4vw, 2.8rem);
             font-weight: 900;
         }
 
@@ -172,141 +173,6 @@
             font-size: 1rem;
         }
 
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.6rem;
-        }
-
-        .resource-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 26px rgba(0,0,0,0.07);
-            border: 1px solid rgba(15, 76, 117, 0.08);
-            transition: 0.25s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 18px 38px rgba(0,0,0,0.12);
-        }
-
-        .resource-header {
-            padding: 1.4rem;
-            color: white;
-            background: linear-gradient(135deg, #0f4c75, #3282b8);
-        }
-
-        .resource-header.green {
-            background: linear-gradient(135deg, #16a34a, #2563eb);
-        }
-
-        .resource-header.orange {
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-        }
-
-        .resource-header i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .resource-header h3 {
-            margin: 0;
-            font-size: 1.3rem;
-        }
-
-        .resource-body {
-            padding: 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .resource-body p {
-            margin: 0 0 1rem;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .resource-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 1.2rem;
-            display: grid;
-            gap: 8px;
-        }
-
-        .resource-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            color: #475569;
-            font-size: 0.92rem;
-        }
-
-        .resource-list i {
-            color: var(--success);
-            margin-top: 4px;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .btn {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            background: var(--secondary);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 800;
-            transition: 0.25s ease;
-        }
-
-        .btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.25);
-        }
-
-        .btn-download {
-            background: linear-gradient(135deg, #16a34a, #2563eb);
-        }
-
-        .btn-download:hover {
-            background: linear-gradient(135deg, #15803d, #1d4ed8);
-            box-shadow: 0 10px 24px rgba(22, 163, 74, 0.28);
-        }
-
-        .btn-secondary {
-            background: #0f172a;
-        }
-
-        .btn-secondary:hover {
-            background: #334155;
-            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.25);
-        }
-
-        .note {
-            margin-top: 1.2rem;
-            padding: 1rem;
-            border-radius: 14px;
-            background: rgba(245, 158, 11, 0.12);
-            color: #92400e;
-            border: 1px solid rgba(245, 158, 11, 0.25);
-            font-size: 0.92rem;
-        }
-
         .table-card {
             background: white;
             border-radius: 20px;
@@ -319,7 +185,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px;
+            min-width: 760px;
         }
 
         th {
@@ -335,6 +201,7 @@
             border-bottom: 1px solid #e2e8f0;
             color: #475569;
             font-size: 0.9rem;
+            vertical-align: middle;
         }
 
         tr:hover td {
@@ -351,32 +218,28 @@
             font-weight: 800;
         }
 
-        .cta {
-            background: linear-gradient(135deg, #0f4c75, #1b262c);
-            color: white;
-            border-radius: 22px;
-            padding: 2.2rem;
-            text-align: center;
-            box-shadow: 0 16px 36px rgba(15, 76, 117, 0.25);
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #0f4c75;
+            text-decoration: none;
+            font-weight: 800;
         }
 
-        .cta h2 {
-            color: white;
-            border-bottom-color: rgba(255,255,255,0.35);
-            margin-top: 0;
+        .download-link:hover {
+            color: #2563eb;
+            text-decoration: underline;
         }
 
-        .cta p {
-            max-width: 760px;
-            margin: 0 auto 1.4rem;
-            color: #dbeafe;
-        }
-
-        .cta-actions {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
+        .info-note {
+            margin-top: 1.4rem;
+            padding: 1rem 1.2rem;
+            border-radius: 14px;
+            background: rgba(187, 225, 250, 0.35);
+            color: #0f4c75;
+            border: 1px solid rgba(50, 130, 184, 0.18);
+            font-size: 0.94rem;
         }
 
         footer {
@@ -408,7 +271,6 @@
             }
 
             .nav-links {
-                flex-wrap: wrap;
                 justify-content: center;
             }
 
@@ -429,13 +291,8 @@
                 padding: 1.2rem;
             }
 
-            .intro-card,
-            .cta {
+            .intro-card {
                 padding: 1.5rem;
-            }
-
-            .resources-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -468,10 +325,10 @@
 
         <div class="nav-links">
             <a href="index.html">Accueil</a>
-            <a href="index.html#applications">Applications</a>
+            <a href="applications.html">Applications</a>
             <a href="ressources.html" class="active">Ressources</a>
             <a href="about.html">À propos</a>
-            <a href="index.html#contact" class="nav-highlight">Contact</a>
+            <a href="mailto:geomap.ia.contact@gmail.com" class="nav-highlight">Contact</a>
         </div>
     </div>
 </nav>
@@ -492,114 +349,9 @@
         <div class="intro-card">
             <p>
                 Cette page regroupe les ressources de test nécessaires pour prendre en main les applications Geomap IA.
-                Les fichiers proposés permettent aux utilisateurs de tester rapidement l’importation de données, les traitements,
+                Les fichiers proposés permettent aux utilisateurs de tester l’importation de données, les traitements,
                 la visualisation cartographique et les fonctionnalités d’export.
             </p>
-        </div>
-    </section>
-
-    <section>
-        <h2><i class="fas fa-download"></i> Téléchargements directs</h2>
-
-        <div class="resources-grid">
-
-            <article class="resource-card">
-                <div class="resource-header green">
-                    <i class="fas fa-leaf"></i>
-                    <h3>Ressources Bioclimat</h3>
-                </div>
-
-                <div class="resource-body">
-                    <p>
-                        Fichier Excel de démonstration destiné à tester l’application Bioclimat & Écologie.
-                    </p>
-
-                    <ul class="resource-list">
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Données de stations climatiques
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Format Excel compatible avec l’application
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Support pour les tests de calculs bioclimatiques
-                        </li>
-                    </ul>
-
-                    <div class="btn-group">
-                        <a href="Applications/Bioclimat/Stations_Tunisie.xlsx"
-                           class="btn btn-download"
-                           download="Stations_Tunisie.xlsx">
-                            <i class="fas fa-download"></i>
-                            Télécharger Stations_Tunisie.xlsx
-                        </a>
-
-                        <a href="Applications/Bioclimat/"
-                           class="btn btn-secondary"
-                           target="_blank">
-                            <i class="fas fa-up-right-from-square"></i>
-                            Ouvrir l’application Bioclimat
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="resource-card">
-                <div class="resource-header">
-                    <i class="fas fa-map-location-dot"></i>
-                    <h3>Ressources Carte de localisation</h3>
-                </div>
-
-                <div class="resource-body">
-                    <p>
-                        Archive ZIP contenant les fichiers nécessaires pour tester la carte de localisation et l’atlas cartographique.
-                    </p>
-
-                    <ul class="resource-list">
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Données Shapefile
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Données GeoJSON
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Fond image de référence
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            Limites administratives
-                        </li>
-                    </ul>
-
-                    <div class="btn-group">
-                        <a href="Applications/Carte%20de%20localisation/Ressources_Carte_Localisation_3_0_Gold.zip"
-                           class="btn btn-download"
-                           download="Ressources_Carte_Localisation_3_0_Gold.zip">
-                            <i class="fas fa-download"></i>
-                            Télécharger les données cartographiques
-                        </a>
-
-                        <a href="Applications/Carte%20de%20localisation/"
-                           class="btn btn-secondary"
-                           target="_blank">
-                            <i class="fas fa-up-right-from-square"></i>
-                            Ouvrir la carte de localisation
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-        </div>
-
-        <div class="note">
-            <strong>Conseil :</strong> téléchargez d’abord les données de test, puis ouvrez l’application correspondante.
-            Les fichiers sont fournis pour faciliter la prise en main et vérifier le bon fonctionnement des outils.
         </div>
     </section>
 
@@ -625,8 +377,10 @@
                         <td><span class="tag">XLSX</span></td>
                         <td>Test des calculs et diagnostics bioclimatiques</td>
                         <td>
-                            <a href="Applications/Bioclimat/Stations_Tunisie.xlsx"
+                            <a class="download-link"
+                               href="Applications/Bioclimat/Stations_Tunisie.xlsx"
                                download="Stations_Tunisie.xlsx">
+                                <i class="fas fa-download"></i>
                                 Télécharger
                             </a>
                         </td>
@@ -638,34 +392,21 @@
                         <td><span class="tag">ZIP</span></td>
                         <td>Import Shapefile, GeoJSON, fond image et limites administratives</td>
                         <td>
-                            <a href="Applications/Carte%20de%20localisation/Ressources_Carte_Localisation_3_0_Gold.zip"
+                            <a class="download-link"
+                               href="Applications/Carte%20de%20localisation/Ressources_Carte_Localisation_3_0_Gold.zip"
                                download="Ressources_Carte_Localisation_3_0_Gold.zip">
+                                <i class="fas fa-download"></i>
                                 Télécharger
                             </a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </section>
 
-    <section class="cta">
-        <h2><i class="fas fa-rocket"></i> Tester les applications</h2>
-        <p>
-            Les ressources disponibles sur cette page sont conçues pour accompagner les applications Geomap IA.
-            Vous pouvez télécharger les données, lancer les applications et expérimenter les fonctionnalités proposées.
-        </p>
-
-        <div class="cta-actions">
-            <a href="index.html#applications" class="btn">
-                <i class="fas fa-th-large"></i>
-                Voir les applications
-            </a>
-
-            <a href="about.html" class="btn btn-secondary">
-                <i class="fas fa-circle-info"></i>
-                En savoir plus
-            </a>
+            <div class="info-note">
+                <strong>Conseil :</strong> téléchargez les données de test correspondant à l’application que vous souhaitez tester,
+                puis ouvrez l’application depuis la page Applications.
+            </div>
         </div>
     </section>
 
