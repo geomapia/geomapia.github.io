@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applications | Geomap IA</title>
+    <title>Geomap IA | Hub d'Applications</title>
+
+    <meta name="description" content="Geomap IA est un hub d'applications web géomatiques, cartographiques, bioclimatiques et environnementales.">
+    <meta name="keywords" content="Geomap IA, géomatique, cartographie, SIG, bioclimat, écologie, atlas cartographique, applications web">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -34,10 +37,6 @@
             color: var(--text);
             line-height: 1.6;
         }
-
-        /* =========================
-           BARRE DE NAVIGATION
-        ========================= */
 
         .navbar {
             position: sticky;
@@ -83,6 +82,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .nav-links a {
@@ -111,12 +111,10 @@
             box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
         }
 
-        /* =========================
-           HEADER
-        ========================= */
-
         header {
-            background: linear-gradient(135deg, #0f4c75, #1b262c);
+            background:
+                radial-gradient(circle at top left, rgba(187, 225, 250, 0.20), transparent 30%),
+                linear-gradient(135deg, #0f4c75, #1b262c);
             color: white;
             padding: 4rem 1rem 3.5rem;
             text-align: center;
@@ -173,10 +171,6 @@
             background: rgba(255,255,255,0.16);
             border: 1px solid rgba(255,255,255,0.28);
         }
-
-        /* =========================
-           CONTENU
-        ========================= */
 
         .container {
             max-width: 1100px;
@@ -312,10 +306,6 @@
             color: #64748b;
         }
 
-        /* =========================
-           RESSOURCES / À PROPOS / CONTACT
-        ========================= */
-
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -406,10 +396,6 @@
             text-decoration: underline;
         }
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
         @media (max-width: 800px) {
             .nav-container {
                 flex-direction: column;
@@ -451,14 +437,14 @@
 
 <nav class="navbar">
     <div class="nav-container">
-        <a href="#accueil" class="nav-brand">
+        <a href="index.html" class="nav-brand">
             <img src="IA.png" alt="Logo Geomap IA">
             <span>Geomap IA</span>
         </a>
 
         <div class="nav-links">
-            <a href="#accueil">Accueil</a>
-            <a href="#applications" class="hero-btn">
+            <a href="index.html">Accueil</a>
+            <a href="applications.html">Applications</a>
             <a href="ressources.html">Ressources</a>
             <a href="about.html">À propos</a>
             <a href="#contact" class="nav-highlight">Contact</a>
@@ -472,12 +458,12 @@
     <p>Solutions Géomatiques & Intelligence Artificielle</p>
 
     <div class="hero-actions">
-        <a href="#applications" class="hero-btn">
+        <a href="applications.html" class="hero-btn">
             <i class="fas fa-rocket"></i>
             Explorer les applications
         </a>
 
-        <a href="#ressources" class="hero-btn secondary">
+        <a href="ressources.html" class="hero-btn secondary">
             <i class="fas fa-download"></i>
             Données de test
         </a>
@@ -500,7 +486,6 @@
 
         <div class="app-grid">
 
-            <!-- Application Bioclimat -->
             <div class="app-card" title="Application intégrée pour transformer les données climatiques en diagnostics écologiques. Calculs automatisés et couplage biodiversité & climat.">
 
                 <a href="Applications/Bioclimat/" target="_blank" class="app-image-link">
@@ -536,7 +521,6 @@
                 </div>
             </div>
 
-            <!-- Application Carte de Localisation -->
             <div class="app-card" title="Outil de cartographie haute précision v3.0 GOLD. Navigation fluide, données OSM intégrées et interface optimisée pour le repérage spatial.">
 
                 <a href="Applications/Carte%20de%20localisation/" target="_blank" class="app-image-link">
