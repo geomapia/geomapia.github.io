@@ -4,58 +4,283 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applications | Geomap IA</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        :root { --primary: #0f4c75; --secondary: #3282b8; --accent: #bbe1fa; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--bg); color: #333; line-height: 1.6; }
-        header { background: var(--primary); color: white; padding: 3rem 1rem; text-align: center; }
-        .container { max-width: 1100px; margin: auto; padding: 2rem; }
-        h2 { color: var(--primary); border-bottom: 3px solid var(--accent); display: inline-block; padding-bottom: 5px; }
-        
-        /* Grille d'applications */
-        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .app-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
-        .app-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .app-info { padding: 1.5rem; }
-        .app-info h3 { margin: 0 0 10px 0; color: var(--secondary); }
-        .btn { display: inline-block; background: var(--secondary); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin-top: 10px; }
+        :root {
+            --primary: #0f4c75;
+            --secondary: #3282b8;
+            --accent: #bbe1fa;
+            --bg: #f4f7f6;
+            --text: #333;
+            --success: #16a34a;
+            --dark: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f4c75, #1b262c);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        header img {
+            height: 120px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            background: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        header p {
+            margin-top: 10px;
+            color: #dbeafe;
+            font-size: 1.05rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+            transition: 0.3s ease;
+            border: 1px solid rgba(15, 76, 117, 0.08);
+        }
+
+        .app-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+        }
+
+        .app-image-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        .app-image {
+            width: 50%;
+            display: block;
+            margin: 0 auto;
+            height: 200px;
+            object-fit: contain;
+            border-bottom: 3px solid var(--accent);
+            padding: 15px 0;
+        }
+
+        .app-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .app-info h3 {
+            margin: 0 0 10px 0;
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+
+        .app-info p {
+            margin: 0 auto 14px;
+            color: #64748b;
+            font-size: 0.94rem;
+            max-width: 360px;
+        }
+
+        .app-title-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #16a34a, #2563eb);
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #15803d, #1d4ed8);
+            box-shadow: 0 10px 24px rgba(22, 163, 74, 0.28);
+        }
+
+        .download-note {
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        footer {
+            margin-top: 2rem;
+        }
+
+        footer p {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #888;
+            margin: 0;
+        }
+
+        footer a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 1.7rem;
+            }
+
+            .container {
+                padding: 1.2rem;
+            }
+
+            .app-image {
+                width: 65%;
+                height: 170px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <header>
-    <img src="IA.png" alt="Logo Geomap IA" style="height: 120px; margin-bottom: 15px; border-radius: 50%;">
+    <img src="IA.png" alt="Logo Geomap IA">
     <h1>Geomap IA - Hub d'Applications</h1>
     <p>Solutions Géomatiques & Intelligence Artificielle</p>
 </header>
 
 <div class="container">
-    
+
     <h2><i class="fas fa-rocket"></i> Applications Web</h2>
 
     <div class="app-grid">
 
+        <!-- Application Bioclimat -->
         <div class="app-card" title="Application intégrée pour transformer les données climatiques en diagnostics écologiques. Calculs automatisés et couplage biodiversité & climat.">
-            <a href="bioclimat.html" target="_blank">
-                <img src="Bioclimat.png" alt="Application Bioclimat" style="width: 50%; display: block; margin: 0 auto; height: 200px; object-fit: contain; border-bottom: 3px solid #bbe1fa;">
-            </a>
             
-            <div class="app-info" style="text-align: center;">
-                <a href="bioclimat.html" target="_blank" style="text-decoration: none; color: inherit;">
+            <a href="bioclimat.html" target="_blank" class="app-image-link">
+                <img src="Bioclimat.png" alt="Application Bioclimat" class="app-image">
+            </a>
+
+            <div class="app-info">
+                <a href="bioclimat.html" target="_blank" class="app-title-link">
                     <h3>Bioclimat & Écologie</h3>
                 </a>
+
+                <p>
+                    Application de diagnostic bioclimatique et écologique.
+                </p>
+
+                <div class="btn-group">
+                    <a href="bioclimat.html" target="_blank" class="btn">
+                        <i class="fas fa-up-right-from-square"></i>
+                        Ouvrir l'application
+                    </a>
+                </div>
             </div>
         </div>
 
+        <!-- Application Carte de Localisation -->
         <div class="app-card" title="Outil de cartographie haute précision v3.0 GOLD. Navigation fluide, données OSM intégrées et interface optimisée pour le repérage spatial.">
-            <a href="Carte_de_localisation_version_3_0_Gold.html" target="_blank">
-                <img src="carte_localisation.png" alt="Carte de Localisation" style="width: 50%; display: block; margin: 0 auto; height: 200px; object-fit: contain; border-bottom: 3px solid #bbe1fa;">
-            </a>
             
-            <div class="app-info" style="text-align: center;">
-                <a href="Carte_de_localisation_version_3_0_Gold.html" target="_blank" style="text-decoration: none; color: inherit;">
-                    <h3>Carte de Localisation</h3>
+            <a href="Carte_de_localisation_version_3_0_Gold.html" target="_blank" class="app-image-link">
+                <img src="carte_localisation.png" alt="Carte de Localisation" class="app-image">
+            </a>
+
+            <div class="app-info">
+                <a href="Carte_de_localisation_version_3_0_Gold.html" target="_blank" class="app-title-link">
+                    <h3>Carte de Localisation 3.0 Gold</h3>
                 </a>
+
+                <p>
+                    Outil de cartographie, d’habillage cartographique et de création d’atlas.
+                </p>
+
+                <div class="btn-group">
+                    <a href="Carte_de_localisation_version_3_0_Gold.html" target="_blank" class="btn">
+                        <i class="fas fa-map-location-dot"></i>
+                        Ouvrir l'application
+                    </a>
+
+                    <a href="Applications/Carte%20de%20localisation/Ressources_Carte_Localisation_3_0_Gold.zip"
+                       class="btn btn-download"
+                       download="Ressources_Carte_Localisation_3_0_Gold.zip">
+                        <i class="fas fa-download"></i>
+                        Télécharger les données de test
+                    </a>
+                </div>
+
+                <div class="download-note">
+                    Données de démonstration : Shapefile, GeoJSON, fond image et limites administratives.
+                </div>
             </div>
         </div>
 
@@ -64,7 +289,12 @@
 </div>
 
 <footer>
-    <p style="text-align: center; padding: 3rem; color: #888;">&copy; 2026 Geomap IA | Contact : <a href="mailto:geomap.ia.contact@gmail.com" style="color: #3282b8; text-decoration: none;">geomap.ia.contact@gmail.com</a> / <a href="mailto:jaziribrahim@gmail.com" style="color: #3282b8; text-decoration: none;">jaziribrahim@gmail.com</a></p>
+    <p>
+        &copy; 2026 Geomap IA | Contact :
+        <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
+        /
+        <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
+    </p>
 </footer>
 
 </body>
