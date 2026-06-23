@@ -188,22 +188,29 @@
             box-shadow: 0 12px 34px rgba(0,0,0,0.08);
             border: 1px solid rgba(15, 76, 117, 0.08);
             display: grid;
-            grid-template-columns: 110px 1fr;
-            gap: 1.6rem;
+            grid-template-columns: 150px 1fr;
+            gap: 1.8rem;
             align-items: center;
         }
 
-        .founder-icon {
-            width: 110px;
-            height: 110px;
+        .founder-photo-wrapper {
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0f4c75, #3282b8);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 3rem;
-            box-shadow: 0 10px 28px rgba(15, 76, 117, 0.28);
+        }
+
+        .founder-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            border: 5px solid #ffffff;
+            box-shadow: 0 12px 30px rgba(15, 76, 117, 0.30);
+            background: white;
         }
 
         .founder-content h3 {
@@ -428,7 +435,7 @@
                 text-align: center;
             }
 
-            .founder-icon {
+            .founder-photo-wrapper {
                 margin: auto;
             }
 
@@ -508,8 +515,8 @@
         <h2><i class="fas fa-user-tie"></i> Fondateur de Geomap IA</h2>
 
         <div class="founder-card">
-            <div class="founder-icon">
-                <i class="fas fa-user-graduate"></i>
+            <div class="founder-photo-wrapper">
+                <img src="ma-photo.jpg" alt="Photo de Pr. Brahim Jaziri" class="founder-photo">
             </div>
 
             <div class="founder-content">
