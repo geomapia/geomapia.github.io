@@ -16,10 +16,15 @@
             --text: #333;
             --success: #16a34a;
             --dark: #0f172a;
+            --white: #ffffff;
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -30,10 +35,90 @@
             line-height: 1.6;
         }
 
+        /* =========================
+           BARRE DE NAVIGATION
+        ========================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            background: rgba(15, 76, 117, 0.96);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            object-fit: cover;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.22);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: #e0f2fe;
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            padding: 9px 13px;
+            border-radius: 999px;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.16);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.nav-highlight {
+            background: linear-gradient(135deg, #16a34a, #2563eb);
+            color: white;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+        }
+
+        .nav-links a.nav-highlight:hover {
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
         header {
             background: linear-gradient(135deg, #0f4c75, #1b262c);
             color: white;
-            padding: 3rem 1rem;
+            padding: 4rem 1rem 3.5rem;
             text-align: center;
         }
 
@@ -57,10 +142,50 @@
             font-size: 1.05rem;
         }
 
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-weight: 800;
+            text-decoration: none;
+            color: white;
+            background: var(--secondary);
+            transition: 0.25s ease;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+        }
+
+        .hero-btn.secondary {
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.28);
+        }
+
+        /* =========================
+           CONTENU
+        ========================= */
+
         .container {
             max-width: 1100px;
             margin: auto;
             padding: 2rem;
+        }
+
+        section {
+            scroll-margin-top: 90px;
         }
 
         h2 {
@@ -69,6 +194,21 @@
             display: inline-block;
             padding-bottom: 5px;
             margin-bottom: 1.5rem;
+        }
+
+        .intro-section {
+            background: white;
+            border-radius: 18px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+            border: 1px solid rgba(15, 76, 117, 0.08);
+        }
+
+        .intro-section p {
+            margin: 0;
+            color: #475569;
+            font-size: 1rem;
         }
 
         .app-grid {
@@ -172,19 +312,93 @@
             color: #64748b;
         }
 
+        /* =========================
+           RESSOURCES / À PROPOS / CONTACT
+        ========================= */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.4rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.4rem;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+            border: 1px solid rgba(15, 76, 117, 0.08);
+        }
+
+        .info-card i {
+            font-size: 1.6rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .info-card h3 {
+            margin: 0 0 8px;
+            color: var(--primary);
+        }
+
+        .info-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.94rem;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, #0f4c75, #1b262c);
+            color: white;
+            border-radius: 18px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .contact-box p {
+            color: #dbeafe;
+            margin-bottom: 1rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: white;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.22);
+            padding: 10px 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .contact-links a:hover {
+            background: rgba(255,255,255,0.24);
+            transform: translateY(-2px);
+        }
+
         footer {
             margin-top: 2rem;
+            background: #0f172a;
         }
 
         footer p {
             text-align: center;
-            padding: 3rem 1rem;
-            color: #888;
+            padding: 2.2rem 1rem;
+            color: #cbd5e1;
             margin: 0;
         }
 
         footer a {
-            color: var(--secondary);
+            color: #93c5fd;
             text-decoration: none;
         }
 
@@ -192,7 +406,31 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 700px) {
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 0.9rem 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+                padding: 7px 10px;
+            }
+
+            header {
+                padding-top: 3rem;
+            }
+
             header h1 {
                 font-size: 1.7rem;
             }
@@ -211,100 +449,202 @@
 
 <body>
 
-<header>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="#accueil" class="nav-brand">
+            <img src="IA.png" alt="Logo Geomap IA">
+            <span>Geomap IA</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="#accueil">Accueil</a>
+            <a href="#applications">Applications</a>
+            <a href="#ressources">Ressources</a>
+            <a href="#apropos">À propos</a>
+            <a href="#contact" class="nav-highlight">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<header id="accueil">
     <img src="IA.png" alt="Logo Geomap IA">
     <h1>Geomap IA - Hub d'Applications</h1>
     <p>Solutions Géomatiques & Intelligence Artificielle</p>
+
+    <div class="hero-actions">
+        <a href="#applications" class="hero-btn">
+            <i class="fas fa-rocket"></i>
+            Explorer les applications
+        </a>
+
+        <a href="#ressources" class="hero-btn secondary">
+            <i class="fas fa-download"></i>
+            Données de test
+        </a>
+    </div>
 </header>
 
 <div class="container">
 
-    <h2><i class="fas fa-rocket"></i> Applications Web</h2>
+    <section class="intro-section">
+        <p>
+            Geomap IA est un hub d’applications web dédiées à la cartographie, à la géomatique,
+            à l’analyse bioclimatique, à l’écologie et à la création d’atlas cartographiques.
+            Les applications sont accessibles directement depuis le navigateur et accompagnées
+            de ressources de démonstration pour faciliter les tests.
+        </p>
+    </section>
 
-    <div class="app-grid">
+    <section id="applications">
+        <h2><i class="fas fa-rocket"></i> Applications Web</h2>
 
-        <!-- Application Bioclimat -->
-        <div class="app-card" title="Application intégrée pour transformer les données climatiques en diagnostics écologiques. Calculs automatisés et couplage biodiversité & climat.">
+        <div class="app-grid">
 
-            <a href="Applications/Bioclimat/" target="_blank" class="app-image-link">
-                <img src="Applications/Bioclimat/Bioclimat.png" alt="Application Bioclimat" class="app-image">
-            </a>
+            <!-- Application Bioclimat -->
+            <div class="app-card" title="Application intégrée pour transformer les données climatiques en diagnostics écologiques. Calculs automatisés et couplage biodiversité & climat.">
 
-            <div class="app-info">
-                <a href="Applications/Bioclimat/" target="_blank" class="app-title-link">
-                    <h3>Bioclimat & Écologie</h3>
+                <a href="Applications/Bioclimat/" target="_blank" class="app-image-link">
+                    <img src="Applications/Bioclimat/Bioclimat.png" alt="Application Bioclimat" class="app-image">
                 </a>
 
-                <p>
-                    Application de diagnostic bioclimatique et écologique.
-                </p>
-
-                <div class="btn-group">
-                    <a href="Applications/Bioclimat/" target="_blank" class="btn">
-                        <i class="fas fa-up-right-from-square"></i>
-                        Ouvrir l'application
+                <div class="app-info">
+                    <a href="Applications/Bioclimat/" target="_blank" class="app-title-link">
+                        <h3>Bioclimat & Écologie</h3>
                     </a>
 
-                    <a href="Applications/Bioclimat/Stations_Tunisie.xlsx"
-                       class="btn btn-download"
-                       download="Stations_Tunisie.xlsx">
-                        <i class="fas fa-download"></i>
-                        Télécharger les données de test
-                    </a>
-                </div>
+                    <p>
+                        Application de diagnostic bioclimatique et écologique.
+                    </p>
 
-                <div class="download-note">
-                    Données de démonstration : fichier Excel des stations climatiques de Tunisie.
+                    <div class="btn-group">
+                        <a href="Applications/Bioclimat/" target="_blank" class="btn">
+                            <i class="fas fa-up-right-from-square"></i>
+                            Ouvrir l'application
+                        </a>
+
+                        <a href="Applications/Bioclimat/Stations_Tunisie.xlsx"
+                           class="btn btn-download"
+                           download="Stations_Tunisie.xlsx">
+                            <i class="fas fa-download"></i>
+                            Télécharger les données de test
+                        </a>
+                    </div>
+
+                    <div class="download-note">
+                        Données de démonstration : fichier Excel des stations climatiques de Tunisie.
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Application Carte de Localisation -->
-        <div class="app-card" title="Outil de cartographie haute précision v3.0 GOLD. Navigation fluide, données OSM intégrées et interface optimisée pour le repérage spatial.">
+            <!-- Application Carte de Localisation -->
+            <div class="app-card" title="Outil de cartographie haute précision v3.0 GOLD. Navigation fluide, données OSM intégrées et interface optimisée pour le repérage spatial.">
 
-            <a href="Applications/Carte%20de%20localisation/" target="_blank" class="app-image-link">
-                <img src="Applications/Carte%20de%20localisation/carte_localisation.png" alt="Carte de Localisation" class="app-image">
-            </a>
-
-            <div class="app-info">
-                <a href="Applications/Carte%20de%20localisation/" target="_blank" class="app-title-link">
-                    <h3>Carte de Localisation 3.0 Gold</h3>
+                <a href="Applications/Carte%20de%20localisation/" target="_blank" class="app-image-link">
+                    <img src="Applications/Carte%20de%20localisation/carte_localisation.png" alt="Carte de Localisation" class="app-image">
                 </a>
 
-                <p>
-                    Outil de cartographie, d’habillage cartographique et de création d’atlas.
-                </p>
-
-                <div class="btn-group">
-                    <a href="Applications/Carte%20de%20localisation/" target="_blank" class="btn">
-                        <i class="fas fa-up-right-from-square"></i>
-                        Ouvrir l'application
+                <div class="app-info">
+                    <a href="Applications/Carte%20de%20localisation/" target="_blank" class="app-title-link">
+                        <h3>Carte de Localisation 3.0 Gold</h3>
                     </a>
 
-                    <a href="Applications/Carte%20de%20localisation/Ressources_Carte_Localisation_3_0_Gold.zip"
-                       class="btn btn-download"
-                       download="Ressources_Carte_Localisation_3_0_Gold.zip">
-                        <i class="fas fa-download"></i>
-                        Télécharger les données de test
-                    </a>
-                </div>
+                    <p>
+                        Outil de cartographie, d’habillage cartographique et de création d’atlas.
+                    </p>
 
-                <div class="download-note">
-                    Données de démonstration : Shapefile, GeoJSON, fond image et limites administratives.
+                    <div class="btn-group">
+                        <a href="Applications/Carte%20de%20localisation/" target="_blank" class="btn">
+                            <i class="fas fa-up-right-from-square"></i>
+                            Ouvrir l'application
+                        </a>
+
+                        <a href="Applications/Carte%20de%20localisation/Ressources_Carte_Localisation_3_0_Gold.zip"
+                           class="btn btn-download"
+                           download="Ressources_Carte_Localisation_3_0_Gold.zip">
+                            <i class="fas fa-download"></i>
+                            Télécharger les données de test
+                        </a>
+                    </div>
+
+                    <div class="download-note">
+                        Données de démonstration : Shapefile, GeoJSON, fond image et limites administratives.
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
+    </section>
+
+    <section id="ressources" style="margin-top: 3rem;">
+        <h2><i class="fas fa-folder-open"></i> Ressources disponibles</h2>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <i class="fas fa-table"></i>
+                <h3>Données Bioclimat</h3>
+                <p>
+                    Fichier Excel de stations climatiques permettant de tester l’application Bioclimat & Écologie.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <i class="fas fa-map"></i>
+                <h3>Données cartographiques</h3>
+                <p>
+                    Ressources de test pour la carte de localisation : Shapefile, GeoJSON, fond image et limites administratives.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Applications web</h3>
+                <p>
+                    Toutes les applications sont organisées dans des dossiers séparés afin de faciliter leur développement.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="apropos" style="margin-top: 3rem;">
+        <h2><i class="fas fa-circle-info"></i> À propos</h2>
+
+        <div class="intro-section">
+            <p>
+                Geomap IA développe des outils numériques pour la cartographie, l’analyse environnementale,
+                la visualisation spatiale et l’aide à la décision. La plateforme vise à rendre les applications
+                géomatiques plus accessibles aux étudiants, chercheurs, enseignants et professionnels de l’environnement.
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" style="margin-top: 3rem;">
+        <h2><i class="fas fa-envelope"></i> Contact</h2>
+
+        <div class="contact-box">
+            <h3>Contacter Geomap IA</h3>
+            <p>
+                Pour toute suggestion, collaboration, test d’application ou remarque technique, vous pouvez nous contacter par e-mail.
+            </p>
+
+            <div class="contact-links">
+                <a href="mailto:geomap.ia.contact@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                    geomap.ia.contact@gmail.com
+                </a>
+
+                <a href="mailto:jaziribrahim@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                    jaziribrahim@gmail.com
+                </a>
+            </div>
+        </div>
+    </section>
 
 </div>
 
 <footer>
     <p>
-        &copy; 2026 Geomap IA | Contact :
-        <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
-        /
-        <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
+        &copy; 2026 Geomap IA | Applications géomatiques, cartographiques et environnementales
     </p>
 </footer>
 
