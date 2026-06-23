@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Geomap IA</title>
+
+    <meta name="description" content="Contact Geomap IA — plateforme d'applications web géomatiques, cartographiques, bioclimatiques et environnementales.">
+    <meta name="keywords" content="Geomap IA, contact, Brahim Jaziri, géomatique, cartographie, SIG, environnement">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0f4c75;
+            --secondary: #3282b8;
+            --accent: #bbe1fa;
+            --bg: #f4f7f6;
+            --text: #333;
+            --white: #ffffff;
+            --dark: #0f172a;
+            --muted: #64748b;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            background: rgba(15, 76, 117, 0.96);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            object-fit: cover;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.22);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #e0f2fe;
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            padding: 9px 13px;
+            border-radius: 999px;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.18);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.nav-highlight {
+            background: linear-gradient(135deg, #16a34a, #2563eb);
+            color: white;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+        }
+
+        header {
+            background:
+                radial-gradient(circle at top left, rgba(187, 225, 250, 0.20), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(50, 130, 184, 0.22), transparent 35%),
+                linear-gradient(135deg, #0f4c75, #1b262c);
+            color: white;
+            padding: 4.5rem 1rem;
+            text-align: center;
+        }
+
+        header img {
+            height: 120px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            background: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 900;
+        }
+
+        header p {
+            max-width: 780px;
+            margin: 14px auto 0;
+            color: #dbeafe;
+            font-size: 1.08rem;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 1.5rem;
+            font-size: 1.55rem;
+        }
+
+        .intro-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+            border: 1px solid rgba(15, 76, 117, 0.08);
+        }
+
+        .intro-card p {
+            margin: 0;
+            color: #475569;
+            font-size: 1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.7rem;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.07);
+            border: 1px solid rgba(15, 76, 117, 0.08);
+            transition: 0.25s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 34px rgba(0,0,0,0.11);
+        }
+
+        .contact-card i {
+            font-size: 1.9rem;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .contact-card h3 {
+            margin: 0 0 8px;
+            color: var(--primary);
+            font-size: 1.15rem;
+        }
+
+        .contact-card p {
+            margin: 0 0 1rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .contact-card a {
+            color: var(--primary);
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .contact-card a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 22px;
+            padding: 2rem;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+            border: 1px solid rgba(15, 76, 117, 0.08);
+        }
+
+        .form-note {
+            margin: 0 0 1.5rem;
+            padding: 1rem 1.2rem;
+            border-radius: 14px;
+            background: rgba(187, 225, 250, 0.35);
+            color: #0f4c75;
+            border: 1px solid rgba(50, 130, 184, 0.18);
+            font-size: 0.94rem;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 6px;
+            font-size: 0.92rem;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.25s ease;
+            background: #f8fafc;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(50, 130, 184, 0.14);
+            background: white;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: white;
+            padding: 13px 20px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 900;
+            border: none;
+            cursor: pointer;
+            transition: 0.25s ease;
+            font-size: 0.96rem;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #16a34a, #2563eb);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .quick-message {
+            background: linear-gradient(135deg, #0f4c75, #1b262c);
+            color: white;
+            border-radius: 22px;
+            padding: 2.2rem;
+            text-align: center;
+            box-shadow: 0 16px 36px rgba(15, 76, 117, 0.25);
+        }
+
+        .quick-message h2 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.35);
+            margin-top: 0;
+        }
+
+        .quick-message p {
+            max-width: 760px;
+            margin: 0 auto 1.4rem;
+            color: #dbeafe;
+        }
+
+        /* =========================
+           FOOTER GEOMAP IA
+        ========================= */
+
+        .geomap-footer {
+            margin-top: 4rem;
+            background: #f7c65b;
+            color: #003b7a;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .footer-main {
+            max-width: 1120px;
+            margin: auto;
+            padding: 3.6rem 2rem;
+            display: grid;
+            grid-template-columns: 1.35fr 1fr 1.35fr;
+            gap: 2.5rem;
+        }
+
+        .footer-column {
+            padding: 0 1.5rem;
+        }
+
+        .footer-column:not(:first-child) {
+            border-left: 2px solid rgba(0, 59, 122, 0.35);
+        }
+
+        .footer-column h3 {
+            margin: 0 0 1rem;
+            color: #004aad;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .footer-brand p {
+            margin: 0;
+            color: #003b7a;
+            line-height: 1.8;
+            font-size: 0.98rem;
+        }
+
+        .footer-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .footer-menu a {
+            color: #003b7a;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: 0.25s ease;
+        }
+
+        .footer-menu a:hover {
+            color: #004aad;
+            transform: translateX(4px);
+            font-weight: 700;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icons a,
+        .copy-link-btn {
+            width: 46px;
+            height: 46px;
+            background: #004aad;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.25rem;
+            transition: 0.25s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .social-icons a:hover,
+        .copy-link-btn:hover {
+            background: #0f4c75;
+            transform: translateY(-4px);
+        }
+
+        .share-note {
+            margin: 1rem 0 0;
+            color: #003b7a;
+            font-size: 0.9rem;
+        }
+
+        .legal-section {
+            max-width: 1120px;
+            margin: auto;
+            padding: 0 2rem 2rem;
+        }
+
+        .legal-section details {
+            background: rgba(255, 255, 255, 0.38);
+            border: 1px solid rgba(0, 59, 122, 0.22);
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+        }
+
+        .legal-section summary {
+            cursor: pointer;
+            color: #004aad;
+            font-weight: 900;
+            font-size: 1.05rem;
+        }
+
+        .legal-content {
+            margin-top: 1rem;
+            color: #003b7a;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .legal-content p {
+            margin: 0 0 0.85rem;
+        }
+
+        .legal-content a {
+            color: #004aad;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .legal-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            background: #0f4c75;
+            color: #ffffff;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .footer-bottom a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom span {
+            margin: 0 0.5rem;
+            opacity: 0.8;
+        }
+
+        .back-to-top {
+            width: 48px;
+            height: 48px;
+            background: #f7c65b;
+            color: #004aad !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none !important;
+            font-size: 1.2rem;
+            font-weight: 900;
+            transition: 0.25s ease;
+        }
+
+        .back-to-top:hover {
+            background: #ffd978;
+            transform: translateY(-4px);
+        }
+
+        @media (max-width: 800px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 0.9rem 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+                padding: 7px 10px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header p {
+                font-size: 0.98rem;
+            }
+
+            .container {
+                padding: 1.2rem;
+            }
+
+            .intro-card,
+            .form-card,
+            .quick-message {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                padding: 2.5rem 1.4rem;
+                gap: 1.8rem;
+            }
+
+            .footer-column {
+                padding: 0;
+            }
+
+            .footer-column:not(:first-child) {
+                border-left: none;
+                border-top: 2px solid rgba(0, 59, 122, 0.25);
+                padding-top: 1.5rem;
+            }
+
+            .legal-section {
+                padding: 0 1.4rem 1.8rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .social-icons {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact Geomap IA",
+      "url": "https://geomapia.github.io/contact.html",
+      "description": "Page de contact de Geomap IA.",
+      "inLanguage": "fr",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Geomap IA",
+        "url": "https://geomapia.github.io/"
+      }
+    }
+    </script>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-brand">
+            <img src="IA.png" alt="Logo Geomap IA">
+            <span>Geomap IA</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Accueil</a>
+            <a href="applications.html">Applications</a>
+            <a href="ressources.html">Ressources</a>
+            <a href="about.html">À propos</a>
+            <a href="contact.html" class="nav-highlight active">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<header>
+    <img src="IA.png" alt="Logo Geomap IA">
+    <h1>Contact</h1>
+    <p>
+        Une question, une suggestion, une collaboration ou un retour sur une application ?
+        Vous pouvez contacter Geomap IA directement depuis cette page.
+    </p>
+</header>
+
+<main class="container">
+
+    <section>
+        <h2><i class="fas fa-envelope-open-text"></i> Nous contacter</h2>
+
+        <div class="intro-card">
+            <p>
+                Geomap IA est une plateforme évolutive. Vos remarques, suggestions et retours d’utilisation
+                sont utiles pour améliorer les applications, enrichir les ressources et développer de nouveaux outils
+                géomatiques, cartographiques et environnementaux.
+            </p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <h3>E-mail principal</h3>
+                <p>Pour les questions relatives à Geomap IA, aux applications et aux ressources.</p>
+                <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
+            </div>
+
+            <div class="contact-card">
+                <i class="fas fa-user-tie"></i>
+                <h3>Responsable du projet</h3>
+                <p>Contact direct avec le fondateur de la plateforme.</p>
+                <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
+            </div>
+
+            <div class="contact-card">
+                <i class="fab fa-github"></i>
+                <h3>Dépôt GitHub</h3>
+                <p>Consulter le dépôt et l’organisation des fichiers du site.</p>
+                <a href="https://github.com/geomapia" target="_blank" rel="noopener">github.com/geomapia</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2><i class="fas fa-paper-plane"></i> Envoyer un message</h2>
+
+        <div class="form-card">
+            <p class="form-note">
+                Ce formulaire fonctionne sans serveur : il ouvre automatiquement votre logiciel de messagerie
+                avec le message pré-rempli.
+            </p>
+
+            <form class="contact-form" onsubmit="sendContactMail(event)">
+                <div class="form-row">
+                    <div>
+                        <label for="name">Nom</label>
+                        <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                    </div>
+
+                    <div>
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="subject">Sujet</label>
+                    <input type="text" id="subject" name="subject" placeholder="Sujet du message" required>
+                </div>
+
+                <div>
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Écrivez votre message ici..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn secondary">
+                        <i class="fas fa-paper-plane"></i>
+                        Ouvrir l’e-mail
+                    </button>
+
+                    <a href="mailto:geomap.ia.contact@gmail.com" class="btn">
+                        <i class="fas fa-envelope"></i>
+                        Écrire directement
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="quick-message">
+        <h2><i class="fas fa-lightbulb"></i> Proposer une amélioration</h2>
+        <p>
+            Vous pouvez signaler un problème, proposer une nouvelle application, suggérer une amélioration
+            d’interface ou demander l’ajout d’une ressource de test.
+        </p>
+
+        <a href="mailto:geomap.ia.contact@gmail.com?subject=Suggestion%20pour%20Geomap%20IA&body=Bonjour,%0D%0A%0D%0AJe souhaite proposer une amélioration pour Geomap IA.%0D%0A%0D%0A"
+           class="btn secondary">
+            <i class="fas fa-comment-dots"></i>
+            Envoyer une suggestion
+        </a>
+    </section>
+
+</main>
+
+<footer class="geomap-footer">
+
+    <div class="footer-main">
+
+        <div class="footer-column footer-brand">
+            <h3>Geomap IA</h3>
+            <p>
+                Geomap IA est une plateforme numérique dédiée aux applications web géomatiques,
+                cartographiques, bioclimatiques et environnementales. Elle propose des outils simples
+                pour l’analyse spatiale, la visualisation des données, la création cartographique
+                et l’aide à la décision.
+            </p>
+        </div>
+
+        <div class="footer-column footer-menu">
+            <h3>Navigation</h3>
+            <a href="index.html">Accueil</a>
+            <a href="applications.html">Applications</a>
+            <a href="ressources.html">Ressources</a>
+            <a href="about.html">À propos</a>
+            <a href="contact.html">Contact</a>
+        </div>
+
+        <div class="footer-column footer-social">
+            <h3>Partager...</h3>
+
+            <div class="social-icons">
+                <a href="https://github.com/geomapia" target="_blank" rel="noopener" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a href="https://api.whatsapp.com/send?text=Geomap%20IA%20-%20Applications%20géomatiques%20et%20cartographiques%20:%20https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Geomap%20IA%20-%20Applications%20géomatiques%20et%20cartographiques&url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur X / Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+
+                <a href="mailto:?subject=Geomap IA&body=Découvrez Geomap IA : https://geomapia.github.io/" title="Partager par e-mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
+
+                <button class="copy-link-btn" onclick="copyGeomapLink()" title="Copier le lien">
+                    <i class="fas fa-link"></i>
+                </button>
+            </div>
+
+            <p class="share-note" id="copyMessage">
+                Cliquez sur une icône pour partager la plateforme.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="legal-section">
+        <details>
+            <summary>Mentions légales</summary>
+
+            <div class="legal-content">
+                <p><strong>Nom du site :</strong> Geomap IA — Portail d’applications géomatiques, cartographiques et environnementales.</p>
+
+                <p>
+                    <strong>Adresse du site :</strong>
+                    <a href="https://geomapia.github.io/" target="_blank" rel="noopener">https://geomapia.github.io/</a>
+                </p>
+
+                <p><strong>Responsable du contenu :</strong> Pr. Brahim Jaziri.</p>
+
+                <p>
+                    <strong>Contact :</strong>
+                    <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
+                    /
+                    <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
+                </p>
+
+                <p><strong>Hébergement :</strong> GitHub Pages. Le site est hébergé sous forme de pages web statiques à partir du dépôt GitHub associé au projet Geomap IA.</p>
+
+                <p><strong>Objectif du site :</strong> Geomap IA met à disposition des applications web, des ressources de test et des supports numériques liés à la cartographie, à la géomatique, à la bioclimatologie, à l’écologie et à l’environnement.</p>
+
+                <p><strong>Données et ressources :</strong> les fichiers proposés au téléchargement sont destinés à des usages de démonstration, de test, de formation et d’expérimentation. L’utilisateur reste responsable de l’usage qu’il fait des données téléchargées.</p>
+
+                <p><strong>Propriété intellectuelle :</strong> les contenus, textes, interfaces, éléments graphiques et applications publiés sur Geomap IA sont protégés. Toute réutilisation doit mentionner la source et respecter les droits de l’auteur.</p>
+
+                <p><strong>Responsabilité :</strong> malgré le soin apporté au développement des applications, Geomap IA ne garantit pas l’absence totale d’erreurs techniques, de bugs ou d’inexactitudes. Les résultats produits doivent être vérifiés avant tout usage scientifique, professionnel ou décisionnel.</p>
+
+                <p><strong>Données personnelles :</strong> le site ne demande pas d’inscription et ne collecte pas directement de données personnelles via un formulaire. Les liens de contact par e-mail ouvrent le logiciel de messagerie de l’utilisateur.</p>
+
+                <p><strong>Statistiques de consultation :</strong> le site peut utiliser des outils de mesure d’audience afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
+            </div>
+        </details>
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            © 2026 Geomap IA — Tous droits réservés
+            <span>|</span>
+            <a href="about.html">À propos</a>
+            <span>|</span>
+            <a href="ressources.html">Ressources</a>
+            <span>|</span>
+            <a href="contact.html">Contact</a>
+        </p>
+
+        <a href="#" class="back-to-top" title="Retour en haut">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+    </div>
+
+</footer>
+
+<script>
+    function copyGeomapLink() {
+        const link = "https://geomapia.github.io/";
+        const message = document.getElementById("copyMessage");
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(link).then(function () {
+                message.textContent = "Lien copié : https://geomapia.github.io/";
+            }).catch(function () {
+                message.textContent = "Copiez ce lien : https://geomapia.github.io/";
+            });
+        } else {
+            message.textContent = "Copiez ce lien : https://geomapia.github.io/";
+        }
+    }
+
+    function sendContactMail(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const subject = document.getElementById("subject").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        const mailSubject = encodeURIComponent("Contact Geomap IA — " + subject);
+        const mailBody = encodeURIComponent(
+            "Nom : " + name + "\n" +
+            "E-mail : " + email + "\n\n" +
+            "Message :\n" + message
+        );
+
+        window.location.href = "mailto:geomap.ia.contact@gmail.com?subject=" + mailSubject + "&body=" + mailBody;
+    }
+</script>
+
+</body>
+</html>
