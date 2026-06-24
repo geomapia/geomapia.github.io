@@ -35,6 +35,7 @@
     trackClick('#btnExportPdf', 'export_pdf', 'Exporter PDF');
     trackClick('#btnAtlas', 'atlas_generated', 'Générer Atlas');
     trackClick('#btnZoomInset', 'zoom_inset_created', 'Créer encart de zoom');
+    trackClick('#btnEnterApp', 'enter_carte_localisation_app', 'Accéder aux outils');
 
   });
 </script>
@@ -298,6 +299,321 @@
         .modal-social-btns { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
         .modal-social-btns .social-btn { width: 45px; height: 45px; background: #f8fafc; border: 1px solid #cbd5e1; color: #334155; }
         .modal-social-btns .social-btn:hover { background: #e2e8f0; color: #0f172a; transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+
+        /* --- ÉCRAN D'ACCUEIL STYLE BIOCLIMAT --- */
+        #welcome-modal.modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 24px 18px;
+            backdrop-filter: blur(5px);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #welcome-modal.modal-overlay.hidden {
+            display: none !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #welcome-modal .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 720px;
+            width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 18px 44px rgba(0,0,0,0.10);
+            padding: 2.35rem 2.4rem 2.1rem 2.4rem;
+            text-align: center;
+            margin: auto;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        #welcome-modal .modal-logo-geomap {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 0.85rem auto;
+            border-radius: 22px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 28px rgba(15, 76, 117, 0.16);
+            border: none;
+            padding: 9px;
+        }
+
+        #welcome-modal .modal-logo-geomap img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 16px;
+            display: block;
+        }
+
+        #welcome-modal .modal-home-link {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #059669;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.84rem;
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            padding: 6px 10px;
+            border-radius: 999px;
+            transition: 0.25s ease;
+            margin: 0;
+        }
+
+        #welcome-modal .modal-home-link:hover {
+            color: #ffffff;
+            background: #059669;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        #welcome-modal h2 {
+            color: #1e293b;
+            font-family: 'Inter', 'Roboto', sans-serif;
+            font-size: clamp(1.85rem, 3.2vw, 2.35rem);
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            line-height: 1.12;
+            margin: 0 0 0.45rem 0;
+        }
+
+        #welcome-modal .welcome-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            margin: 0 0 0.85rem 0;
+            font-weight: 400;
+            line-height: 1.45;
+        }
+
+        #welcome-modal .welcome-author {
+            color: #059669;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 1.25rem 0;
+            line-height: 1.35;
+        }
+
+        #welcome-modal .welcome-separator {
+            opacity: 0.1;
+            margin: 1.1rem 0 1rem 0;
+            border: none;
+            border-top: 1px solid #1e293b;
+        }
+
+        #welcome-modal .intro-warning {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 4px;
+            color: #92400e;
+            padding: 1rem 1.15rem;
+            text-align: left;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        #welcome-modal .intro-warning h5 {
+            color: #92400e;
+            font-family: 'Inter', 'Roboto', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+            margin: 0 0 0.65rem 0;
+        }
+
+        #welcome-modal .intro-warning ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            font-size: 0.86rem;
+            line-height: 1.42;
+        }
+
+        #welcome-modal .intro-warning li {
+            margin-bottom: 0.42rem;
+        }
+
+        #welcome-modal .intro-warning li:last-child {
+            margin-bottom: 0;
+        }
+
+        #welcome-modal .intro-checkbox-wrapper {
+            margin-bottom: 0.55rem;
+        }
+
+        #welcome-modal .form-check {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #welcome-modal .form-check-input {
+            width: 1.05em;
+            height: 1.05em;
+            cursor: pointer;
+            accent-color: #059669;
+        }
+
+        #welcome-modal .form-check-label {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.86rem;
+            cursor: pointer;
+            margin: 0;
+            display: inline;
+        }
+
+        #welcome-modal #btnEnterApp {
+            background-color: #059669;
+            color: #ffffff;
+            border: none;
+            padding: 0.78rem 1rem;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            width: 100%;
+            display: block;
+            font-family: 'Inter', 'Roboto', sans-serif;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+
+        #welcome-modal #btnEnterApp:hover:not(:disabled) {
+            background-color: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(5, 150, 105, 0.3);
+        }
+
+        #welcome-modal #btnEnterApp:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 800px) {
+            #welcome-modal.modal-overlay {
+                padding: 18px 12px;
+            }
+
+            #welcome-modal .modal-content {
+                padding: 3.4rem 1.2rem 1.6rem 1.2rem;
+            }
+
+            #welcome-modal .modal-home-link {
+                top: 16px;
+                left: 16px;
+            }
+
+            #welcome-modal .modal-logo-geomap {
+                width: 78px;
+                height: 78px;
+            }
+
+            #welcome-modal .modal-logo-geomap img {
+                width: 62px;
+                height: 62px;
+            }
+
+            #welcome-modal h2 {
+                font-size: 1.65rem;
+            }
+
+            #welcome-modal .welcome-subtitle {
+                font-size: 0.9rem;
+            }
+
+            #welcome-modal .form-check {
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            #welcome-modal #btnEnterApp {
+                font-size: 0.92rem;
+            }
+        }
+
+
+        @media (max-height: 760px) {
+            #welcome-modal.modal-overlay {
+                padding: 14px 16px;
+            }
+
+            #welcome-modal .modal-content {
+                padding: 2rem 2.1rem 1.8rem 2.1rem;
+                max-width: 690px;
+            }
+
+            #welcome-modal .modal-logo-geomap {
+                width: 76px;
+                height: 76px;
+                margin-bottom: 0.6rem;
+            }
+
+            #welcome-modal .modal-logo-geomap img {
+                width: 60px;
+                height: 60px;
+            }
+
+            #welcome-modal h2 {
+                font-size: 1.85rem;
+            }
+
+            #welcome-modal .welcome-subtitle {
+                font-size: 0.92rem;
+                margin-bottom: 0.65rem;
+            }
+
+            #welcome-modal .welcome-author {
+                font-size: 0.76rem;
+                margin-bottom: 0.9rem;
+            }
+
+            #welcome-modal .welcome-separator {
+                margin: 0.8rem 0 0.75rem 0;
+            }
+
+            #welcome-modal .intro-warning {
+                padding: 0.85rem 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            #welcome-modal .intro-warning h5 {
+                font-size: 0.98rem;
+                margin-bottom: 0.45rem;
+            }
+
+            #welcome-modal .intro-warning ul {
+                font-size: 0.8rem;
+                line-height: 1.35;
+            }
+
+            #welcome-modal #btnEnterApp {
+                padding: 0.68rem 1rem;
+            }
+        }
+
 
         /* --- 4. ZONE PAPIER (A4) --- */
         .paper-wrapper { flex-grow: 1; width: 100%; display: flex; justify-content: center; padding-bottom: 60px; }
@@ -2306,22 +2622,69 @@
     <!-- PANNEAU D'ACCUEIL -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-logo-geomap">
-                <img src="https://geomapia.github.io/IA.png" alt="Logo Geomap IA">
-            </div>
-            <h2>Bienvenue sur le Créateur de Cartes de Localisation & Atlas Cartographique</h2>
-            <p>
-                Cet outil gratuit a été spécialement conçu pour vous aider à réaliser des plans de situation clairs et esthétiques pour vos projets, rapports et études.
-                <br><br>
-                <strong>Commencez par importer vos limites administratives</strong>, personnalisez le rendu, ajoutez la zone de votre projet et exportez une carte professionnelle en un clic !
-            </p>
-            <button class="modal-btn" onclick="closeWelcomeModal()">C'est parti !</button>
             <a href="https://geomapia.github.io/" class="modal-home-link" title="Retour vers Geomap IA">
-                <i class="fas fa-arrow-left"></i>
-                Retour vers Geomap IA
+                <span>←</span>
+                Geomap IA
             </a>
+
+            <div class="modal-logo-geomap">
+                <img src="https://geomapia.github.io/IA.png" alt="Logo Geomap IA - Carte de Localisation 3.0 Gold">
+            </div>
+
+            <h2>Carte de Localisation 3.0 Gold</h2>
+
+            <p class="welcome-subtitle">
+                Outil de création de cartes de localisation, d’habillage cartographique,
+                d’encarts de zoom et d’atlas cartographiques.
+            </p>
+
+            <p class="welcome-author">
+                Destiné à la communauté scientifique, aux étudiants et aux professionnels de la cartographie
+            </p>
+
+            <hr class="welcome-separator">
+
+            <div class="intro-warning">
+                <h5>
+                    ⚠️ Avertissement Important & Responsabilité
+                </h5>
+
+                <ul>
+                    <li>
+                        <strong>Outil d’aide à la décision :</strong>
+                        Cette application facilite la production de cartes et d’atlas, mais ne remplace pas
+                        une vérification cartographique, scientifique ou institutionnelle.
+                    </li>
+
+                    <li>
+                        <strong>Données :</strong>
+                        Les résultats dépendent de la qualité, de la projection, de la précision et de l’actualité
+                        des fichiers importés par l’utilisateur.
+                    </li>
+
+                    <li>
+                        <strong>Conformité :</strong>
+                        Avant tout usage académique, professionnel, administratif ou réglementaire,
+                        les cartes exportées doivent être vérifiées selon les normes cartographiques classiques.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="intro-checkbox-wrapper">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="welcomeCheck" onchange="toggleWelcomeEnterButton()">
+                    <label class="form-check-label" for="welcomeCheck">
+                        Je confirme avoir pris connaissance de l’avertissement et accepte les conditions.
+                    </label>
+                </div>
+            </div>
+
+            <button id="btnEnterApp" class="modal-btn" onclick="closeWelcomeModal()" disabled>
+                🚪 ACCÉDER AUX OUTILS
+            </button>
         </div>
     </div>
+
 
     <!-- PANNEAU D'EXPORT (REMERCIEMENT) -->
     <div id="export-modal" class="modal-overlay hidden">
@@ -2745,9 +3108,26 @@
             document.body.classList.toggle('welcome-open', isOpen);
         }
 
+        function toggleWelcomeEnterButton() {
+            const check = document.getElementById('welcomeCheck');
+            const button = document.getElementById('btnEnterApp');
+            if (button) button.disabled = !(check && check.checked);
+        }
+
         function closeWelcomeModal() {
+            const check = document.getElementById('welcomeCheck');
+            if (check && !check.checked) return;
+
             const modal = document.getElementById('welcome-modal');
             if (modal) modal.classList.add('hidden');
+
+            try {
+                gtag('event', 'enter_carte_localisation_app', {
+                    app_name: 'GeomapIA_Carte_Localisation_3_0_Gold',
+                    button_name: 'Accéder aux outils'
+                });
+            } catch (e) {}
+
             syncWelcomeUI();
         }
         function showExportModal() { document.getElementById('export-modal').classList.remove('hidden'); }
