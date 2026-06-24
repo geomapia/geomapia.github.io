@@ -250,19 +250,20 @@
             font-weight: 800;
         }
 
-        .grid {
+        .four-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.4rem;
         }
 
         .card {
             background: white;
             border-radius: 18px;
-            padding: 1.6rem;
+            padding: 1.45rem;
             box-shadow: 0 10px 24px rgba(0,0,0,0.06);
             border: 1px solid rgba(15, 76, 117, 0.08);
             transition: 0.25s ease;
+            min-height: 190px;
         }
 
         .card:hover {
@@ -271,7 +272,7 @@
         }
 
         .card i {
-            font-size: 1.8rem;
+            font-size: 1.65rem;
             color: var(--secondary);
             margin-bottom: 12px;
         }
@@ -279,100 +280,15 @@
         .card h3 {
             margin: 0 0 8px;
             color: var(--primary);
-            font-size: 1.15rem;
+            font-size: 1.02rem;
+            line-height: 1.35;
         }
 
         .card p {
             margin: 0;
             color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .values-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .value-item {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-            background: white;
-            border-radius: 16px;
-            padding: 1.25rem;
-            box-shadow: 0 8px 22px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--secondary);
-        }
-
-        .value-item i {
-            color: var(--success);
-            font-size: 1.35rem;
-            margin-top: 4px;
-        }
-
-        .value-item h3 {
-            margin: 0 0 5px;
-            color: var(--primary);
-            font-size: 1.05rem;
-        }
-
-        .value-item p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .cta {
-            background: linear-gradient(135deg, #0f4c75, #1b262c);
-            color: white;
-            border-radius: 22px;
-            padding: 2.2rem;
-            text-align: center;
-            box-shadow: 0 16px 36px rgba(15, 76, 117, 0.25);
-        }
-
-        .cta h2 {
-            color: white;
-            border-bottom-color: rgba(255,255,255,0.35);
-            margin-top: 0;
-        }
-
-        .cta p {
-            max-width: 760px;
-            margin: 0 auto 1.4rem;
-            color: #dbeafe;
-        }
-
-        .cta-actions {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .btn {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            background: var(--secondary);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 999px;
-            text-decoration: none;
-            font-weight: 800;
-            transition: 0.25s ease;
-        }
-
-        .btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
-        }
-
-        .btn.secondary {
-            background: rgba(255,255,255,0.16);
-            border: 1px solid rgba(255,255,255,0.28);
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
         /* =========================
@@ -562,6 +478,12 @@
             transform: translateY(-4px);
         }
 
+        @media (max-width: 1000px) {
+            .four-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 800px) {
             .nav-container {
                 flex-direction: column;
@@ -591,7 +513,6 @@
             }
 
             .intro-card,
-            .cta,
             .founder-card {
                 padding: 1.5rem;
             }
@@ -607,6 +528,10 @@
 
             .founder-tags {
                 justify-content: center;
+            }
+
+            .four-grid {
+                grid-template-columns: 1fr;
             }
 
             .footer-main {
@@ -671,7 +596,7 @@
             <a href="applications.html">Applications</a>
             <a href="ressources.html">Ressources</a>
             <a href="about.html" class="active">À propos</a>
-            <a href="mailto:geomap.ia.contact@gmail.com" class="nav-highlight">Contact</a>
+            <a href="contact.html" class="nav-highlight">Contact</a>
         </div>
     </div>
 </nav>
@@ -751,7 +676,7 @@
     <section>
         <h2><i class="fas fa-bullseye"></i> Objectifs</h2>
 
-        <div class="grid">
+        <div class="four-grid">
             <div class="card">
                 <i class="fas fa-map-location-dot"></i>
                 <h3>Produire des outils cartographiques</h3>
@@ -789,7 +714,7 @@
     <section>
         <h2><i class="fas fa-layer-group"></i> Domaines couverts</h2>
 
-        <div class="grid">
+        <div class="four-grid">
             <div class="card">
                 <i class="fas fa-globe-africa"></i>
                 <h3>Géomatique & SIG</h3>
@@ -824,72 +749,6 @@
         </div>
     </section>
 
-    <section>
-        <h2><i class="fas fa-gem"></i> Valeurs du projet</h2>
-
-        <div class="values-list">
-            <div class="value-item">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <h3>Accessibilité</h3>
-                    <p>
-                        Des applications utilisables directement en ligne, sans installation complexe.
-                    </p>
-                </div>
-            </div>
-
-            <div class="value-item">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <h3>Clarté scientifique</h3>
-                    <p>
-                        Des outils pensés pour produire des résultats lisibles, interprétables et pédagogiques.
-                    </p>
-                </div>
-            </div>
-
-            <div class="value-item">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <h3>Évolution continue</h3>
-                    <p>
-                        Une plateforme appelée à accueillir progressivement de nouvelles applications et ressources.
-                    </p>
-                </div>
-            </div>
-
-            <div class="value-item">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <h3>Ouverture</h3>
-                    <p>
-                        Une organisation simple des fichiers et des applications pour faciliter l’amélioration du projet.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta">
-        <h2><i class="fas fa-rocket"></i> Explorer les applications</h2>
-        <p>
-            Accédez aux applications disponibles sur Geomap IA et téléchargez les données de test associées
-            pour expérimenter les outils proposés.
-        </p>
-
-        <div class="cta-actions">
-            <a href="applications.html" class="btn">
-                <i class="fas fa-th-large"></i>
-                Voir les applications
-            </a>
-
-            <a href="ressources.html" class="btn secondary">
-                <i class="fas fa-download"></i>
-                Ressources de test
-            </a>
-        </div>
-    </section>
-
 </main>
 
 <footer class="geomap-footer">
@@ -912,7 +771,7 @@
             <a href="applications.html">Applications</a>
             <a href="ressources.html">Ressources</a>
             <a href="about.html">À propos</a>
-            <a href="mailto:geomap.ia.contact@gmail.com">Contact</a>
+            <a href="contact.html">Contact</a>
         </div>
 
         <div class="footer-column footer-social">
@@ -971,7 +830,7 @@
 
                 <p>
                     <strong>Contact :</strong>
-                    <a href="mailto:geomap.ia.contact@gmail.com">geomap.ia.contact@gmail.com</a>
+                    <a href="mailto:geomapia.ia@gmail.com">geomapia.ia@gmail.com</a>
                     /
                     <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
                 </p>
@@ -986,7 +845,7 @@
 
                 <p><strong>Responsabilité :</strong> malgré le soin apporté au développement des applications, Geomap IA ne garantit pas l’absence totale d’erreurs techniques, de bugs ou d’inexactitudes. Les résultats produits doivent être vérifiés avant tout usage scientifique, professionnel ou décisionnel.</p>
 
-                <p><strong>Données personnelles :</strong> le site ne demande pas d’inscription et ne collecte pas directement de données personnelles via un formulaire. Les liens de contact par e-mail ouvrent le logiciel de messagerie de l’utilisateur.</p>
+                <p><strong>Données personnelles :</strong> les informations transmises via la page contact sont destinées uniquement à permettre une réponse au message envoyé.</p>
 
                 <p><strong>Statistiques de consultation :</strong> le site peut utiliser des outils de mesure d’audience afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
             </div>
@@ -1001,7 +860,7 @@
             <span>|</span>
             <a href="ressources.html">Ressources</a>
             <span>|</span>
-            <a href="mailto:geomap.ia.contact@gmail.com">Contact</a>
+            <a href="contact.html">Contact</a>
         </p>
 
         <a href="#" class="back-to-top" title="Retour en haut">
