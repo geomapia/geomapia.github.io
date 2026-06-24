@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<head>
 <!-- Google Analytics - GeomapIA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
 
@@ -12,7 +13,7 @@
 
   /* Ouverture de l'application */
   gtag('event', 'application_open', {
-    app_name: 'GeomapIA_Bioclimat'
+    app_name: 'GeomapIA_Carte_Localisation_3_0_Gold'
   });
 
   /* Suivi des clics importants */
@@ -39,7 +40,31 @@
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de Cartes de Localisation & Atlas Cartographique</title>
+    <title>Carte de Localisation 3.0 Gold | Geomap IA</title>
+
+    <meta name="description" content="Carte de Localisation 3.0 Gold est une application web Geomap IA pour créer des cartes de localisation, habiller des cartes, importer des données GeoJSON, KML et Shapefile, générer des encarts de zoom et produire des atlas cartographiques.">
+    <meta name="keywords" content="Geomap IA, Carte de Localisation 3.0 Gold, cartographie, SIG, GeoJSON, Shapefile, KML, atlas cartographique, encart de zoom, export PDF, export PNG">
+    <meta name="author" content="Pr. Brahim Jaziri">
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://geomapia.github.io/Applications/Carte%20de%20localisation/">
+
+    <link rel="icon" href="https://geomapia.github.io/IA.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://geomapia.github.io/IA.png">
+
+    <meta property="og:title" content="Carte de Localisation 3.0 Gold | Geomap IA">
+    <meta property="og:description" content="Application web de cartographie pour créer des cartes de localisation, importer des couches spatiales, générer des encarts de zoom et produire des atlas cartographiques.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geomapia.github.io/Applications/Carte%20de%20localisation/">
+    <meta property="og:image" content="https://geomapia.github.io/Applications/Carte%20de%20localisation/carte_localisation.png">
+    <meta property="og:site_name" content="Geomap IA">
+    <meta property="og:locale" content="fr_FR">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Carte de Localisation 3.0 Gold | Geomap IA">
+    <meta name="twitter:description" content="Application web Geomap IA pour la cartographie, les cartes de localisation, les encarts de zoom et les atlas cartographiques.">
+    <meta name="twitter:image" content="https://geomapia.github.io/Applications/Carte%20de%20localisation/carte_localisation.png">
+
     
     <!-- Polices -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -92,7 +117,8 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #475569;
         }
         .banner-content { display: flex; align-items: center; gap: 16px; }
-        .banner-icon { font-size: 2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .banner-icon { font-size: 2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); display:flex; align-items:center; justify-content:center; }
+
         .banner-text-group { display: flex; flex-direction: column; }
         .banner-title { margin: 0; font-size: 1.3rem; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; }
         .banner-subtitle { margin: 2px 0 0 0; font-size: 0.8rem; color: #cbd5e1; font-weight: 400; }
@@ -227,6 +253,40 @@
             border: 1px solid #e2e8f0; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         .modal-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
+        .modal-logo-geomap {
+            width: 92px;
+            height: 92px;
+            margin: 0 auto 18px auto;
+            border-radius: 24px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 32px rgba(15, 76, 117, 0.22);
+            border: 1px solid rgba(15, 76, 117, 0.10);
+        }
+        .modal-logo-geomap img {
+            width: 74px;
+            height: 74px;
+            object-fit: cover;
+            border-radius: 18px;
+            display: block;
+        }
+        .modal-home-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            color: #0f4c75;
+            font-weight: 800;
+            text-decoration: none;
+            font-size: 0.92rem;
+        }
+        .modal-home-link:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
         .modal-content h2 { margin: 0 0 15px 0; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 700; }
         .modal-content p { color: #475569; line-height: 1.6; font-size: 0.95rem; margin-bottom: 25px; }
         .modal-btn { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; width: 100%; display: block; }
@@ -1430,6 +1490,30 @@
         }
 
     </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Carte de Localisation 3.0 Gold",
+      "applicationCategory": "MappingApplication",
+      "operatingSystem": "Web",
+      "url": "https://geomapia.github.io/Applications/Carte%20de%20localisation/",
+      "description": "Application web Geomap IA pour créer des cartes de localisation, importer des couches spatiales, générer des encarts de zoom et produire des atlas cartographiques.",
+      "inLanguage": "fr",
+      "creator": {
+        "@type": "Person",
+        "name": "Brahim Jaziri",
+        "honorificPrefix": "Pr."
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Geomap IA",
+        "url": "https://geomapia.github.io/"
+      }
+    }
+    </script>
+
 </head>
 <body>
 
@@ -2222,7 +2306,9 @@
     <!-- PANNEAU D'ACCUEIL -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-content">
-            <span class="modal-icon">🗺️</span>
+            <div class="modal-logo-geomap">
+                <img src="https://geomapia.github.io/IA.png" alt="Logo Geomap IA">
+            </div>
             <h2>Bienvenue sur le Créateur de Cartes de Localisation & Atlas Cartographique</h2>
             <p>
                 Cet outil gratuit a été spécialement conçu pour vous aider à réaliser des plans de situation clairs et esthétiques pour vos projets, rapports et études.
@@ -2230,6 +2316,10 @@
                 <strong>Commencez par importer vos limites administratives</strong>, personnalisez le rendu, ajoutez la zone de votre projet et exportez une carte professionnelle en un clic !
             </p>
             <button class="modal-btn" onclick="closeWelcomeModal()">C'est parti !</button>
+            <a href="https://geomapia.github.io/" class="modal-home-link" title="Retour vers Geomap IA">
+                <i class="fas fa-arrow-left"></i>
+                Retour vers Geomap IA
+            </a>
         </div>
     </div>
 
@@ -8680,7 +8770,7 @@
         function shareSocial(platform) {
             let pageUrl = window.location.href;
             if (pageUrl.startsWith('file://') || pageUrl.includes('localhost') || pageUrl.includes('127.0.0.1')) { 
-                pageUrl = 'https://brahimjaziri.jimdofree.com/'; 
+                pageUrl = 'https://geomapia.github.io/Applications/Carte%20de%20localisation/'; 
             }
             const url = encodeURIComponent(pageUrl); 
             const text = encodeURIComponent("Découvrez le Créateur de Cartes de Localisation & Atlas Cartographique, un outil puissant pour générer vos cartes et atlas cartographiques ! 🗺️");
