@@ -195,56 +195,6 @@
             font-size: 1rem;
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .contact-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.7rem;
-            box-shadow: 0 10px 26px rgba(0,0,0,0.07);
-            border: 1px solid rgba(15, 76, 117, 0.08);
-            transition: 0.25s ease;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 16px 34px rgba(0,0,0,0.11);
-        }
-
-        .contact-card i {
-            font-size: 1.9rem;
-            color: var(--secondary);
-            margin-bottom: 12px;
-        }
-
-        .contact-card h3 {
-            margin: 0 0 8px;
-            color: var(--primary);
-            font-size: 1.15rem;
-        }
-
-        .contact-card p {
-            margin: 0 0 1rem;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .contact-card a {
-            color: var(--primary);
-            font-weight: 800;
-            text-decoration: none;
-        }
-
-        .contact-card a:hover {
-            color: #2563eb;
-            text-decoration: underline;
-        }
-
         .form-card {
             background: white;
             border-radius: 22px;
@@ -340,27 +290,6 @@
             gap: 12px;
             flex-wrap: wrap;
             margin-top: 0.5rem;
-        }
-
-        .quick-message {
-            background: linear-gradient(135deg, #0f4c75, #1b262c);
-            color: white;
-            border-radius: 22px;
-            padding: 2.2rem;
-            text-align: center;
-            box-shadow: 0 16px 36px rgba(15, 76, 117, 0.25);
-        }
-
-        .quick-message h2 {
-            color: white;
-            border-bottom-color: rgba(255,255,255,0.35);
-            margin-top: 0;
-        }
-
-        .quick-message p {
-            max-width: 760px;
-            margin: 0 auto 1.4rem;
-            color: #dbeafe;
         }
 
         .geomap-footer {
@@ -579,8 +508,7 @@
             }
 
             .intro-card,
-            .form-card,
-            .quick-message {
+            .form-card {
                 padding: 1.5rem;
             }
 
@@ -681,29 +609,6 @@
                 géomatiques, cartographiques et environnementaux.
             </p>
         </div>
-
-        <div class="contact-grid">
-            <div class="contact-card">
-                <i class="fas fa-envelope"></i>
-                <h3>E-mail principal</h3>
-                <p>Pour les questions relatives à Geomap IA, aux applications et aux ressources.</p>
-                <a href="mailto:geomapia.ia@gmail.com">geomapia.ia@gmail.com</a>
-            </div>
-
-            <div class="contact-card">
-                <i class="fas fa-user-tie"></i>
-                <h3>Responsable du projet</h3>
-                <p>Contact direct avec le fondateur de la plateforme.</p>
-                <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
-            </div>
-
-            <div class="contact-card">
-                <i class="fab fa-github"></i>
-                <h3>Dépôt GitHub</h3>
-                <p>Consulter le dépôt et l’organisation des fichiers du site.</p>
-                <a href="https://github.com/geomapia" target="_blank" rel="noopener">github.com/geomapia</a>
-            </div>
-        </div>
     </section>
 
     <section>
@@ -750,20 +655,6 @@
 
             </form>
         </div>
-    </section>
-
-    <section class="quick-message">
-        <h2><i class="fas fa-lightbulb"></i> Proposer une amélioration</h2>
-        <p>
-            Vous pouvez signaler un problème, proposer une nouvelle application, suggérer une amélioration
-            d’interface ou demander l’ajout d’une ressource de test.
-        </p>
-
-        <a href="mailto:geomapia.ia@gmail.com?subject=Suggestion%20pour%20Geomap%20IA&body=Bonjour,%0D%0A%0D%0AJe souhaite proposer une amélioration pour Geomap IA.%0D%0A%0D%0A"
-           class="btn secondary">
-            <i class="fas fa-comment-dots"></i>
-            Envoyer une suggestion
-        </a>
     </section>
 
 </main>
