@@ -6,26 +6,38 @@
     <title>Page introuvable | Geomap IA</title>
 
     <meta name="description" content="Page introuvable sur Geomap IA. Retournez vers l'accueil, les applications, les ressources ou la page contact.">
+    <meta name="keywords" content="Geomap IA, page introuvable, 404, géomatique, cartographie, applications web">
+    <meta name="author" content="Pr. Brahim Jaziri">
+    <meta name="robots" content="noindex, follow">
+
+    <link rel="canonical" href="https://geomapia.github.io/404.html">
+
+    <link rel="icon" href="IA.png" type="image/png">
+    <link rel="apple-touch-icon" href="IA.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- Favicon -->
-<link rel="icon" href="IA.png" type="image/png">
-<link rel="apple-touch-icon" href="IA.png">
 
-<!-- Open Graph / Réseaux sociaux -->
-<meta property="og:title" content="Geomap IA | Applications géomatiques et cartographiques">
-<meta property="og:description" content="Geomap IA est une plateforme d’applications web dédiées à la cartographie, à la géomatique, au bioclimat, à l’écologie et à l’environnement.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://geomapia.github.io/">
-<meta property="og:image" content="https://geomapia.github.io/IA.png">
-<meta property="og:site_name" content="Geomap IA">
-<meta property="og:locale" content="fr_FR">
+    <meta property="og:title" content="Page introuvable | Geomap IA">
+    <meta property="og:description" content="La page demandée est introuvable. Retournez vers l’accueil, les applications ou les ressources de Geomap IA.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geomapia.github.io/404.html">
+    <meta property="og:image" content="https://geomapia.github.io/IA.png">
+    <meta property="og:site_name" content="Geomap IA">
+    <meta property="og:locale" content="fr_FR">
 
-<!-- X / Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Geomap IA | Applications géomatiques et cartographiques">
-<meta name="twitter:description" content="Plateforme d’applications web pour la cartographie, la géomatique, le bioclimat, l’écologie et l’environnement.">
-<meta name="twitter:image" content="https://geomapia.github.io/IA.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Page introuvable | Geomap IA">
+    <meta name="twitter:description" content="La page demandée est introuvable sur Geomap IA.">
+    <meta name="twitter:image" content="https://geomapia.github.io/IA.png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-KE3JVWHSFS");
+    </script>
+
     <style>
         :root {
             --primary: #0f4c75;
@@ -35,6 +47,7 @@
             --text: #333;
             --muted: #64748b;
             --success: #16a34a;
+            --white: #ffffff;
         }
 
         * {
@@ -81,6 +94,7 @@
             text-decoration: none;
             font-weight: 800;
             font-size: 1.1rem;
+            letter-spacing: 0.3px;
         }
 
         .nav-brand img {
@@ -138,14 +152,6 @@
         .error-box {
             max-width: 780px;
             margin: auto;
-        }
-
-        .error-box img {
-            height: 120px;
-            margin-bottom: 18px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.28);
         }
 
         .error-code {
@@ -334,6 +340,10 @@
             text-decoration: none;
         }
 
+        .legal-content a:hover {
+            text-decoration: underline;
+        }
+
         .footer-bottom {
             background: #0f4c75;
             color: #ffffff;
@@ -354,6 +364,10 @@
             color: #ffffff;
             text-decoration: none;
             font-weight: 700;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
         }
 
         .footer-bottom span {
@@ -396,6 +410,11 @@
                 padding: 7px 10px;
             }
 
+            header {
+                min-height: 70vh;
+                padding: 4rem 1rem;
+            }
+
             .footer-main {
                 grid-template-columns: 1fr;
                 padding: 2.5rem 1.4rem;
@@ -420,8 +439,28 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .social-icons {
+                justify-content: flex-start;
+            }
         }
     </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Page introuvable | Geomap IA",
+      "url": "https://geomapia.github.io/404.html",
+      "description": "Page introuvable sur Geomap IA.",
+      "inLanguage": "fr",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Geomap IA",
+        "url": "https://geomapia.github.io/"
+      }
+    }
+    </script>
 </head>
 
 <body>
@@ -445,9 +484,10 @@
 
 <header>
     <div class="error-box">
-        <img src="IA.png" alt="Logo Geomap IA">
         <p class="error-code">404</p>
+
         <h1>Page introuvable</h1>
+
         <p>
             Le lien demandé n’existe pas ou a été déplacé. Vous pouvez revenir vers l’accueil,
             consulter les applications, télécharger les ressources ou nous contacter.
@@ -507,16 +547,12 @@
                     <i class="fab fa-facebook-f"></i>
                 </a>
 
-                <a href="https://api.whatsapp.com/send?text=Geomap%20IA%20:%20https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur WhatsApp">
+                <a href="https://api.whatsapp.com/send?text=Geomap%20IA%20-%20Applications%20géomatiques%20et%20cartographiques%20:%20https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur WhatsApp">
                     <i class="fab fa-whatsapp"></i>
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Geomap%20IA&url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur X / Twitter">
+                <a href="https://twitter.com/intent/tweet?text=Geomap%20IA%20-%20Applications%20géomatiques%20et%20cartographiques&url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur X / Twitter">
                     <i class="fab fa-twitter"></i>
-                </a>
-
-                <a href="mailto:?subject=Geomap IA&body=Découvrez Geomap IA : https://geomapia.github.io/" title="Partager par e-mail">
-                    <i class="fas fa-envelope"></i>
                 </a>
 
                 <button class="copy-link-btn" onclick="copyGeomapLink()" title="Copier le lien">
@@ -537,11 +573,34 @@
 
             <div class="legal-content">
                 <p><strong>Nom du site :</strong> Geomap IA — Portail d’applications géomatiques, cartographiques et environnementales.</p>
-                <p><strong>Adresse du site :</strong> <a href="https://geomapia.github.io/" target="_blank" rel="noopener">https://geomapia.github.io/</a></p>
+
+                <p>
+                    <strong>Adresse du site :</strong>
+                    <a href="https://geomapia.github.io/" target="_blank" rel="noopener">https://geomapia.github.io/</a>
+                </p>
+
                 <p><strong>Responsable du contenu :</strong> Pr. Brahim Jaziri.</p>
-                <p><strong>Contact :</strong> <a href="mailto:geomapia.ia@gmail.com">geomapia.ia@gmail.com</a> / <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a></p>
-                <p><strong>Hébergement :</strong> GitHub Pages.</p>
-                <p><strong>Responsabilité :</strong> les résultats produits par les applications doivent être vérifiés avant tout usage scientifique, professionnel ou décisionnel.</p>
+
+                <p>
+                    <strong>Contact :</strong>
+                    <a href="mailto:geomapia.ia@gmail.com">geomapia.ia@gmail.com</a>
+                    /
+                    <a href="mailto:jaziribrahim@gmail.com">jaziribrahim@gmail.com</a>
+                </p>
+
+                <p><strong>Hébergement :</strong> GitHub Pages. Le site est hébergé sous forme de pages web statiques à partir du dépôt GitHub associé au projet Geomap IA.</p>
+
+                <p><strong>Objectif du site :</strong> Geomap IA met à disposition des applications web, des ressources de test et des supports numériques liés à la cartographie, à la géomatique, à la bioclimatologie, à l’écologie et à l’environnement.</p>
+
+                <p><strong>Données et ressources :</strong> les fichiers proposés au téléchargement sont destinés à des usages de démonstration, de test, de formation et d’expérimentation. L’utilisateur reste responsable de l’usage qu’il fait des données téléchargées.</p>
+
+                <p><strong>Propriété intellectuelle :</strong> les contenus, textes, interfaces, éléments graphiques et applications publiés sur Geomap IA sont protégés. Toute réutilisation doit mentionner la source et respecter les droits de l’auteur.</p>
+
+                <p><strong>Responsabilité :</strong> malgré le soin apporté au développement des applications, Geomap IA ne garantit pas l’absence totale d’erreurs techniques, de bugs ou d’inexactitudes. Les résultats produits doivent être vérifiés avant tout usage scientifique, professionnel ou décisionnel.</p>
+
+                <p><strong>Données personnelles :</strong> les informations éventuellement transmises via la page Contact sont destinées uniquement à permettre une réponse au message envoyé. Le formulaire de contact peut utiliser un service externe de transmission de messages.</p>
+
+                <p><strong>Statistiques de consultation :</strong> le site peut utiliser Google Analytics afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
             </div>
         </details>
     </div>
