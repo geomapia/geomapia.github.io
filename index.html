@@ -7,26 +7,42 @@
 
     <meta name="description" content="Geomap IA est un portail d'applications web dédiées à la géomatique, à la cartographie, au bioclimat, à l'écologie et à l'analyse environnementale.">
     <meta name="keywords" content="Geomap IA, géomatique, cartographie, SIG, bioclimat, écologie, atlas cartographique, applications web, environnement">
+    <meta name="author" content="Pr. Brahim Jaziri">
+    <meta name="robots" content="index, follow">
 
+    <link rel="canonical" href="https://geomapia.github.io/">
+
+    <!-- Favicon -->
+    <link rel="icon" href="IA.png" type="image/png">
+    <link rel="apple-touch-icon" href="IA.png">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- Favicon -->
-<link rel="icon" href="IA.png" type="image/png">
-<link rel="apple-touch-icon" href="IA.png">
 
-<!-- Open Graph / Réseaux sociaux -->
-<meta property="og:title" content="Geomap IA | Applications géomatiques et cartographiques">
-<meta property="og:description" content="Geomap IA est une plateforme d’applications web dédiées à la cartographie, à la géomatique, au bioclimat, à l’écologie et à l’environnement.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://geomapia.github.io/">
-<meta property="og:image" content="https://geomapia.github.io/IA.png">
-<meta property="og:site_name" content="Geomap IA">
-<meta property="og:locale" content="fr_FR">
+    <!-- Open Graph / Réseaux sociaux -->
+    <meta property="og:title" content="Geomap IA | Applications géomatiques et cartographiques">
+    <meta property="og:description" content="Geomap IA est une plateforme d’applications web dédiées à la cartographie, à la géomatique, au bioclimat, à l’écologie et à l’environnement.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geomapia.github.io/">
+    <meta property="og:image" content="https://geomapia.github.io/IA.png">
+    <meta property="og:site_name" content="Geomap IA">
+    <meta property="og:locale" content="fr_FR">
 
-<!-- X / Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Geomap IA | Applications géomatiques et cartographiques">
-<meta name="twitter:description" content="Plateforme d’applications web pour la cartographie, la géomatique, le bioclimat, l’écologie et l’environnement.">
-<meta name="twitter:image" content="https://geomapia.github.io/IA.png">
+    <!-- X / Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Geomap IA | Applications géomatiques et cartographiques">
+    <meta name="twitter:description" content="Plateforme d’applications web pour la cartographie, la géomatique, le bioclimat, l’écologie et l’environnement.">
+    <meta name="twitter:image" content="https://geomapia.github.io/IA.png">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-KE3JVWHSFS");
+    </script>
+
     <style>
         :root {
             --primary: #0f4c75;
@@ -263,6 +279,35 @@
             margin: 0;
             color: var(--muted);
             font-size: 0.95rem;
+        }
+
+        .updates-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+            border: 1px solid rgba(15, 76, 117, 0.08);
+        }
+
+        .updates-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .updates-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #475569;
+            font-size: 0.96rem;
+        }
+
+        .updates-list i {
+            color: var(--success);
+            margin-top: 5px;
         }
 
         .vision-box {
@@ -506,7 +551,8 @@
             }
 
             .intro-card,
-            .vision-box {
+            .vision-box,
+            .updates-card {
                 padding: 1.5rem;
             }
 
@@ -547,8 +593,17 @@
       "@type": "WebSite",
       "name": "Geomap IA",
       "url": "https://geomapia.github.io/",
-      "description": "Portail d'applications web géomatiques, cartographiques et environnementales.",
-      "inLanguage": "fr"
+      "description": "Portail d'applications web géomatiques, cartographiques, bioclimatiques et environnementales.",
+      "inLanguage": "fr",
+      "creator": {
+        "@type": "Person",
+        "name": "Brahim Jaziri"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://geomapia.github.io/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
     </script>
 </head>
@@ -645,6 +700,31 @@
     </section>
 
     <section>
+        <h2><i class="fas fa-clock-rotate-left"></i> Dernières mises à jour</h2>
+
+        <div class="updates-card">
+            <ul class="updates-list">
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    Mise en place d’une page Contact avec formulaire intégré.
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    Ajout des fichiers SEO de base : sitemap.xml et robots.txt.
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    Création d’une page 404 personnalisée pour les liens inexistants.
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    Nettoyage progressif du footer et harmonisation des liens de navigation.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
         <div class="vision-box">
             <h2><i class="fas fa-lightbulb"></i> Une plateforme évolutive</h2>
             <p>
@@ -684,14 +764,6 @@
             <h3>Partager...</h3>
 
             <div class="social-icons">
-
-                <a href="https://github.com/geomapia"
-                   target="_blank"
-                   rel="noopener"
-                   title="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://geomapia.github.io/"
                    target="_blank"
                    rel="noopener"
@@ -720,17 +792,11 @@
                     <i class="fab fa-twitter"></i>
                 </a>
 
-                <a href="mailto:?subject=Geomap IA&body=Découvrez Geomap IA : https://geomapia.github.io/"
-                   title="Partager par e-mail">
-                    <i class="fas fa-envelope"></i>
-                </a>
-
                 <button class="copy-link-btn"
                         onclick="copyGeomapLink()"
                         title="Copier le lien">
                     <i class="fas fa-link"></i>
                 </button>
-
             </div>
 
             <p class="share-note" id="copyMessage">
@@ -805,14 +871,14 @@
 
                 <p>
                     <strong>Données personnelles :</strong>
-                    le site ne demande pas d’inscription et ne collecte pas directement de données personnelles
-                    via un formulaire. Les liens de contact par e-mail ouvrent le logiciel de messagerie
-                    de l’utilisateur.
+                    les informations éventuellement transmises via la page Contact sont destinées uniquement
+                    à permettre une réponse au message envoyé. Le formulaire de contact peut utiliser un service
+                    externe de transmission de messages.
                 </p>
 
                 <p>
                     <strong>Statistiques de consultation :</strong>
-                    le site peut utiliser des outils de mesure d’audience afin de suivre la fréquentation générale
+                    le site peut utiliser Google Analytics afin de suivre la fréquentation générale
                     des pages et d’améliorer les services proposés.
                 </p>
             </div>
@@ -824,6 +890,8 @@
             © 2026 Geomap IA — Tous droits réservés
             <span>|</span>
             <a href="about.html">À propos</a>
+            <span>|</span>
+            <a href="applications.html">Applications</a>
             <span>|</span>
             <a href="ressources.html">Ressources</a>
             <span>|</span>
