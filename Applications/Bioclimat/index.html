@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<head>
 
 <!-- Google Analytics - GeomapIA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
@@ -35,6 +36,7 @@
     trackClick('#btnExportPdf', 'export_pdf', 'Exporter PDF');
     trackClick('#btnAtlas', 'atlas_generated', 'Générer Atlas');
     trackClick('#btnZoomInset', 'zoom_inset_created', 'Créer encart de zoom');
+    trackClick('#btnEnterApp', 'enter_bioclimat_app', 'Accéder aux outils');
 
   });
 </script>
@@ -43,6 +45,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Bioclimat et Écologie - Indice d'Emberger & Martonne</title>
+
+    <meta name="description" content="Application Geomap IA dédiée à l'analyse bioclimatique et écologique : indices d'Emberger et de Martonne, climagramme, carte, import Excel et export PDF.">
+    <meta name="keywords" content="Geomap IA, Bioclimat, Écologie, Emberger, Martonne, bioclimatologie, phytogéographie, cartographie, SIG, environnement">
+    <meta name="author" content="Pr. Brahim Jaziri">
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://geomapia.github.io/Applications/Bioclimat/">
+
+    <link rel="icon" href="https://geomapia.github.io/IA.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://geomapia.github.io/IA.png">
+
+    <meta property="og:title" content="Bioclimat et Écologie | Geomap IA">
+    <meta property="og:description" content="Application web d'analyse bioclimatique et écologique basée sur les indices d'Emberger et de Martonne.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geomapia.github.io/Applications/Bioclimat/">
+    <meta property="og:image" content="https://geomapia.github.io/IA.png">
+    <meta property="og:site_name" content="Geomap IA">
+    <meta property="og:locale" content="fr_FR">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bioclimat et Écologie | Geomap IA">
+    <meta name="twitter:description" content="Application web d'analyse bioclimatique et écologique : Emberger, Martonne, climagramme et export PDF.">
+    <meta name="twitter:image" content="https://geomapia.github.io/IA.png">
         <!-- Google Fonts (Professionnel : Montserrat + Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,7 +79,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- MathJax (Formules mathématiques) -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <!-- SheetJS (Excel) -->
@@ -131,6 +155,42 @@
             display: inline-block;
             margin-bottom: 1.5rem;
         }
+        .intro-logo-img {
+            width: 135px;
+            height: 135px;
+            object-fit: contain;
+            border-radius: 28px;
+            background: #ffffff;
+            padding: 14px;
+            box-shadow: 0 16px 36px rgba(15, 76, 117, 0.18);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .geomap-back-link {
+            position: absolute;
+            top: 18px;
+            left: 22px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            padding: 8px 12px;
+            border-radius: 999px;
+            transition: 0.25s ease;
+        }
+
+        .geomap-back-link:hover {
+            color: #ffffff;
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
         .intro-title {
             color: var(--primary-color);
             font-weight: 700;
@@ -352,14 +412,41 @@
             text-shadow: none;
         }
     </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Bioclimat et Écologie",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "url": "https://geomapia.github.io/Applications/Bioclimat/",
+      "description": "Application web d'analyse bioclimatique et écologique basée sur les indices d'Emberger et de Martonne.",
+      "creator": {
+        "@type": "Person",
+        "name": "Brahim Jaziri"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Geomap IA",
+        "url": "https://geomapia.github.io/"
+      }
+    }
+    </script>
+
 </head>
 <body>
 
 <!-- 1. ÉCRAN D'ACCUEIL -->
 <div id="intro-screen">
     <div class="intro-card">
+        <a href="../../index.html" class="geomap-back-link" title="Retour vers Geomap IA">
+            <i class="fas fa-arrow-left"></i>
+            Geomap IA
+        </a>
+
         <div class="intro-logo">
-            <i class="fas fa-leaf intro-logo-icon"></i>
+            <img src="https://geomapia.github.io/IA.png" alt="Logo Geomap IA - Bioclimat et Écologie" class="intro-logo-img">
         </div>
         <h1 class="intro-title display-5">Bioclimat et Écologie</h1>
         <p class="intro-subtitle">Outil d'analyse bioclimatique (Emberger, Martonne) et phytogéographique</p>
@@ -836,10 +923,10 @@
                 <div class="text-center">
                     <p class="small text-muted mb-3 text-uppercase fw-bold">Partager l'outil</p>
                     <div class="d-flex justify-content-center gap-3">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbrahimjaziri.jimdofree.com%2F" target="_blank" class="share-btn share-fb text-decoration-none text-white bg-primary">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgeomapia.github.io%2FApplications%2FBioclimat%2F" target="_blank" class="share-btn share-fb text-decoration-none text-white bg-primary">
                             <i class="fab fa-facebook-f me-2"></i> Facebook
                         </a>
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbrahimjaziri.jimdofree.com%2F" target="_blank" class="share-btn share-li text-decoration-none text-white bg-primary">
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgeomapia.github.io%2FApplications%2FBioclimat%2F" target="_blank" class="share-btn share-li text-decoration-none text-white bg-primary">
                             <i class="fab fa-linkedin-in me-2"></i> LinkedIn
                         </a>
                     </div>
@@ -849,7 +936,7 @@
                 <div class="mt-4 pt-3 border-top text-center small text-muted">
                     <p class="mb-2">Suggestions ? Problèmes ? Contactez-nous : <a href="mailto:geomapia.ia@gmail.com" class="text-decoration-none fw-bold text-success">geomapia.ia@gmail.com</a></p>
                     <div class="fw-bold d-flex justify-content-center align-items-center gap-3">
-                        <a href="https://brahimjaziri.jimdofree.com/" target="_blank" class="text-decoration-none text-dark"><i class="fas fa-globe me-1"></i>Site Web</a>
+                        <a href="https://geomapia.github.io/" target="_blank" class="text-decoration-none text-dark"><i class="fas fa-globe me-1"></i>Geomap IA</a>
                         <span class="text-muted opacity-50">|</span>
                         <a href="https://www.youtube.com/channel/UCJgpf2GdxNkXSMt3-z6jUwg" target="_blank" class="text-decoration-none text-danger"><i class="fab fa-youtube me-1"></i>YouTube</a>
                     </div>
