@@ -7,26 +7,37 @@
 
     <meta name="description" content="Contact Geomap IA — plateforme d'applications web géomatiques, cartographiques, bioclimatiques et environnementales.">
     <meta name="keywords" content="Geomap IA, contact, Brahim Jaziri, géomatique, cartographie, SIG, environnement">
+    <meta name="author" content="Pr. Brahim Jaziri">
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://geomapia.github.io/contact.html">
+
+    <link rel="icon" href="IA.png" type="image/png">
+    <link rel="apple-touch-icon" href="IA.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- Favicon -->
-<link rel="icon" href="IA.png" type="image/png">
-<link rel="apple-touch-icon" href="IA.png">
 
-<!-- Open Graph / Réseaux sociaux -->
-<meta property="og:title" content="Geomap IA | Applications géomatiques et cartographiques">
-<meta property="og:description" content="Geomap IA est une plateforme d’applications web dédiées à la cartographie, à la géomatique, au bioclimat, à l’écologie et à l’environnement.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://geomapia.github.io/">
-<meta property="og:image" content="https://geomapia.github.io/IA.png">
-<meta property="og:site_name" content="Geomap IA">
-<meta property="og:locale" content="fr_FR">
+    <meta property="og:title" content="Contact | Geomap IA">
+    <meta property="og:description" content="Contacter Geomap IA pour une question, une suggestion, une collaboration ou un retour sur les applications géomatiques et cartographiques.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geomapia.github.io/contact.html">
+    <meta property="og:image" content="https://geomapia.github.io/IA.png">
+    <meta property="og:site_name" content="Geomap IA">
+    <meta property="og:locale" content="fr_FR">
 
-<!-- X / Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Geomap IA | Applications géomatiques et cartographiques">
-<meta name="twitter:description" content="Plateforme d’applications web pour la cartographie, la géomatique, le bioclimat, l’écologie et l’environnement.">
-<meta name="twitter:image" content="https://geomapia.github.io/IA.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Contact | Geomap IA">
+    <meta name="twitter:description" content="Page de contact de Geomap IA, plateforme d’applications web géomatiques et environnementales.">
+    <meta name="twitter:image" content="https://geomapia.github.io/IA.png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KE3JVWHSFS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-KE3JVWHSFS");
+    </script>
+
     <style>
         :root {
             --primary: #0f4c75;
@@ -132,29 +143,23 @@
                 radial-gradient(circle at bottom right, rgba(50, 130, 184, 0.22), transparent 35%),
                 linear-gradient(135deg, #0f4c75, #1b262c);
             color: white;
-            padding: 4.5rem 1rem;
+            padding: 5.8rem 1rem 5.8rem;
             text-align: center;
-        }
-
-        header img {
-            height: 120px;
-            margin-bottom: 15px;
-            border-radius: 50%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            background: white;
         }
 
         header h1 {
             margin: 0;
-            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-size: clamp(2.3rem, 4vw, 3.4rem);
             font-weight: 900;
+            letter-spacing: 0.3px;
         }
 
         header p {
             max-width: 780px;
-            margin: 14px auto 0;
+            margin: 22px auto 0;
             color: #dbeafe;
             font-size: 1.08rem;
+            line-height: 1.8;
         }
 
         .container {
@@ -557,8 +562,12 @@
                 padding: 7px 10px;
             }
 
+            header {
+                padding: 5rem 1rem 5rem;
+            }
+
             header h1 {
-                font-size: 1.8rem;
+                font-size: 2.1rem;
             }
 
             header p {
@@ -622,6 +631,12 @@
         "@type": "WebSite",
         "name": "Geomap IA",
         "url": "https://geomapia.github.io/"
+      },
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Geomap IA",
+        "url": "https://geomapia.github.io/",
+        "email": "geomapia.ia@gmail.com"
       }
     }
     </script>
@@ -647,7 +662,6 @@
 </nav>
 
 <header>
-    <img src="IA.png" alt="Logo Geomap IA">
     <h1>Contact</h1>
     <p>
         Une question, une suggestion, une collaboration ou un retour sur une application ?
@@ -702,6 +716,9 @@
 
             <form class="contact-form" action="https://formspree.io/f/xlgydqdl" method="POST">
 
+                <input type="hidden" name="_subject" value="Nouveau message depuis Geomap IA">
+                <input type="hidden" name="_language" value="fr">
+
                 <div class="form-row">
                     <div>
                         <label for="name">Nom</label>
@@ -724,15 +741,12 @@
                     <textarea id="message" name="Message" placeholder="Écrivez votre message ici..." required></textarea>
                 </div>
 
-                <input type="hidden" name="_subject" value="Nouveau message depuis Geomap IA">
-                <input type="hidden" name="_language" value="fr">
-
                 <div class="form-actions">
-    <button type="submit" class="btn secondary">
-        <i class="fas fa-paper-plane"></i>
-        Envoyer le message
-    </button>
-</div>
+                    <button type="submit" class="btn secondary">
+                        <i class="fas fa-paper-plane"></i>
+                        Envoyer le message
+                    </button>
+                </div>
 
             </form>
         </div>
@@ -781,10 +795,6 @@
             <h3>Partager...</h3>
 
             <div class="social-icons">
-                <a href="https://github.com/geomapia" target="_blank" rel="noopener" title="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
@@ -799,10 +809,6 @@
 
                 <a href="https://twitter.com/intent/tweet?text=Geomap%20IA%20-%20Applications%20géomatiques%20et%20cartographiques&url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur X / Twitter">
                     <i class="fab fa-twitter"></i>
-                </a>
-
-                <a href="mailto:?subject=Geomap IA&body=Découvrez Geomap IA : https://geomapia.github.io/" title="Partager par e-mail">
-                    <i class="fas fa-envelope"></i>
                 </a>
 
                 <button class="copy-link-btn" onclick="copyGeomapLink()" title="Copier le lien">
@@ -850,7 +856,7 @@
 
                 <p><strong>Données personnelles :</strong> les informations saisies dans le formulaire de contact sont transmises via Formspree afin de permettre la réception du message. Aucun espace membre ni inscription n’est proposé sur ce site.</p>
 
-                <p><strong>Statistiques de consultation :</strong> le site peut utiliser des outils de mesure d’audience afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
+                <p><strong>Statistiques de consultation :</strong> le site peut utiliser Google Analytics afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
             </div>
         </details>
     </div>
@@ -860,6 +866,8 @@
             © 2026 Geomap IA — Tous droits réservés
             <span>|</span>
             <a href="about.html">À propos</a>
+            <span>|</span>
+            <a href="applications.html">Applications</a>
             <span>|</span>
             <a href="ressources.html">Ressources</a>
             <span>|</span>
