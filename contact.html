@@ -14,7 +14,8 @@
 
     <link rel="icon" href="IA.png" type="image/png">
     <link rel="apple-touch-icon" href="IA.png">
-<link rel="alternate" type="application/rss+xml" title="Geomap IA — Nouveautés" href="https://geomapia.github.io/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="Geomap IA — Nouveautés" href="https://geomapia.github.io/rss.xml">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <meta property="og:title" content="Contact | Geomap IA">
@@ -347,6 +348,22 @@
             color: #004aad;
             transform: translateX(4px);
             font-weight: 700;
+        }
+
+        .footer-social {
+            position: relative;
+        }
+
+        .rss-help {
+            margin: 0 0 1rem;
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.42);
+            border-left: 5px solid #004aad;
+            border-radius: 12px;
+            color: #003b7a;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            font-weight: 600;
         }
 
         .social-icons {
@@ -685,6 +702,10 @@
         <div class="footer-column footer-social">
             <h3>Partager...</h3>
 
+            <p class="rss-help">
+                Flux RSS : copiez ce lien dans votre lecteur RSS pour suivre les nouveautés de Geomap IA.
+            </p>
+
             <div class="social-icons">
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
@@ -701,9 +722,11 @@
                 <a href="https://twitter.com/intent/tweet?text=Geomap%20IA%20-%20Applications%20géomatiques%20et%20cartographiques&url=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur X / Twitter">
                     <i class="fab fa-twitter"></i>
                 </a>
-<a href="https://geomapia.github.io/rss.xml" target="_blank" rel="noopener" title="Flux RSS Geomap IA">
-    <i class="fas fa-rss"></i>
-</a>
+
+                <a href="https://geomapia.github.io/rss.xml" target="_blank" rel="noopener" title="Flux RSS Geomap IA">
+                    <i class="fas fa-rss"></i>
+                </a>
+
                 <button class="copy-link-btn" onclick="copyGeomapLink()" title="Copier le lien">
                     <i class="fas fa-link"></i>
                 </button>
