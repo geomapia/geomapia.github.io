@@ -49,5 +49,10 @@
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
-
+<url>
+    <loc>https://geomapia.github.io/Applications/Referentiel-Tunisie/</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+</url>
 </urlset>
