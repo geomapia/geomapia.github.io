@@ -196,6 +196,132 @@
             font-size: 1rem;
         }
 
+        .newsletter-panel {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: #ffffff;
+            border-radius: 22px;
+            padding: 2.2rem;
+            box-shadow: 0 16px 36px rgba(2, 132, 199, 0.22);
+            display: grid;
+            grid-template-columns: 1.7fr 0.7fr;
+            gap: 2rem;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .newsletter-panel h2 {
+            color: #ffffff;
+            border-bottom: none;
+            display: block;
+            padding-bottom: 0;
+            margin: 0 0 1rem;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 900;
+        }
+
+        .newsletter-panel p {
+            margin: 0 0 1.2rem;
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .newsletter-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .newsletter-input-row {
+            display: flex;
+            max-width: 560px;
+        }
+
+        .newsletter-input-row input {
+            border-radius: 12px 0 0 12px;
+            border: none;
+            background: #ffffff;
+            min-height: 52px;
+        }
+
+        .newsletter-input-row button {
+            min-width: 72px;
+            border: none;
+            background: #000000;
+            color: #ffffff;
+            font-weight: 900;
+            border-radius: 0 12px 12px 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: 0.25s ease;
+        }
+
+        .newsletter-input-row button:hover {
+            background: #0f172a;
+        }
+
+        .newsletter-consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+            max-width: 780px;
+        }
+
+        .newsletter-consent input {
+            width: 18px;
+            height: 18px;
+            margin-top: 4px;
+            accent-color: #004aad;
+            flex: 0 0 auto;
+        }
+
+        .newsletter-consent span {
+            color: #ffffff;
+        }
+
+        .newsletter-privacy {
+            font-size: 0.88rem;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .newsletter-privacy a {
+            color: #ffffff;
+            font-weight: 900;
+            text-decoration: underline;
+        }
+
+        .newsletter-social {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .newsletter-social a {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            background: #000000;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.6rem;
+            transition: 0.25s ease;
+        }
+
+        .newsletter-social a:hover {
+            transform: translateY(-5px);
+            background: #0f172a;
+        }
+
         .form-card {
             background: white;
             border-radius: 22px;
@@ -529,6 +655,19 @@
                 padding: 1.5rem;
             }
 
+            .newsletter-panel {
+                grid-template-columns: 1fr;
+                padding: 1.6rem;
+            }
+
+            .newsletter-input-row {
+                max-width: 100%;
+            }
+
+            .newsletter-social {
+                justify-content: flex-start;
+            }
+
             .form-row {
                 grid-template-columns: 1fr;
             }
@@ -625,6 +764,55 @@
                 sont utiles pour améliorer les applications, enrichir les ressources et développer de nouveaux outils
                 géomatiques, cartographiques et environnementaux.
             </p>
+        </div>
+    </section>
+
+    <section class="newsletter-panel">
+        <div class="newsletter-content">
+            <h2>Restez informé sur Geomap IA</h2>
+
+            <p>
+                Laissez votre adresse email pour être informé des nouvelles applications,
+                ressources, tutoriels et annonces autour de la géomatique, de la cartographie
+                et de l’environnement.
+            </p>
+
+            <form class="newsletter-form" action="https://formspree.io/f/xlgydqdl" method="POST">
+                <input type="hidden" name="_subject" value="Demande d'information — Geomap IA">
+                <input type="hidden" name="_language" value="fr">
+
+                <div class="newsletter-input-row">
+                    <input type="email" name="email" placeholder="Adresse email *" required>
+                    <button type="submit">OK</button>
+                </div>
+
+                <label class="newsletter-consent">
+                    <input type="checkbox" name="consentement" required>
+                    <span>
+                        J’accepte que les informations saisies dans ce formulaire soient utilisées
+                        pour répondre à ma demande et m’informer des actualités de Geomap IA.
+                    </span>
+                </label>
+
+                <p class="newsletter-privacy">
+                    Pour connaître et exercer vos droits, consultez les
+                    <a href="#mentions-legales">mentions légales</a>.
+                </p>
+            </form>
+        </div>
+
+        <div class="newsletter-social">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://geomapia.github.io/" target="_blank" rel="noopener" title="Partager sur Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+
+            <a href="https://www.linkedin.com/in/brahim-jaziri-45082561/" target="_blank" rel="noopener" title="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+
+            <a href="https://www.youtube.com/channel/UCJgpf2GdxNkXSMt3-z6jUwg?view_as=subscriber" target="_blank" rel="noopener" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
         </div>
     </section>
 
@@ -739,7 +927,7 @@
 
     </div>
 
-    <div class="legal-section">
+    <div class="legal-section" id="mentions-legales">
         <details>
             <summary>Mentions légales</summary>
 
@@ -770,7 +958,7 @@
 
                 <p><strong>Responsabilité :</strong> malgré le soin apporté au développement des applications, Geomap IA ne garantit pas l’absence totale d’erreurs techniques, de bugs ou d’inexactitudes. Les résultats produits doivent être vérifiés avant tout usage scientifique, professionnel ou décisionnel.</p>
 
-                <p><strong>Données personnelles :</strong> les informations saisies dans le formulaire de contact sont transmises via Formspree afin de permettre la réception du message. Aucun espace membre ni inscription n’est proposé sur ce site.</p>
+                <p><strong>Données personnelles :</strong> les informations saisies dans les formulaires de contact et d’information sont transmises via Formspree afin de permettre la réception du message ou de la demande d’information. Aucun espace membre ni inscription automatique n’est proposé sur ce site.</p>
 
                 <p><strong>Statistiques de consultation :</strong> le site peut utiliser Google Analytics afin de suivre la fréquentation générale des pages et d’améliorer les services proposés.</p>
             </div>
