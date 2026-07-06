@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Geomap IA — Nouveautés</title>
+    <link>https://geomapia.github.io/</link>
+    <description>Nouveautés, applications, ressources, tutoriels et annonces de la plateforme Geomap IA.</description>
+    <language>fr-fr</language>
+    <lastBuildDate>Mon, 06 Jul 2026 12:00:00 +0000</lastBuildDate>
+    <generator>Geomap IA</generator>
+
+    <item>
+      <title>Nouvelle application : Référentiel géographique administratif de la Tunisie</title>
+      <link>https://geomapia.github.io/Applications/Referentiel-Tunisie/</link>
+      <description>
+        Mise en ligne d’une application interactive permettant de consulter, rechercher, visualiser et exporter
+        les gouvernorats, délégations, secteurs et localités de Tunisie.
+      </description>
+      <pubDate>Mon, 06 Jul 2026 12:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://geomapia.github.io/Applications/Referentiel-Tunisie/</guid>
+    </item>
+
+    <item>
+      <title>Mise en ligne de la plateforme Geomap IA</title>
+      <link>https://geomapia.github.io/</link>
+      <description>
+        Geomap IA est une plateforme pédagogique ouverte dédiée aux applications web en géomatique,
+        cartographie, bioclimatologie, écologie et environnement.
+      </description>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://geomapia.github.io/</guid>
+    </item>
+
+  </channel>
+</rss>
