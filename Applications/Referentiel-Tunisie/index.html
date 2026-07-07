@@ -70,128 +70,134 @@
   <link rel="stylesheet" href="https://geomapia.github.io/Applications/Referentiel-Tunisie/assets/index-BAA5kDtG.css">
 
   <style>
-    #geomap-district-export-panel {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 99999;
-      width: 310px;
-      max-width: calc(100vw - 36px);
-      background: #ffffff;
-      border: 1px solid rgba(15, 23, 42, 0.14);
-      border-radius: 16px;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+    .geomap-district-admin-block {
+      margin: 10px 0 14px 0;
+      padding: 12px;
+      border: 1px solid rgba(15, 118, 110, 0.25);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(240, 253, 250, 0.95), rgba(255, 255, 255, 0.98));
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
       font-family: Inter, Arial, sans-serif;
-      overflow: hidden;
     }
 
-    #geomap-district-export-panel .geomap-export-header {
-      background: linear-gradient(135deg, #0f766e, #0f172a);
-      color: #ffffff;
-      padding: 12px 14px;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: 0.2px;
+    .geomap-district-admin-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-    }
-
-    #geomap-district-export-panel .geomap-export-toggle {
-      border: 0;
-      background: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    #geomap-district-export-panel .geomap-export-body {
-      padding: 14px;
-      display: block;
-    }
-
-    #geomap-district-export-panel.collapsed .geomap-export-body {
-      display: none;
-    }
-
-    #geomap-district-export-panel label {
-      display: block;
-      font-size: 12px;
-      color: #334155;
-      font-weight: 700;
-      margin: 10px 0 6px;
-    }
-
-    #geomap-district-export-panel select,
-    #geomap-district-export-panel button.geomap-download-btn {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      padding: 9px 10px;
-      font-size: 13px;
-      font-family: Inter, Arial, sans-serif;
-      box-sizing: border-box;
-    }
-
-    #geomap-district-export-panel select {
-      background: #ffffff;
+      gap: 8px;
+      margin-bottom: 6px;
       color: #0f172a;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.25;
     }
 
-    #geomap-district-export-panel button.geomap-download-btn {
-      margin-top: 12px;
+    .geomap-district-admin-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 8px;
+      border-radius: 999px;
       background: #0f766e;
       color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .geomap-district-admin-note {
+      margin: 0 0 10px 0;
+      color: #64748b;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .geomap-district-admin-block label {
+      display: block;
+      margin: 8px 0 5px 0;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .geomap-district-admin-block select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 9px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 12px;
+      font-family: Inter, Arial, sans-serif;
+      outline: none;
+    }
+
+    .geomap-district-admin-block select:focus {
+      border-color: #0f766e;
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+    }
+
+    .geomap-district-admin-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .geomap-district-admin-button {
+      width: 100%;
       border: 0;
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: #0f766e;
+      color: #ffffff;
+      font-family: Inter, Arial, sans-serif;
+      font-size: 12px;
       font-weight: 800;
       cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
-    #geomap-district-export-panel button.geomap-download-btn:hover {
+    .geomap-district-admin-button:hover {
       background: #115e59;
+      transform: translateY(-1px);
     }
 
-    #geomap-district-export-panel .geomap-export-note {
-      margin-top: 10px;
-      font-size: 11px;
-      line-height: 1.45;
-      color: #64748b;
-    }
-
-    #geomap-district-export-panel .geomap-export-status {
-      margin-top: 10px;
-      font-size: 11px;
-      line-height: 1.45;
-      color: #0f172a;
-      background: #f8fafc;
-      border-radius: 10px;
+    .geomap-district-admin-status {
+      margin-top: 9px;
       padding: 8px;
       border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #f8fafc;
+      color: #475569;
+      font-size: 10.5px;
+      line-height: 1.45;
     }
 
-    #geomap-district-export-panel .geomap-export-error {
-      color: #991b1b;
-      background: #fef2f2;
-      border-color: #fecaca;
-    }
-
-    #geomap-district-export-panel .geomap-export-success {
-      color: #166534;
-      background: #f0fdf4;
+    .geomap-district-admin-status.success {
       border-color: #bbf7d0;
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    .geomap-district-admin-status.error {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .geomap-district-admin-source {
+      margin-top: 7px;
+      color: #64748b;
+      font-size: 10px;
+      line-height: 1.35;
     }
 
     @media (max-width: 700px) {
-      #geomap-district-export-panel {
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        width: auto;
+      .geomap-district-admin-block {
+        margin-top: 8px;
+        margin-bottom: 12px;
       }
     }
   </style>
@@ -199,44 +205,6 @@
 
 <body>
   <div id="root"></div>
-
-  <div id="geomap-district-export-panel">
-    <div class="geomap-export-header">
-      <span>Export par district</span>
-      <button class="geomap-export-toggle" type="button" title="Réduire / afficher">−</button>
-    </div>
-
-    <div class="geomap-export-body">
-      <label for="geomap-district-select">District</label>
-      <select id="geomap-district-select">
-        <option value="District 1">District 1</option>
-        <option value="District 2">District 2</option>
-        <option value="District 3">District 3</option>
-        <option value="District 4">District 4</option>
-        <option value="District 5">District 5</option>
-      </select>
-
-      <label for="geomap-format-select">Format</label>
-      <select id="geomap-format-select">
-        <option value="geojson">GeoJSON</option>
-        <option value="kml">KML</option>
-        <option value="csv">CSV attributaire</option>
-      </select>
-
-      <button class="geomap-download-btn" type="button" id="geomap-download-district">
-        Télécharger
-      </button>
-
-      <div class="geomap-export-note">
-        Cette version exporte les gouvernorats constitutifs du district.
-        Les limites internes ne sont pas encore dissoutes.
-      </div>
-
-      <div class="geomap-export-status" id="geomap-export-status">
-        Chargement des données administratives…
-      </div>
-    </div>
-  </div>
 
   <script>
     (function () {
@@ -289,22 +257,6 @@
           GOVERNORATE_TO_DISTRICT[normalizeText(governorateName)] = districtName;
         });
       });
-
-      function setStatus(message, type) {
-        const status = document.getElementById("geomap-export-status");
-        if (!status) return;
-
-        status.textContent = message;
-        status.classList.remove("geomap-export-error", "geomap-export-success");
-
-        if (type === "error") {
-          status.classList.add("geomap-export-error");
-        }
-
-        if (type === "success") {
-          status.classList.add("geomap-export-success");
-        }
-      }
 
       function getGovernorateName(feature) {
         const properties = feature && feature.properties ? feature.properties : {};
@@ -443,6 +395,7 @@
             const governorateName = getGovernorateName(cloned);
 
             cloned.properties = cloned.properties || {};
+            cloned.properties.niveau_administratif = "District";
             cloned.properties.district = districtName;
             cloned.properties.nom_district = districtName;
             cloned.properties.nom_gouvernorat = governorateName;
@@ -466,6 +419,9 @@
             name: districtName.replace(/\s+/g, "_").toLowerCase(),
             metadata: {
               source: "Geomap IA — Référentiel géographique administratif de la Tunisie",
+              niveau_administratif: "District",
+              niveau_superieur: "District",
+              niveau_inferieur: "Gouvernorat",
               export_type: "district",
               district: districtName,
               mode: "gouvernorats_constitutifs_non_dissous",
@@ -645,20 +601,43 @@
         );
       }
 
-      async function handleDownload() {
+      function setDistrictStatus(message, type) {
+        const status = document.getElementById("geomap-district-admin-status");
+
+        if (!status) {
+          return;
+        }
+
+        status.textContent = message;
+        status.classList.remove("success", "error");
+
+        if (type === "success") {
+          status.classList.add("success");
+        }
+
+        if (type === "error") {
+          status.classList.add("error");
+        }
+      }
+
+      async function handleDistrictDownload() {
         const districtSelect = document.getElementById("geomap-district-select");
-        const formatSelect = document.getElementById("geomap-format-select");
+        const formatSelect = document.getElementById("geomap-district-format");
+
+        if (!districtSelect || !formatSelect) {
+          return;
+        }
 
         const districtName = districtSelect.value;
         const format = formatSelect.value;
 
-        setStatus("Préparation de l’export…", "neutral");
+        setDistrictStatus("Préparation de l’export du niveau District…", "neutral");
 
         const governoratesGeojson = await getGovernoratesLayer();
 
         if (!governoratesGeojson) {
-          setStatus(
-            "Impossible de trouver automatiquement la couche des gouvernorats. Activez la couche des gouvernorats puis réessayez.",
+          setDistrictStatus(
+            "Impossible de trouver automatiquement la couche des gouvernorats. Activez d’abord le niveau Gouvernorat, puis réessayez.",
             "error"
           );
           return;
@@ -667,7 +646,7 @@
         const result = buildDistrictGeoJSON(governoratesGeojson, districtName);
 
         if (!result.geojson.features.length) {
-          setStatus(
+          setDistrictStatus(
             "Aucun gouvernorat correspondant n’a été trouvé pour " + districtName + ".",
             "error"
           );
@@ -687,55 +666,247 @@
         }
 
         if (result.missing.length) {
-          setStatus(
+          setDistrictStatus(
             "Export réalisé, mais certains gouvernorats n’ont pas été trouvés : " + result.missing.join(", ") + ".",
             "error"
           );
         } else {
-          setStatus(
+          setDistrictStatus(
             "Export terminé : " + districtName + " — " + result.geojson.features.length + " gouvernorat(s).",
             "success"
           );
         }
       }
 
-      function initDistrictExportPanel() {
-        const button = document.getElementById("geomap-download-district");
-        const toggle = document.querySelector("#geomap-district-export-panel .geomap-export-toggle");
-        const panel = document.getElementById("geomap-district-export-panel");
+      function createDistrictAdminBlock() {
+        const wrapper = document.createElement("div");
+        wrapper.className = "geomap-district-admin-block";
+        wrapper.id = "geomap-district-admin-block";
 
-        if (button) {
-          button.addEventListener("click", handleDownload);
+        wrapper.innerHTML = [
+          '<div class="geomap-district-admin-title">',
+          '  <span>Districts</span>',
+          '  <span class="geomap-district-admin-badge">Niveau supérieur</span>',
+          '</div>',
+
+          '<p class="geomap-district-admin-note">',
+          '  Niveau administratif supérieur au gouvernorat. ',
+          '  Le téléchargement produit les gouvernorats constitutifs du district.',
+          '</p>',
+
+          '<label for="geomap-district-select">Choisir un district</label>',
+          '<select id="geomap-district-select">',
+          '  <option value="District 1">District 1 — Béja, Bizerte, Jendouba, Le Kef</option>',
+          '  <option value="District 2">District 2 — Ariana, Ben Arous, Manouba, Nabeul, Tunis, Zaghouan</option>',
+          '  <option value="District 3">District 3 — Kairouan, Kasserine, Mahdia, Monastir, Siliana, Sousse</option>',
+          '  <option value="District 4">District 4 — Gafsa, Sfax, Sidi Bouzid, Tozeur</option>',
+          '  <option value="District 5">District 5 — Gabès, Kébili, Médenine, Tataouine</option>',
+          '</select>',
+
+          '<label for="geomap-district-format">Format d’export</label>',
+          '<select id="geomap-district-format">',
+          '  <option value="geojson">GeoJSON</option>',
+          '  <option value="kml">KML</option>',
+          '  <option value="csv">CSV attributaire</option>',
+          '</select>',
+
+          '<div class="geomap-district-admin-actions">',
+          '  <button class="geomap-district-admin-button" type="button" id="geomap-district-download">',
+          '    Télécharger le district',
+          '  </button>',
+          '</div>',
+
+          '<div class="geomap-district-admin-status" id="geomap-district-admin-status">',
+          '  En attente du chargement du niveau Gouvernorat…',
+          '</div>',
+
+          '<div class="geomap-district-admin-source">',
+          '  Les limites internes ne sont pas encore dissoutes dans cette version.',
+          '</div>'
+        ].join("");
+
+        return wrapper;
+      }
+
+      function findSmallestElementContaining(text) {
+        const normalizedText = normalizeText(text);
+        const elements = Array.from(document.querySelectorAll("aside, section, nav, div, form, main, article"));
+
+        const matches = elements
+          .filter(function (element) {
+            return normalizeText(element.textContent).includes(normalizedText);
+          })
+          .sort(function (a, b) {
+            return a.textContent.length - b.textContent.length;
+          });
+
+        return matches[0] || null;
+      }
+
+      function findAdministrativePanel() {
+        const direct = findSmallestElementContaining("Découpage administratif");
+
+        if (!direct) {
+          return null;
         }
 
-        if (toggle && panel) {
-          toggle.addEventListener("click", function () {
-            panel.classList.toggle("collapsed");
-            toggle.textContent = panel.classList.contains("collapsed") ? "+" : "−";
+        let panel = direct;
+
+        while (
+          panel &&
+          panel !== document.body &&
+          !normalizeText(panel.textContent).includes("gouvernorat")
+        ) {
+          panel = panel.parentElement;
+        }
+
+        if (panel && panel !== document.body) {
+          return panel;
+        }
+
+        panel = direct.parentElement;
+
+        while (
+          panel &&
+          panel !== document.body &&
+          panel.textContent &&
+          panel.textContent.length < 6000
+        ) {
+          if (
+            normalizeText(panel.textContent).includes("decoupage administratif") ||
+            normalizeText(panel.textContent).includes("gouvernorat")
+          ) {
+            return panel;
+          }
+
+          panel = panel.parentElement;
+        }
+
+        return direct.parentElement || null;
+      }
+
+      function findGovernorateReferenceElement(panel) {
+        if (!panel) {
+          return null;
+        }
+
+        const candidates = Array.from(panel.querySelectorAll("label, button, div, span, p, h2, h3, h4"))
+          .filter(function (element) {
+            return normalizeText(element.textContent).includes("gouvernorat");
+          })
+          .sort(function (a, b) {
+            return a.textContent.length - b.textContent.length;
           });
+
+        if (!candidates.length) {
+          return null;
+        }
+
+        let target = candidates[0];
+
+        while (
+          target.parentElement &&
+          target.parentElement !== panel &&
+          target.parentElement.textContent &&
+          target.parentElement.textContent.length < 1200 &&
+          normalizeText(target.parentElement.textContent).includes("gouvernorat")
+        ) {
+          target = target.parentElement;
+        }
+
+        return target;
+      }
+
+      function insertDistrictBlockIntoAdministrativeMenu() {
+        if (document.getElementById("geomap-district-admin-block")) {
+          return true;
+        }
+
+        const administrativePanel = findAdministrativePanel();
+
+        if (!administrativePanel) {
+          return false;
+        }
+
+        const districtBlock = createDistrictAdminBlock();
+        const governorateElement = findGovernorateReferenceElement(administrativePanel);
+
+        if (
+          governorateElement &&
+          governorateElement.parentElement &&
+          governorateElement.parentElement !== document.body
+        ) {
+          governorateElement.parentElement.insertBefore(districtBlock, governorateElement);
+        } else {
+          administrativePanel.appendChild(districtBlock);
+        }
+
+        const button = document.getElementById("geomap-district-download");
+
+        if (button) {
+          button.addEventListener("click", handleDistrictDownload);
         }
 
         setTimeout(async function () {
           const layer = await getGovernoratesLayer();
 
           if (layer) {
-            setStatus(
-              "Données prêtes. Vous pouvez exporter un district.",
+            setDistrictStatus(
+              "Données prêtes. Le niveau District peut être téléchargé.",
               "success"
             );
           } else {
-            setStatus(
-              "En attente des données de gouvernorats. Activez la couche des gouvernorats si nécessaire.",
+            setDistrictStatus(
+              "Activez ou chargez le niveau Gouvernorat pour permettre l’export des districts.",
               "error"
             );
           }
-        }, 1500);
+        }, 1200);
+
+        return true;
+      }
+
+      function startDistrictMenuObserver() {
+        const firstTry = insertDistrictBlockIntoAdministrativeMenu();
+
+        if (firstTry) {
+          return;
+        }
+
+        const observer = new MutationObserver(function () {
+          const inserted = insertDistrictBlockIntoAdministrativeMenu();
+
+          if (inserted) {
+            observer.disconnect();
+          }
+        });
+
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+
+        let tries = 0;
+
+        const interval = setInterval(function () {
+          tries += 1;
+
+          const inserted = insertDistrictBlockIntoAdministrativeMenu();
+
+          if (inserted || tries >= 60) {
+            clearInterval(interval);
+
+            if (inserted) {
+              observer.disconnect();
+            }
+          }
+        }, 500);
       }
 
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initDistrictExportPanel);
+        document.addEventListener("DOMContentLoaded", startDistrictMenuObserver);
       } else {
-        initDistrictExportPanel();
+        startDistrictMenuObserver();
       }
     })();
   </script>
