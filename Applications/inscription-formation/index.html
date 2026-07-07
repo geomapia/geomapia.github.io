@@ -41,6 +41,18 @@
       padding: 36px 20px 42px;
     }
 
+    .logo-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      border-radius: 50%;
+      text-decoration: none;
+    }
+
+    .logo-link:focus {
+      outline: 3px solid #ffffff;
+      outline-offset: 6px;
+    }
+
     .logo {
       width: 130px;
       height: 130px;
@@ -48,8 +60,13 @@
       border-radius: 50%;
       background: white;
       padding: 6px;
-      margin-bottom: 18px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .logo-link:hover .logo {
+      transform: scale(1.04);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
     }
 
     header h1 {
@@ -232,7 +249,9 @@
 <body>
 
   <header>
-    <img src="../../IA.png" alt="Logo Geomap IA" class="logo">
+    <a href="https://geomapia.github.io/" class="logo-link" title="Retour au site Geomap IA">
+      <img src="../../IA.png" alt="Logo Geomap IA" class="logo">
+    </a>
 
     <h1>Inscription à la présentation en ligne de Geomap IA</h1>
 
@@ -332,7 +351,7 @@
           </div>
 
           <div class="field">
-            <label for="niveau">Niveau <span class="required">*</span></label>
+            <label for="niveau">Niveau en géomatique / cartographie <span class="required">*</span></label>
             <select id="niveau" name="niveau" required>
               <option value="">Choisir...</option>
               <option>Débutant</option>
