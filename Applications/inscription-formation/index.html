@@ -38,7 +38,18 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       text-align: center;
-      padding: 34px 20px;
+      padding: 36px 20px 42px;
+    }
+
+    .logo {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: white;
+      padding: 6px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     }
 
     header h1 {
@@ -51,24 +62,6 @@
       margin: 10px auto 0;
       color: #e3f2fd;
       font-size: 1.05rem;
-    }
-
-    nav {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      text-align: center;
-      padding: 12px 20px;
-    }
-
-    nav a {
-      color: var(--primary-dark);
-      text-decoration: none;
-      font-weight: bold;
-      margin: 0 10px;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
     }
 
     main {
@@ -219,11 +212,6 @@
       font-size: 0.95rem;
     }
 
-    footer a {
-      color: #bfdbfe;
-      text-decoration: none;
-    }
-
     @media (max-width: 750px) {
       .form-grid {
         grid-template-columns: 1fr;
@@ -233,9 +221,9 @@
         font-size: 1.5rem;
       }
 
-      nav a {
-        display: inline-block;
-        margin: 6px 8px;
+      .logo {
+        width: 105px;
+        height: 105px;
       }
     }
   </style>
@@ -244,20 +232,15 @@
 <body>
 
   <header>
+    <img src="../../IA.png" alt="Logo Geomap IA" class="logo">
+
     <h1>Inscription à la présentation en ligne de Geomap IA</h1>
+
     <p>
       Première réunion de présentation de la plateforme Geomap IA,
       de ses applications, ressources et usages pédagogiques.
     </p>
   </header>
-
-  <nav>
-    <a href="../../index.html">Accueil</a>
-    <a href="../../applications.html">Applications</a>
-    <a href="../../ressources.html">Ressources</a>
-    <a href="../../about.html">À propos</a>
-    <a href="../../contact.html">Contact</a>
-  </nav>
 
   <main>
 
@@ -392,10 +375,6 @@
   <footer>
     <p>
       © 2026 Geomap IA — Inscription à la présentation en ligne.
-      <br>
-      <a href="../../index.html">Accueil</a> |
-      <a href="../../applications.html">Applications</a> |
-      <a href="../../contact.html">Contact</a>
     </p>
   </footer>
 
