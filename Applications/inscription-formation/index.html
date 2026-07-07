@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Inscription à la présentation de Geomap IA</title>
+
+  <meta name="description" content="Formulaire d'inscription à la présentation en ligne de la plateforme Geomap IA." />
+
+  <style>
+    :root {
+      --primary: #1565c0;
+      --primary-dark: #0d47a1;
+      --primary-light: #e3f2fd;
+      --bg: #f4f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --danger: #b91c1c;
+      --success: #0f766e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      text-align: center;
+      padding: 34px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    header p {
+      max-width: 850px;
+      margin: 10px auto 0;
+      color: #e3f2fd;
+      font-size: 1.05rem;
+    }
+
+    nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      padding: 12px 20px;
+    }
+
+    nav a {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .intro {
+      background: var(--card);
+      border-left: 6px solid var(--primary);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .intro h2 {
+      color: var(--primary-dark);
+      margin-top: 0;
+    }
+
+    .info-box {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 16px;
+      font-weight: bold;
+    }
+
+    .form-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .form-card h2 {
+      color: var(--primary-dark);
+      margin-top: 0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    input,
+    select {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      background: white;
+      color: var(--text);
+    }
+
+    input:focus,
+    select:focus {
+      outline: 3px solid rgba(21, 101, 192, 0.18);
+      border-color: var(--primary);
+    }
+
+    .required {
+      color: var(--danger);
+    }
+
+    .actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .reset-btn {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .reset-btn:hover {
+      background: #d1d5db;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 14px;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .message.success {
+      display: block;
+      background: #ecfdf5;
+      color: var(--success);
+      border: 1px solid #99f6e4;
+    }
+
+    footer {
+      background: #111827;
+      color: #e5e7eb;
+      text-align: center;
+      padding: 22px;
+      margin-top: 40px;
+      font-size: 0.95rem;
+    }
+
+    footer a {
+      color: #bfdbfe;
+      text-decoration: none;
+    }
+
+    @media (max-width: 750px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      nav a {
+        display: inline-block;
+        margin: 6px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Inscription à la présentation en ligne de Geomap IA</h1>
+    <p>
+      Première réunion de présentation de la plateforme Geomap IA,
+      de ses applications, ressources et usages pédagogiques.
+    </p>
+  </header>
+
+  <nav>
+    <a href="../../index.html">Accueil</a>
+    <a href="../../applications.html">Applications</a>
+    <a href="../../ressources.html">Ressources</a>
+    <a href="../../about.html">À propos</a>
+    <a href="../../contact.html">Contact</a>
+  </nav>
+
+  <main>
+
+    <section class="intro">
+      <h2>Participer à la réunion de présentation</h2>
+
+      <p>
+        Ce formulaire permet de collecter les inscriptions des personnes souhaitant
+        participer à la première réunion en ligne consacrée à la présentation de
+        la plateforme <strong>Geomap IA</strong>.
+      </p>
+
+      <p>
+        Cette rencontre permettra de présenter les applications disponibles,
+        les ressources pédagogiques, les usages possibles en cartographie,
+        géomatique, environnement et enseignement.
+      </p>
+
+      <div class="info-box">
+        Les informations saisies seront enregistrées automatiquement dans le tableau
+        Google Sheets des inscriptions Geomap IA.
+      </div>
+    </section>
+
+    <section class="form-card">
+      <h2>Formulaire d’inscription</h2>
+
+      <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+      <form
+        id="formationForm"
+        action="https://script.google.com/macros/s/AKfycbzxcAAblrqF42oKShn7zBp7yWPiXXL3pkZ6K0YLqc1conRA1Efm_cjWhsrNgiWhr3XA/exec"
+        method="POST"
+        target="hidden_iframe"
+      >
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="nom">Nom et prénom <span class="required">*</span></label>
+            <input type="text" id="nom" name="nom" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="field">
+            <label for="telephone">Téléphone / WhatsApp</label>
+            <input type="tel" id="telephone" name="telephone" placeholder="Ex. +216 00 000 000">
+          </div>
+
+          <div class="field">
+            <label for="pays">Pays <span class="required">*</span></label>
+            <select id="pays" name="pays" required>
+              <option value="">Choisir...</option>
+              <option>Tunisie</option>
+              <option>Algérie</option>
+              <option>Maroc</option>
+              <option>France</option>
+              <option>Canada</option>
+              <option>Sénégal</option>
+              <option>Côte d'Ivoire</option>
+              <option>Cameroun</option>
+              <option>Mali</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="institution">Institution / Organisme</label>
+            <input type="text" id="institution" name="institution" placeholder="Université, laboratoire, organisme...">
+          </div>
+
+          <div class="field">
+            <label for="profil">Profil <span class="required">*</span></label>
+            <select id="profil" name="profil" required>
+              <option value="">Choisir...</option>
+              <option>Étudiant</option>
+              <option>Enseignant</option>
+              <option>Chercheur</option>
+              <option>Professionnel</option>
+              <option>Cadre administratif</option>
+              <option>Acteur associatif</option>
+              <option>Collectivité territoriale</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="niveau">Niveau <span class="required">*</span></label>
+            <select id="niveau" name="niveau" required>
+              <option value="">Choisir...</option>
+              <option>Débutant</option>
+              <option>Intermédiaire</option>
+              <option>Avancé</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Envoyer mon inscription
+          </button>
+
+          <button type="reset" class="reset-btn">
+            Effacer
+          </button>
+        </div>
+
+        <p class="note">
+          Les champs marqués par <span class="required">*</span> sont obligatoires.
+          La date et l’heure d’inscription seront ajoutées automatiquement dans Google Sheets.
+        </p>
+
+        <p class="note">
+          Les informations transmises sont utilisées uniquement pour gérer les inscriptions
+          à la présentation en ligne de Geomap IA.
+        </p>
+
+        <div id="successMessage" class="message">
+          Votre inscription a été enregistrée avec succès.
+        </div>
+
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      © 2026 Geomap IA — Inscription à la présentation en ligne.
+      <br>
+      <a href="../../index.html">Accueil</a> |
+      <a href="../../applications.html">Applications</a> |
+      <a href="../../contact.html">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("formationForm");
+    const iframe = document.getElementById("hidden_iframe");
+    const submitBtn = document.getElementById("submitBtn");
+    const successMessage = document.getElementById("successMessage");
+
+    let formSubmitted = false;
+
+    form.addEventListener("submit", function () {
+      formSubmitted = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Envoi en cours...";
+      successMessage.className = "message";
+    });
+
+    iframe.addEventListener("load", function () {
+      if (formSubmitted) {
+        successMessage.className = "message success";
+        form.reset();
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Envoyer mon inscription";
+
+        formSubmitted = false;
+      }
+    });
+  </script>
+
+</body>
+</html>
