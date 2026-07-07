@@ -10,195 +10,73 @@
 
   <title>Référentiel géographique administratif de la Tunisie</title>
 
-  <script>
-    (function () {
-      const originalFetch = window.fetch.bind(window);
-
-      window.__geomapIAGeojsonCache = {
-        layers: [],
-        startedAt: new Date().toISOString()
-      };
-
-      window.fetch = async function (input, init) {
-        const response = await originalFetch(input, init);
-
-        try {
-          const url =
-            typeof input === "string"
-              ? input
-              : input && input.url
-                ? input.url
-                : "";
-
-          const contentType = response.headers.get("content-type") || "";
-
-          if (
-            response.ok &&
-            (
-              contentType.includes("json") ||
-              url.toLowerCase().includes(".json") ||
-              url.toLowerCase().includes(".geojson")
-            )
-          ) {
-            response
-              .clone()
-              .json()
-              .then(function (data) {
-                if (
-                  data &&
-                  data.type === "FeatureCollection" &&
-                  Array.isArray(data.features)
-                ) {
-                  window.__geomapIAGeojsonCache.layers.push({
-                    url: url,
-                    count: data.features.length,
-                    data: data,
-                    capturedAt: new Date().toISOString()
-                  });
-                }
-              })
-              .catch(function () {});
-          }
-        } catch (error) {}
-
-        return response;
-      };
-    })();
-  </script>
-
   <script type="module" src="https://geomapia.github.io/Applications/Referentiel-Tunisie/assets/index-KRuaT5Dk.js"></script>
   <link rel="stylesheet" href="https://geomapia.github.io/Applications/Referentiel-Tunisie/assets/index-BAA5kDtG.css">
 
   <style>
-    .geomap-district-admin-block {
-      margin: 10px 0 14px 0;
-      padding: 12px;
-      border: 1px solid rgba(15, 118, 110, 0.25);
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(240, 253, 250, 0.95), rgba(255, 255, 255, 0.98));
-      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    .geomap-admin-hierarchy-row {
+      margin: 0 0 12px 0;
+      padding: 0;
       font-family: Inter, Arial, sans-serif;
     }
 
-    .geomap-district-admin-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 6px;
-      color: #0f172a;
+    .geomap-admin-hierarchy-row label {
+      display: block;
+      margin: 0 0 6px 0;
+      color: #334155;
       font-size: 13px;
       font-weight: 800;
-      line-height: 1.25;
+      line-height: 1.3;
     }
 
-    .geomap-district-admin-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #0f766e;
-      color: #ffffff;
-      font-size: 10px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .geomap-district-admin-note {
-      margin: 0 0 10px 0;
-      color: #64748b;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .geomap-district-admin-block label {
-      display: block;
-      margin: 8px 0 5px 0;
-      color: #334155;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .geomap-district-admin-block select {
+    .geomap-admin-hierarchy-row select {
       width: 100%;
       box-sizing: border-box;
-      padding: 8px 9px;
       border: 1px solid #cbd5e1;
       border-radius: 10px;
       background: #ffffff;
       color: #0f172a;
-      font-size: 12px;
+      padding: 9px 10px;
       font-family: Inter, Arial, sans-serif;
+      font-size: 13px;
       outline: none;
     }
 
-    .geomap-district-admin-block select:focus {
+    .geomap-admin-hierarchy-row select:focus {
       border-color: #0f766e;
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
     }
 
-    .geomap-district-admin-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .geomap-district-admin-button {
-      width: 100%;
-      border: 0;
-      border-radius: 10px;
-      padding: 9px 10px;
-      background: #0f766e;
-      color: #ffffff;
+    .geomap-admin-hierarchy-note {
+      margin: 7px 0 0 0;
+      color: #64748b;
       font-family: Inter, Arial, sans-serif;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s ease;
+      font-size: 11px;
+      line-height: 1.4;
     }
 
-    .geomap-district-admin-button:hover {
-      background: #115e59;
-      transform: translateY(-1px);
-    }
-
-    .geomap-district-admin-status {
-      margin-top: 9px;
-      padding: 8px;
-      border: 1px solid #e2e8f0;
+    .geomap-admin-hierarchy-status {
+      margin: 8px 0 12px 0;
+      padding: 8px 9px;
       border-radius: 10px;
+      border: 1px solid #e2e8f0;
       background: #f8fafc;
       color: #475569;
-      font-size: 10.5px;
-      line-height: 1.45;
+      font-family: Inter, Arial, sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
     }
 
-    .geomap-district-admin-status.success {
+    .geomap-admin-hierarchy-status.success {
       border-color: #bbf7d0;
       background: #f0fdf4;
       color: #166534;
     }
 
-    .geomap-district-admin-status.error {
+    .geomap-admin-hierarchy-status.error {
       border-color: #fecaca;
       background: #fef2f2;
       color: #991b1b;
-    }
-
-    .geomap-district-admin-source {
-      margin-top: 7px;
-      color: #64748b;
-      font-size: 10px;
-      line-height: 1.35;
-    }
-
-    @media (max-width: 700px) {
-      .geomap-district-admin-block {
-        margin-top: 8px;
-        margin-bottom: 12px;
-      }
     }
   </style>
 </head>
@@ -216,397 +94,249 @@
         "District 5": ["Gabès", "Kébili", "Médenine", "Tataouine"]
       };
 
-      const NAME_KEYS = [
-        "gouvernorat",
-        "Gouvernorat",
-        "GOUVERNORAT",
-        "nom_gouv",
-        "NOM_GOUV",
-        "nom_gouvernorat",
-        "NOM_GOUVERNORAT",
-        "nom",
-        "Nom",
-        "NOM",
-        "name",
-        "Name",
-        "NAME",
-        "NAME_1",
-        "shapeName",
-        "libelle",
-        "Libelle",
-        "LIBELLE",
-        "admin1Name",
-        "ADM1_FR",
-        "ADM1_EN"
+      const REGIONS_GEOGRAPHIQUES = {
+        "Nord-Est": ["Tunis", "Ariana", "Ben Arous", "Manouba", "Nabeul", "Zaghouan", "Bizerte"],
+        "Nord-Ouest": ["Béja", "Jendouba", "Le Kef", "Siliana"],
+        "Centre-Est": ["Sousse", "Monastir", "Mahdia", "Sfax"],
+        "Centre-Ouest": ["Kairouan", "Kasserine", "Sidi Bouzid"],
+        "Sud-Ouest": ["Gafsa", "Tozeur", "Kébili"],
+        "Sud-Est": ["Gabès", "Médenine", "Tataouine"]
+      };
+
+      const ALL_GOVERNORATES = [
+        "Tunis",
+        "Ariana",
+        "Ben Arous",
+        "Manouba",
+        "Nabeul",
+        "Zaghouan",
+        "Bizerte",
+        "Béja",
+        "Jendouba",
+        "Le Kef",
+        "Siliana",
+        "Sousse",
+        "Monastir",
+        "Mahdia",
+        "Sfax",
+        "Kairouan",
+        "Kasserine",
+        "Sidi Bouzid",
+        "Gafsa",
+        "Tozeur",
+        "Kébili",
+        "Gabès",
+        "Médenine",
+        "Tataouine"
       ];
+
+      let isApplyingFilter = false;
+      let lastKnownGovernorateSelect = null;
 
       function normalizeText(value) {
         return String(value || "")
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
           .replace(/[’']/g, " ")
-          .replace(/[^a-zA-Z0-9]+/g, " ")
+          .replace(/[^a-zA-Z0-9\u0600-\u06FF]+/g, " ")
           .toLowerCase()
           .trim();
       }
 
-      const GOVERNORATE_TO_DISTRICT = {};
+      function makeNormalizedSet(values) {
+        return new Set(
+          values.map(function (value) {
+            return normalizeText(value);
+          })
+        );
+      }
 
-      Object.keys(DISTRICTS).forEach(function (districtName) {
-        DISTRICTS[districtName].forEach(function (governorateName) {
-          GOVERNORATE_TO_DISTRICT[normalizeText(governorateName)] = districtName;
-        });
-      });
+      function isPlaceholderOption(option) {
+        const text = normalizeText(option.textContent);
+        const value = normalizeText(option.value);
 
-      function getGovernorateName(feature) {
-        const properties = feature && feature.properties ? feature.properties : {};
+        if (!value) return true;
 
-        for (const key of NAME_KEYS) {
-          if (properties[key]) {
-            return String(properties[key]).trim();
-          }
-        }
+        return (
+          text === "" ||
+          text.includes("tous") ||
+          text.includes("toutes") ||
+          text.includes("selection") ||
+          text.includes("sélection") ||
+          text.includes("choisir") ||
+          text.includes("aucun") ||
+          text.includes("الكل") ||
+          text.includes("اختر")
+        );
+      }
 
-        for (const key in properties) {
-          if (!Object.prototype.hasOwnProperty.call(properties, key)) continue;
+      function governorateFromOption(option) {
+        const text = normalizeText(option.textContent);
+        const value = normalizeText(option.value);
 
-          const value = properties[key];
+        for (const governorate of ALL_GOVERNORATES) {
+          const normalizedGovernorate = normalizeText(governorate);
 
           if (
-            typeof value === "string" &&
-            GOVERNORATE_TO_DISTRICT[normalizeText(value)]
+            text === normalizedGovernorate ||
+            value === normalizedGovernorate ||
+            text.includes(normalizedGovernorate) ||
+            value.includes(normalizedGovernorate)
           ) {
-            return value.trim();
+            return governorate;
           }
         }
 
         return "";
       }
 
-      function isGovernorateFeatureCollection(geojson) {
-        if (
-          !geojson ||
-          geojson.type !== "FeatureCollection" ||
-          !Array.isArray(geojson.features)
-        ) {
-          return false;
-        }
+      function getSelectedAllowedGovernorates() {
+        const districtSelect = document.getElementById("geomap-admin-district-select");
+        const regionSelect = document.getElementById("geomap-admin-region-select");
 
-        const matched = geojson.features.filter(function (feature) {
-          const name = getGovernorateName(feature);
-          return Boolean(GOVERNORATE_TO_DISTRICT[normalizeText(name)]);
-        });
+        const selectedDistrict = districtSelect ? districtSelect.value : "";
+        const selectedRegion = regionSelect ? regionSelect.value : "";
 
-        return matched.length >= 20;
-      }
-
-      function getCachedGovernoratesLayer() {
-        const cache =
-          window.__geomapIAGeojsonCache &&
-          Array.isArray(window.__geomapIAGeojsonCache.layers)
-            ? window.__geomapIAGeojsonCache.layers
-            : [];
-
-        const exactCandidate = cache.find(function (item) {
-          return item.count === 24 && isGovernorateFeatureCollection(item.data);
-        });
-
-        if (exactCandidate) {
-          return exactCandidate.data;
-        }
-
-        const compatibleCandidate = cache.find(function (item) {
-          return isGovernorateFeatureCollection(item.data);
-        });
-
-        return compatibleCandidate ? compatibleCandidate.data : null;
-      }
-
-      async function fetchCandidateGovernorates() {
-        const candidateUrls = [
-          "data/gouvernorats.geojson",
-          "data/gouvernorats.json",
-          "data/gouvernorat.geojson",
-          "data/gouvernorat.json",
-          "data/Gouvernorats.geojson",
-          "data/Gouvernorats.json",
-          "data/tunisie_gouvernorats.geojson",
-          "data/tunisie_gouvernorats.json",
-          "data/tunisia_governorates.geojson",
-          "data/tunisia_governorates.json",
-          "data/tn_gouvernorats.geojson",
-          "data/tn_gouvernorats.json",
-          "public/data/gouvernorats.geojson",
-          "public/data/gouvernorats.json"
-        ];
-
-        for (const url of candidateUrls) {
-          try {
-            const response = await fetch(url, { cache: "no-store" });
-            if (!response.ok) continue;
-
-            const data = await response.json();
-
-            if (isGovernorateFeatureCollection(data)) {
-              return data;
-            }
-          } catch (error) {}
-        }
-
-        return null;
-      }
-
-      async function getGovernoratesLayer() {
-        const cached = getCachedGovernoratesLayer();
-
-        if (cached) {
-          return cached;
-        }
-
-        for (let attempt = 0; attempt < 24; attempt++) {
-          await new Promise(function (resolve) {
-            setTimeout(resolve, 500);
-          });
-
-          const layer = getCachedGovernoratesLayer();
-
-          if (layer) {
-            return layer;
-          }
-        }
-
-        return await fetchCandidateGovernorates();
-      }
-
-      function buildDistrictGeoJSON(governoratesGeojson, districtName) {
-        const selectedNames = new Set(
-          DISTRICTS[districtName].map(function (name) {
-            return normalizeText(name);
+        let allowed = new Set(
+          ALL_GOVERNORATES.map(function (governorate) {
+            return normalizeText(governorate);
           })
         );
 
-        const features = governoratesGeojson.features
-          .filter(function (feature) {
-            const governorateName = getGovernorateName(feature);
-            return selectedNames.has(normalizeText(governorateName));
-          })
-          .map(function (feature) {
-            const cloned = JSON.parse(JSON.stringify(feature));
-            const governorateName = getGovernorateName(cloned);
+        if (selectedDistrict && DISTRICTS[selectedDistrict]) {
+          const districtSet = makeNormalizedSet(DISTRICTS[selectedDistrict]);
 
-            cloned.properties = cloned.properties || {};
-            cloned.properties.niveau_administratif = "District";
-            cloned.properties.district = districtName;
-            cloned.properties.nom_district = districtName;
-            cloned.properties.nom_gouvernorat = governorateName;
-
-            return cloned;
-          });
-
-        const foundNames = new Set(
-          features.map(function (feature) {
-            return normalizeText(getGovernorateName(feature));
-          })
-        );
-
-        const missing = DISTRICTS[districtName].filter(function (name) {
-          return !foundNames.has(normalizeText(name));
-        });
-
-        return {
-          geojson: {
-            type: "FeatureCollection",
-            name: districtName.replace(/\s+/g, "_").toLowerCase(),
-            metadata: {
-              source: "Geomap IA — Référentiel géographique administratif de la Tunisie",
-              niveau_administratif: "District",
-              niveau_superieur: "District",
-              niveau_inferieur: "Gouvernorat",
-              export_type: "district",
-              district: districtName,
-              mode: "gouvernorats_constitutifs_non_dissous",
-              generated_at: new Date().toISOString()
-            },
-            features: features
-          },
-          missing: missing
-        };
-      }
-
-      function downloadTextFile(filename, content, mimeType) {
-        const blob = new Blob([content], {
-          type: mimeType + ";charset=utf-8"
-        });
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-
-        setTimeout(function () {
-          URL.revokeObjectURL(url);
-          link.remove();
-        }, 300);
-      }
-
-      function safeFileName(value) {
-        return normalizeText(value)
-          .replace(/\s+/g, "_")
-          .replace(/[^a-z0-9_]/g, "");
-      }
-
-      function exportGeoJSON(geojson, districtName) {
-        downloadTextFile(
-          safeFileName(districtName) + ".geojson",
-          JSON.stringify(geojson, null, 2),
-          "application/geo+json"
-        );
-      }
-
-      function csvEscape(value) {
-        const text = value === null || value === undefined ? "" : String(value);
-
-        if (/[",\n;]/.test(text)) {
-          return '"' + text.replace(/"/g, '""') + '"';
-        }
-
-        return text;
-      }
-
-      function exportCSV(geojson, districtName) {
-        const rows = geojson.features.map(function (feature) {
-          return feature.properties || {};
-        });
-
-        const headers = Array.from(
-          rows.reduce(function (set, row) {
-            Object.keys(row).forEach(function (key) {
-              set.add(key);
-            });
-            return set;
-          }, new Set())
-        );
-
-        const csv = [
-          headers.join(";")
-        ].concat(
-          rows.map(function (row) {
-            return headers.map(function (header) {
-              return csvEscape(row[header]);
-            }).join(";");
-          })
-        ).join("\n");
-
-        downloadTextFile(
-          safeFileName(districtName) + "_attributs.csv",
-          csv,
-          "text/csv"
-        );
-      }
-
-      function coordinatesToKml(coordinates) {
-        return coordinates
-          .map(function (coordinate) {
-            return coordinate[0] + "," + coordinate[1] + ",0";
-          })
-          .join(" ");
-      }
-
-      function polygonToKml(coordinates) {
-        const outerRing = coordinates[0] || [];
-        const innerRings = coordinates.slice(1);
-
-        let kml = "";
-        kml += "<Polygon>";
-        kml += "<outerBoundaryIs><LinearRing><coordinates>";
-        kml += coordinatesToKml(outerRing);
-        kml += "</coordinates></LinearRing></outerBoundaryIs>";
-
-        innerRings.forEach(function (ring) {
-          kml += "<innerBoundaryIs><LinearRing><coordinates>";
-          kml += coordinatesToKml(ring);
-          kml += "</coordinates></LinearRing></innerBoundaryIs>";
-        });
-
-        kml += "</Polygon>";
-
-        return kml;
-      }
-
-      function geometryToKml(geometry) {
-        if (!geometry) return "";
-
-        if (geometry.type === "Polygon") {
-          return polygonToKml(geometry.coordinates);
-        }
-
-        if (geometry.type === "MultiPolygon") {
-          return "<MultiGeometry>" +
-            geometry.coordinates.map(polygonToKml).join("") +
-            "</MultiGeometry>";
-        }
-
-        return "";
-      }
-
-      function xmlEscape(value) {
-        return String(value || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&apos;");
-      }
-
-      function exportKML(geojson, districtName) {
-        const placemarks = geojson.features.map(function (feature) {
-          const properties = feature.properties || {};
-          const name =
-            properties.nom_gouvernorat ||
-            getGovernorateName(feature) ||
-            districtName;
-
-          const description = Object.keys(properties)
-            .map(function (key) {
-              return "<tr><td><b>" + xmlEscape(key) + "</b></td><td>" + xmlEscape(properties[key]) + "</td></tr>";
+          allowed = new Set(
+            Array.from(allowed).filter(function (governorate) {
+              return districtSet.has(governorate);
             })
-            .join("");
+          );
+        }
 
-          return [
-            "<Placemark>",
-            "<name>" + xmlEscape(name) + "</name>",
-            "<description><![CDATA[<table>" + description + "</table>]]></description>",
-            geometryToKml(feature.geometry),
-            "</Placemark>"
-          ].join("");
-        }).join("");
+        if (selectedRegion && REGIONS_GEOGRAPHIQUES[selectedRegion]) {
+          const regionSet = makeNormalizedSet(REGIONS_GEOGRAPHIQUES[selectedRegion]);
 
-        const kml = [
-          '<?xml version="1.0" encoding="UTF-8"?>',
-          '<kml xmlns="http://www.opengis.net/kml/2.2">',
-          "<Document>",
-          "<name>" + xmlEscape(districtName) + "</name>",
-          placemarks,
-          "</Document>",
-          "</kml>"
-        ].join("");
+          allowed = new Set(
+            Array.from(allowed).filter(function (governorate) {
+              return regionSet.has(governorate);
+            })
+          );
+        }
 
-        downloadTextFile(
-          safeFileName(districtName) + ".kml",
-          kml,
-          "application/vnd.google-earth.kml+xml"
-        );
+        return allowed;
       }
 
-      function setDistrictStatus(message, type) {
-        const status = document.getElementById("geomap-district-admin-status");
+      function dispatchSelectChange(selectElement) {
+        if (!selectElement) return;
 
-        if (!status) {
-          return;
+        selectElement.dispatchEvent(new Event("input", { bubbles: true }));
+        selectElement.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+
+      function resetSelectToPlaceholder(selectElement) {
+        if (!selectElement) return;
+
+        const options = Array.from(selectElement.options || []);
+        const placeholder = options.find(isPlaceholderOption);
+        const visibleAllowed = options.find(function (option) {
+          return !option.disabled && !option.hidden;
+        });
+
+        if (placeholder) {
+          selectElement.value = placeholder.value;
+        } else if (visibleAllowed) {
+          selectElement.value = visibleAllowed.value;
+        } else {
+          selectElement.selectedIndex = 0;
         }
+      }
+
+      function applyGovernorateFilter() {
+        if (isApplyingFilter) return;
+
+        isApplyingFilter = true;
+
+        try {
+          const governorateSelect = findGovernorateSelect();
+
+          if (!governorateSelect) {
+            setHierarchyStatus(
+              "Les niveaux District et Région géographique sont prêts. Ouvrez le panneau Découpage administratif pour appliquer le filtrage.",
+              "neutral"
+            );
+            isApplyingFilter = false;
+            return;
+          }
+
+          lastKnownGovernorateSelect = governorateSelect;
+
+          const allowed = getSelectedAllowedGovernorates();
+          const options = Array.from(governorateSelect.options || []);
+          let visibleGovernoratesCount = 0;
+          let selectedOptionStillAllowed = false;
+
+          options.forEach(function (option) {
+            const governorateName = governorateFromOption(option);
+            const isPlaceholder = isPlaceholderOption(option);
+
+            if (isPlaceholder || !governorateName) {
+              option.hidden = false;
+              option.disabled = false;
+              option.style.display = "";
+              return;
+            }
+
+            const isAllowed = allowed.has(normalizeText(governorateName));
+
+            option.hidden = !isAllowed;
+            option.disabled = !isAllowed;
+            option.style.display = isAllowed ? "" : "none";
+
+            if (isAllowed) {
+              visibleGovernoratesCount += 1;
+            }
+
+            if (option.selected && isAllowed) {
+              selectedOptionStillAllowed = true;
+            }
+          });
+
+          const selectedOption = governorateSelect.options[governorateSelect.selectedIndex];
+
+          if (
+            selectedOption &&
+            !isPlaceholderOption(selectedOption) &&
+            !selectedOptionStillAllowed
+          ) {
+            resetSelectToPlaceholder(governorateSelect);
+            dispatchSelectChange(governorateSelect);
+          }
+
+          if (visibleGovernoratesCount === 0) {
+            setHierarchyStatus(
+              "Aucun gouvernorat ne correspond simultanément au district et à la région géographique choisis.",
+              "error"
+            );
+          } else {
+            setHierarchyStatus(
+              "Filtrage appliqué : " + visibleGovernoratesCount + " gouvernorat(s) disponible(s).",
+              "success"
+            );
+          }
+        } catch (error) {
+          setHierarchyStatus(
+            "Le filtrage des gouvernorats n’a pas pu être appliqué automatiquement.",
+            "error"
+          );
+        }
+
+        isApplyingFilter = false;
+      }
+
+      function setHierarchyStatus(message, type) {
+        const status = document.getElementById("geomap-admin-hierarchy-status");
+
+        if (!status) return;
 
         status.textContent = message;
         status.classList.remove("success", "error");
@@ -620,121 +350,16 @@
         }
       }
 
-      async function handleDistrictDownload() {
-        const districtSelect = document.getElementById("geomap-district-select");
-        const formatSelect = document.getElementById("geomap-district-format");
-
-        if (!districtSelect || !formatSelect) {
-          return;
-        }
-
-        const districtName = districtSelect.value;
-        const format = formatSelect.value;
-
-        setDistrictStatus("Préparation de l’export du niveau District…", "neutral");
-
-        const governoratesGeojson = await getGovernoratesLayer();
-
-        if (!governoratesGeojson) {
-          setDistrictStatus(
-            "Impossible de trouver automatiquement la couche des gouvernorats. Activez d’abord le niveau Gouvernorat, puis réessayez.",
-            "error"
-          );
-          return;
-        }
-
-        const result = buildDistrictGeoJSON(governoratesGeojson, districtName);
-
-        if (!result.geojson.features.length) {
-          setDistrictStatus(
-            "Aucun gouvernorat correspondant n’a été trouvé pour " + districtName + ".",
-            "error"
-          );
-          return;
-        }
-
-        if (format === "geojson") {
-          exportGeoJSON(result.geojson, districtName);
-        }
-
-        if (format === "kml") {
-          exportKML(result.geojson, districtName);
-        }
-
-        if (format === "csv") {
-          exportCSV(result.geojson, districtName);
-        }
-
-        if (result.missing.length) {
-          setDistrictStatus(
-            "Export réalisé, mais certains gouvernorats n’ont pas été trouvés : " + result.missing.join(", ") + ".",
-            "error"
-          );
-        } else {
-          setDistrictStatus(
-            "Export terminé : " + districtName + " — " + result.geojson.features.length + " gouvernorat(s).",
-            "success"
-          );
-        }
-      }
-
-      function createDistrictAdminBlock() {
-        const wrapper = document.createElement("div");
-        wrapper.className = "geomap-district-admin-block";
-        wrapper.id = "geomap-district-admin-block";
-
-        wrapper.innerHTML = [
-          '<div class="geomap-district-admin-title">',
-          '  <span>Districts</span>',
-          '  <span class="geomap-district-admin-badge">Niveau supérieur</span>',
-          '</div>',
-
-          '<p class="geomap-district-admin-note">',
-          '  Niveau administratif supérieur au gouvernorat. ',
-          '  Le téléchargement produit les gouvernorats constitutifs du district.',
-          '</p>',
-
-          '<label for="geomap-district-select">Choisir un district</label>',
-          '<select id="geomap-district-select">',
-          '  <option value="District 1">District 1 — Béja, Bizerte, Jendouba, Le Kef</option>',
-          '  <option value="District 2">District 2 — Ariana, Ben Arous, Manouba, Nabeul, Tunis, Zaghouan</option>',
-          '  <option value="District 3">District 3 — Kairouan, Kasserine, Mahdia, Monastir, Siliana, Sousse</option>',
-          '  <option value="District 4">District 4 — Gafsa, Sfax, Sidi Bouzid, Tozeur</option>',
-          '  <option value="District 5">District 5 — Gabès, Kébili, Médenine, Tataouine</option>',
-          '</select>',
-
-          '<label for="geomap-district-format">Format d’export</label>',
-          '<select id="geomap-district-format">',
-          '  <option value="geojson">GeoJSON</option>',
-          '  <option value="kml">KML</option>',
-          '  <option value="csv">CSV attributaire</option>',
-          '</select>',
-
-          '<div class="geomap-district-admin-actions">',
-          '  <button class="geomap-district-admin-button" type="button" id="geomap-district-download">',
-          '    Télécharger le district',
-          '  </button>',
-          '</div>',
-
-          '<div class="geomap-district-admin-status" id="geomap-district-admin-status">',
-          '  En attente du chargement du niveau Gouvernorat…',
-          '</div>',
-
-          '<div class="geomap-district-admin-source">',
-          '  Les limites internes ne sont pas encore dissoutes dans cette version.',
-          '</div>'
-        ].join("");
-
-        return wrapper;
-      }
-
       function findSmallestElementContaining(text) {
-        const normalizedText = normalizeText(text);
-        const elements = Array.from(document.querySelectorAll("aside, section, nav, div, form, main, article"));
+        const searched = normalizeText(text);
+
+        const elements = Array.from(
+          document.querySelectorAll("aside, section, nav, form, div, main, article, h1, h2, h3, h4, label, span, p")
+        );
 
         const matches = elements
           .filter(function (element) {
-            return normalizeText(element.textContent).includes(normalizedText);
+            return normalizeText(element.textContent).includes(searched);
           })
           .sort(function (a, b) {
             return a.textContent.length - b.textContent.length;
@@ -744,53 +369,103 @@
       }
 
       function findAdministrativePanel() {
-        const direct = findSmallestElementContaining("Découpage administratif");
+        const titleElement =
+          findSmallestElementContaining("Découpage administratif") ||
+          findSmallestElementContaining("decoupage administratif");
 
-        if (!direct) {
-          return null;
-        }
+        if (!titleElement) return null;
 
-        let panel = direct;
+        let candidate = titleElement;
 
-        while (
-          panel &&
-          panel !== document.body &&
-          !normalizeText(panel.textContent).includes("gouvernorat")
-        ) {
-          panel = panel.parentElement;
-        }
+        while (candidate && candidate !== document.body) {
+          const text = normalizeText(candidate.textContent);
 
-        if (panel && panel !== document.body) {
-          return panel;
-        }
-
-        panel = direct.parentElement;
-
-        while (
-          panel &&
-          panel !== document.body &&
-          panel.textContent &&
-          panel.textContent.length < 6000
-        ) {
           if (
-            normalizeText(panel.textContent).includes("decoupage administratif") ||
-            normalizeText(panel.textContent).includes("gouvernorat")
+            text.includes("decoupage administratif") &&
+            (
+              text.includes("gouvernorat") ||
+              text.includes("delegation") ||
+              text.includes("délégation") ||
+              text.includes("secteur")
+            )
           ) {
-            return panel;
+            return candidate;
           }
 
-          panel = panel.parentElement;
+          candidate = candidate.parentElement;
         }
 
-        return direct.parentElement || null;
+        candidate = titleElement.parentElement;
+
+        while (candidate && candidate !== document.body) {
+          const text = normalizeText(candidate.textContent);
+
+          if (
+            text.includes("decoupage administratif") ||
+            text.includes("gouvernorat")
+          ) {
+            return candidate;
+          }
+
+          candidate = candidate.parentElement;
+        }
+
+        return titleElement.parentElement || null;
       }
 
-      function findGovernorateReferenceElement(panel) {
-        if (!panel) {
-          return null;
+      function elementComesAfter(a, b) {
+        if (!a || !b || a === b) return false;
+
+        return Boolean(
+          b.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING
+        );
+      }
+
+      function findSelectNearLabel(labelElement, panel) {
+        if (!labelElement) return null;
+
+        const labelFor = labelElement.getAttribute && labelElement.getAttribute("for");
+
+        if (labelFor) {
+          const linked = document.getElementById(labelFor);
+
+          if (linked && linked.tagName === "SELECT") {
+            return linked;
+          }
         }
 
-        const candidates = Array.from(panel.querySelectorAll("label, button, div, span, p, h2, h3, h4"))
+        let cursor = labelElement;
+
+        for (let i = 0; i < 5 && cursor; i += 1) {
+          if (cursor.querySelector) {
+            const selectInside = cursor.querySelector("select");
+
+            if (selectInside) {
+              return selectInside;
+            }
+          }
+
+          cursor = cursor.parentElement;
+
+          if (cursor === panel || cursor === document.body) {
+            break;
+          }
+        }
+
+        const allSelects = Array.from((panel || document).querySelectorAll("select"));
+        const followingSelect = allSelects.find(function (select) {
+          return elementComesAfter(select, labelElement);
+        });
+
+        return followingSelect || null;
+      }
+
+      function findGovernorateSelect() {
+        const panel = findAdministrativePanel() || document;
+
+        const candidates = Array.from(
+          panel.querySelectorAll("label, div, span, p, h2, h3, h4")
+        )
           .filter(function (element) {
             return normalizeText(element.textContent).includes("gouvernorat");
           })
@@ -798,17 +473,52 @@
             return a.textContent.length - b.textContent.length;
           });
 
-        if (!candidates.length) {
-          return null;
+        for (const candidate of candidates) {
+          const select = findSelectNearLabel(candidate, panel);
+
+          if (select && select.tagName === "SELECT") {
+            return select;
+          }
         }
+
+        const allSelects = Array.from(panel.querySelectorAll("select"));
+
+        for (const select of allSelects) {
+          const hasGovernorateOption = Array.from(select.options || []).some(function (option) {
+            return Boolean(governorateFromOption(option));
+          });
+
+          if (hasGovernorateOption) {
+            return select;
+          }
+        }
+
+        return lastKnownGovernorateSelect;
+      }
+
+      function findGovernorateReferenceElement(panel) {
+        if (!panel) return null;
+
+        const candidates = Array.from(
+          panel.querySelectorAll("label, div, span, p, h2, h3, h4")
+        )
+          .filter(function (element) {
+            return normalizeText(element.textContent).includes("gouvernorat");
+          })
+          .sort(function (a, b) {
+            return a.textContent.length - b.textContent.length;
+          });
+
+        if (!candidates.length) return null;
 
         let target = candidates[0];
 
         while (
           target.parentElement &&
           target.parentElement !== panel &&
+          target.parentElement !== document.body &&
           target.parentElement.textContent &&
-          target.parentElement.textContent.length < 1200 &&
+          target.parentElement.textContent.length < 900 &&
           normalizeText(target.parentElement.textContent).includes("gouvernorat")
         ) {
           target = target.parentElement;
@@ -817,67 +527,157 @@
         return target;
       }
 
-      function insertDistrictBlockIntoAdministrativeMenu() {
-        if (document.getElementById("geomap-district-admin-block")) {
+      function createHierarchyControls() {
+        const fragment = document.createDocumentFragment();
+
+        const districtRow = document.createElement("div");
+        districtRow.className = "geomap-admin-hierarchy-row";
+        districtRow.id = "geomap-admin-district-row";
+        districtRow.innerHTML = [
+          '<label for="geomap-admin-district-select">1. District / الإقليم</label>',
+          '<select id="geomap-admin-district-select">',
+          '  <option value="">Tous les districts / كل الأقاليم</option>',
+          '  <option value="District 1">District 1 — Béja, Bizerte, Jendouba, Le Kef</option>',
+          '  <option value="District 2">District 2 — Ariana, Ben Arous, Manouba, Nabeul, Tunis, Zaghouan</option>',
+          '  <option value="District 3">District 3 — Kairouan, Kasserine, Mahdia, Monastir, Siliana, Sousse</option>',
+          '  <option value="District 4">District 4 — Gafsa, Sfax, Sidi Bouzid, Tozeur</option>',
+          '  <option value="District 5">District 5 — Gabès, Kébili, Médenine, Tataouine</option>',
+          '</select>'
+        ].join("");
+
+        const regionRow = document.createElement("div");
+        regionRow.className = "geomap-admin-hierarchy-row";
+        regionRow.id = "geomap-admin-region-row";
+        regionRow.innerHTML = [
+          '<label for="geomap-admin-region-select">2. Région géographique</label>',
+          '<select id="geomap-admin-region-select">',
+          '  <option value="">Toutes les régions géographiques</option>',
+          '  <option value="Nord-Est">Nord-Est — Tunis, Ariana, Ben Arous, Manouba, Nabeul, Zaghouan, Bizerte</option>',
+          '  <option value="Nord-Ouest">Nord-Ouest — Béja, Jendouba, Le Kef, Siliana</option>',
+          '  <option value="Centre-Est">Centre-Est — Sousse, Monastir, Mahdia, Sfax</option>',
+          '  <option value="Centre-Ouest">Centre-Ouest — Kairouan, Kasserine, Sidi Bouzid</option>',
+          '  <option value="Sud-Ouest">Sud-Ouest — Gafsa, Tozeur, Kébili</option>',
+          '  <option value="Sud-Est">Sud-Est — Gabès, Médenine, Tataouine</option>',
+          '</select>',
+          '<p class="geomap-admin-hierarchy-note">',
+          '  Les districts et les régions géographiques filtrent la liste des gouvernorats. ',
+          '  Si les deux sont choisis, seuls les gouvernorats communs aux deux niveaux restent visibles.',
+          '</p>'
+        ].join("");
+
+        const status = document.createElement("div");
+        status.className = "geomap-admin-hierarchy-status";
+        status.id = "geomap-admin-hierarchy-status";
+        status.textContent = "Filtres supérieurs prêts : District / الإقليم et Région géographique.";
+
+        fragment.appendChild(districtRow);
+        fragment.appendChild(regionRow);
+        fragment.appendChild(status);
+
+        return fragment;
+      }
+
+      function insertHierarchyControlsIntoAdministrativePanel() {
+        if (
+          document.getElementById("geomap-admin-district-row") &&
+          document.getElementById("geomap-admin-region-row")
+        ) {
           return true;
         }
 
-        const administrativePanel = findAdministrativePanel();
+        const panel = findAdministrativePanel();
 
-        if (!administrativePanel) {
+        if (!panel) {
           return false;
         }
 
-        const districtBlock = createDistrictAdminBlock();
-        const governorateElement = findGovernorateReferenceElement(administrativePanel);
+        const governorateReference = findGovernorateReferenceElement(panel);
+        const controls = createHierarchyControls();
 
         if (
-          governorateElement &&
-          governorateElement.parentElement &&
-          governorateElement.parentElement !== document.body
+          governorateReference &&
+          governorateReference.parentElement &&
+          governorateReference.parentElement !== document.body
         ) {
-          governorateElement.parentElement.insertBefore(districtBlock, governorateElement);
+          governorateReference.parentElement.insertBefore(controls, governorateReference);
         } else {
-          administrativePanel.appendChild(districtBlock);
+          panel.appendChild(controls);
         }
 
-        const button = document.getElementById("geomap-district-download");
+        const districtSelect = document.getElementById("geomap-admin-district-select");
+        const regionSelect = document.getElementById("geomap-admin-region-select");
 
-        if (button) {
-          button.addEventListener("click", handleDistrictDownload);
+        if (districtSelect) {
+          districtSelect.addEventListener("change", applyGovernorateFilter);
+          districtSelect.addEventListener("input", applyGovernorateFilter);
         }
 
-        setTimeout(async function () {
-          const layer = await getGovernoratesLayer();
+        if (regionSelect) {
+          regionSelect.addEventListener("change", applyGovernorateFilter);
+          regionSelect.addEventListener("input", applyGovernorateFilter);
+        }
 
-          if (layer) {
-            setDistrictStatus(
-              "Données prêtes. Le niveau District peut être téléchargé.",
-              "success"
-            );
-          } else {
-            setDistrictStatus(
-              "Activez ou chargez le niveau Gouvernorat pour permettre l’export des districts.",
-              "error"
-            );
-          }
-        }, 1200);
+        setTimeout(applyGovernorateFilter, 300);
+        setTimeout(applyGovernorateFilter, 900);
+        setTimeout(applyGovernorateFilter, 1600);
 
         return true;
       }
 
-      function startDistrictMenuObserver() {
-        const firstTry = insertDistrictBlockIntoAdministrativeMenu();
+      function renumberExistingAdministrativeLabels() {
+        const panel = findAdministrativePanel();
 
-        if (firstTry) {
-          return;
+        if (!panel) return;
+
+        const elements = Array.from(
+          panel.querySelectorAll("label, div, span, p, h2, h3, h4")
+        );
+
+        elements.forEach(function (element) {
+          const text = normalizeText(element.textContent);
+
+          if (
+            text.includes("gouvernorat") &&
+            !text.includes("district") &&
+            !text.includes("region")
+          ) {
+            element.setAttribute("data-geomap-level", "3");
+          }
+
+          if (
+            (
+              text.includes("delegation") ||
+              text.includes("délégation")
+            ) &&
+            !text.includes("gouvernorat")
+          ) {
+            element.setAttribute("data-geomap-level", "4");
+          }
+
+          if (
+            text.includes("secteur") &&
+            !text.includes("delegation") &&
+            !text.includes("délégation")
+          ) {
+            element.setAttribute("data-geomap-level", "5");
+          }
+        });
+      }
+
+      function startHierarchyIntegration() {
+        const inserted = insertHierarchyControlsIntoAdministrativePanel();
+
+        if (inserted) {
+          renumberExistingAdministrativeLabels();
+          applyGovernorateFilter();
         }
 
         const observer = new MutationObserver(function () {
-          const inserted = insertDistrictBlockIntoAdministrativeMenu();
+          const controlsInserted = insertHierarchyControlsIntoAdministrativePanel();
 
-          if (inserted) {
-            observer.disconnect();
+          if (controlsInserted) {
+            renumberExistingAdministrativeLabels();
+            applyGovernorateFilter();
           }
         });
 
@@ -891,22 +691,34 @@
         const interval = setInterval(function () {
           tries += 1;
 
-          const inserted = insertDistrictBlockIntoAdministrativeMenu();
+          const controlsInserted = insertHierarchyControlsIntoAdministrativePanel();
 
-          if (inserted || tries >= 60) {
+          if (controlsInserted) {
+            renumberExistingAdministrativeLabels();
+            applyGovernorateFilter();
+          }
+
+          if (tries >= 80) {
             clearInterval(interval);
-
-            if (inserted) {
-              observer.disconnect();
-            }
           }
         }, 500);
+
+        document.addEventListener("change", function (event) {
+          if (
+            event.target &&
+            event.target.tagName === "SELECT" &&
+            event.target.id !== "geomap-admin-district-select" &&
+            event.target.id !== "geomap-admin-region-select"
+          ) {
+            setTimeout(applyGovernorateFilter, 150);
+          }
+        }, true);
       }
 
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", startDistrictMenuObserver);
+        document.addEventListener("DOMContentLoaded", startHierarchyIntegration);
       } else {
-        startDistrictMenuObserver();
+        startHierarchyIntegration();
       }
     })();
   </script>
