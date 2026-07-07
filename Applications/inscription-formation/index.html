@@ -20,6 +20,9 @@
       --border: #d1d5db;
       --danger: #b91c1c;
       --success: #0f766e;
+      --warning-bg: #fff7ed;
+      --warning-text: #9a3412;
+      --warning-border: #f97316;
     }
 
     * {
@@ -99,6 +102,16 @@
     .intro h2 {
       color: var(--primary-dark);
       margin-top: 0;
+    }
+
+    .event-date {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border-left: 5px solid var(--warning-border);
+      border-radius: 12px;
+      padding: 14px;
+      margin: 16px 0;
+      font-size: 1.05rem;
     }
 
     .info-box {
@@ -220,6 +233,83 @@
       border: 1px solid #99f6e4;
     }
 
+    .thank-you-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .thank-you-overlay.active {
+      display: flex;
+    }
+
+    .thank-you-panel {
+      background: white;
+      max-width: 540px;
+      width: 100%;
+      border-radius: 22px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      animation: panelIn 0.25s ease-out;
+    }
+
+    @keyframes panelIn {
+      from {
+        transform: scale(0.94);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .thank-you-panel img {
+      width: 105px;
+      height: 105px;
+      object-fit: cover;
+      border-radius: 50%;
+      padding: 5px;
+      background: white;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      margin-bottom: 14px;
+    }
+
+    .thank-you-panel h2 {
+      color: var(--primary-dark);
+      margin: 10px 0;
+    }
+
+    .thank-you-panel p {
+      color: var(--text);
+      margin: 10px 0;
+    }
+
+    .thank-you-panel .important {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: bold;
+      margin-top: 16px;
+    }
+
+    .close-panel-btn {
+      margin-top: 20px;
+      background: var(--primary);
+      color: white;
+    }
+
+    .close-panel-btn:hover {
+      background: var(--primary-dark);
+    }
+
     footer {
       background: #111827;
       color: #e5e7eb;
@@ -241,6 +331,11 @@
       .logo {
         width: 105px;
         height: 105px;
+      }
+
+      .form-card,
+      .intro {
+        padding: 20px;
       }
     }
   </style>
@@ -272,6 +367,10 @@
         la plateforme <strong>Geomap IA</strong>.
       </p>
 
+      <div class="event-date">
+        <strong>La présentation aura lieu samedi 12 juillet à partir de 19h.</strong>
+      </div>
+
       <p>
         Cette rencontre permettra de présenter les applications disponibles,
         les ressources pédagogiques, les usages possibles en cartographie,
@@ -291,7 +390,7 @@
 
       <form
         id="formationForm"
-        action="https://script.google.com/macros/s/AKfycbzxcAAblrqF42oKShn7zBp7yWPiXXL3pkZ6K0YLqc1conRA1Efm_cjWhsrNgiWhr3XA/exec"
+        action="https://script.google.com/macros/s/AKfycbz6fjqM7ujQHwmRKe6EfKzCyuB61seMjb2Y8D3zhrMnHmTaFO-QgclR_7piskDNg8aNPg/exec"
         method="POST"
         target="hidden_iframe"
       >
@@ -391,6 +490,31 @@
 
   </main>
 
+  <div id="thankYouOverlay" class="thank-you-overlay">
+    <div class="thank-you-panel">
+      <img src="../../IA.png" alt="Logo Geomap IA">
+
+      <h2>Merci pour votre inscription</h2>
+
+      <p>
+        Votre demande de participation à la présentation en ligne de
+        <strong>Geomap IA</strong> a bien été enregistrée.
+      </p>
+
+      <p>
+        <strong>La présentation aura lieu samedi 12 juillet à partir de 19h.</strong>
+      </p>
+
+      <div class="important">
+        Le lien de participation vous sera envoyé par e-mail samedi matin.
+      </div>
+
+      <button type="button" class="close-panel-btn" id="closePanelBtn">
+        Fermer
+      </button>
+    </div>
+  </div>
+
   <footer>
     <p>
       © 2026 Geomap IA — Inscription à la présentation en ligne.
@@ -402,6 +526,8 @@
     const iframe = document.getElementById("hidden_iframe");
     const submitBtn = document.getElementById("submitBtn");
     const successMessage = document.getElementById("successMessage");
+    const thankYouOverlay = document.getElementById("thankYouOverlay");
+    const closePanelBtn = document.getElementById("closePanelBtn");
 
     let formSubmitted = false;
 
@@ -415,6 +541,7 @@
     iframe.addEventListener("load", function () {
       if (formSubmitted) {
         successMessage.className = "message success";
+        thankYouOverlay.classList.add("active");
         form.reset();
 
         submitBtn.disabled = false;
@@ -422,6 +549,10 @@
 
         formSubmitted = false;
       }
+    });
+
+    closePanelBtn.addEventListener("click", function () {
+      thankYouOverlay.classList.remove("active");
     });
   </script>
 
