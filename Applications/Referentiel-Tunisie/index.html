@@ -9,8 +9,65 @@
   <title>Référentiel géographique administratif de la Tunisie</title>
   <script type="module" crossorigin src="./assets/index-CTMS1PHt-v11.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-B7HnPuyo-v11.css">
+
+<style>
+/* V12 fix — boutons de partage + trait recherche rose */
+.globalSearchPanel{border-left:5px solid #ec4899 !important;}
+.topBanner .socialShare{display:flex !important;gap:8px !important;border-left:1px solid rgba(255,255,255,0.20) !important;padding-left:12px !important;margin-left:2px !important;align-items:center !important;}
+.topBanner .socialBtn{display:inline-flex !important;justify-content:center !important;align-items:center !important;width:30px !important;height:30px !important;border-radius:50% !important;background:rgba(255,255,255,0.10) !important;border:1px solid rgba(255,255,255,0.22) !important;color:#ffffff !important;text-decoration:none !important;transition:all .2s ease !important;cursor:pointer !important;}
+.topBanner .socialBtn:hover{background:rgba(255,255,255,0.25) !important;transform:translateY(-2px) !important;}
+.topBanner .socialBtn svg{width:13px !important;height:13px !important;fill:currentColor !important;display:block !important;}
+@media (max-width: 620px){.topBanner .socialShare{border-left:none !important;padding-left:0 !important;gap:6px !important;}.topBanner .socialBtn{display:none !important;}}
+</style>
+
 </head>
 <body>
   <div id="root"></div>
+
+<script>
+(function(){
+  function shareUrl(platform){
+    var url = encodeURIComponent(window.location.href);
+    var txt = encodeURIComponent(document.title || 'Référentiel géographique administratif de la Tunisie');
+    if(platform==='linkedin') return 'https://www.linkedin.com/sharing/share-offsite/?url=' + url;
+    if(platform==='twitter') return 'https://twitter.com/intent/tweet?url=' + url + '&text=' + txt;
+    if(platform==='facebook') return 'https://www.facebook.com/sharer/sharer.php?u=' + url;
+    return '#';
+  }
+
+  function addShareButtons(){
+    var actions = document.querySelector('.topBanner .bannerActions');
+    if(!actions) return false;
+    if(actions.querySelector('.socialShare')) return true;
+
+    var wrapper = document.createElement('div');
+    wrapper.className = 'socialShare';
+    wrapper.innerHTML = ''+
+      '<a href="'+shareUrl('linkedin')+'" class="socialBtn" target="_blank" rel="noreferrer" title="Partager sur LinkedIn" aria-label="Partager sur LinkedIn">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>'+
+      '<a href="'+shareUrl('twitter')+'" class="socialBtn" target="_blank" rel="noreferrer" title="Partager sur X" aria-label="Partager sur X">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>'+
+      '<a href="'+shareUrl('facebook')+'" class="socialBtn" target="_blank" rel="noreferrer" title="Partager sur Facebook" aria-label="Partager sur Facebook">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>';
+
+    var version = actions.querySelector('.versionPill');
+    if(version) actions.insertBefore(wrapper, version);
+    else actions.appendChild(wrapper);
+    return true;
+  }
+
+  function boot(){
+    if(addShareButtons()) return;
+    var tries = 0;
+    var iv = setInterval(function(){
+      tries += 1;
+      if(addShareButtons() || tries > 50) clearInterval(iv);
+    }, 400);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+
 </body>
 </html>
