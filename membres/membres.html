@@ -10,7 +10,7 @@
   <meta name="author" content="Pr. Brahim Jaziri">
   <meta name="robots" content="index, follow">
 
-  <link rel="canonical" href="https://geomapia.github.io/membres/membres.html">
+  <link rel="canonical" href="https://geomapia-platform.web.app/membres/membres.html">
   <link rel="icon" href="../IA.png" type="image/png">
   <link rel="apple-touch-icon" href="../IA.png">
 
@@ -1115,26 +1115,30 @@
   </div>
 </footer>
 
+<!-- Firebase Hosting fournit automatiquement la configuration du projet. -->
+<script src="/__/firebase/8.10.1/firebase-app.js"></script>
+<script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+<script src="/__/firebase/init.js"></script>
+
 <script>
   "use strict";
 
-  /*
-   * Remplacez uniquement la valeur ci-dessous par votre URL Apps Script /exec.
-   * Ne placez aucun mot de passe ou secret dans ce fichier public.
-   */
-  const APPS_SCRIPT_WEB_APP_URL =
-    "REMPLACEZ_PAR_VOTRE_URL_APPS_SCRIPT_EXEC";
-
-  const FORM_VERSION = "membres-v109";
+  const FORM_VERSION = "membres-firestore-v110";
+  const COLLECTION_NAME = "membershipRequests";
 
   const form = document.getElementById("adhesionForm");
   const submitButton = document.getElementById("submitButton");
   const formMessage = document.getElementById("formMessage");
 
+  let db = null;
+
   function showFormMessage(type, message) {
     formMessage.className = "form-message " + type;
     formMessage.textContent = message;
-    formMessage.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    formMessage.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
   }
 
   function resetFormMessage() {
@@ -1142,16 +1146,48 @@
     formMessage.textContent = "";
   }
 
-  function configurationValide() {
-    return (
-      APPS_SCRIPT_WEB_APP_URL.startsWith("https://script.google.com/") &&
-      APPS_SCRIPT_WEB_APP_URL.endsWith("/exec")
-    );
+  function normalizeText(value) {
+    return String(value || "").trim();
   }
+
+  function normalizeEmail(value) {
+    return normalizeText(value).toLowerCase();
+  }
+
+  function initializeFirestore() {
+    try {
+      if (!window.firebase || !firebase.apps || firebase.apps.length === 0) {
+        throw new Error(
+          "Firebase n’est pas initialisé. Ouvrez cette page depuis Firebase Hosting."
+        );
+      }
+
+      db = firebase.firestore();
+      return true;
+    } catch (error) {
+      console.error("Initialisation Firebase impossible :", error);
+      showFormMessage(
+        "error",
+        "La connexion à Firebase est indisponible. Rechargez la page depuis le site officiel."
+      );
+      submitButton.disabled = true;
+      return false;
+    }
+  }
+
+  initializeFirestore();
 
   form.addEventListener("submit", async function(event) {
     event.preventDefault();
     resetFormMessage();
+
+    if (!db) {
+      showFormMessage(
+        "error",
+        "La connexion à Firestore n’est pas disponible."
+      );
+      return;
+    }
 
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -1162,27 +1198,32 @@
       return;
     }
 
-    if (!configurationValide()) {
+    if (normalizeText(form.siteInternet.value) !== "") {
       showFormMessage(
-        "error",
-        "Ajoutez votre URL Apps Script /exec dans APPS_SCRIPT_WEB_APP_URL."
+        "success",
+        "Votre demande a été prise en compte."
       );
+      form.reset();
       return;
     }
 
     const payload = {
-      prenom: form.prenom.value.trim(),
-      nom: form.nom.value.trim(),
-      email: form.email.value.trim(),
-      pays: form.pays.value.trim(),
-      etablissement: form.etablissement.value.trim(),
+      prenom: normalizeText(form.prenom.value),
+      nom: normalizeText(form.nom.value),
+      email: normalizeEmail(form.email.value),
+      pays: normalizeText(form.pays.value),
+      etablissement: normalizeText(form.etablissement.value),
       statut: form.statut.value,
       domaineInteret: form.domaineInteret.value,
-      motivation: form.motivation.value.trim(),
-      consentementDonnees: document.getElementById("consentementDonnees").checked,
-      consentementProfilPublic: document.getElementById("consentementProfilPublic").checked,
-      acceptationReglement: document.getElementById("acceptationReglement").checked,
-      siteInternet: form.siteInternet.value.trim(),
+      motivation: normalizeText(form.motivation.value),
+      consentementDonnees:
+        document.getElementById("consentementDonnees").checked,
+      consentementProfilPublic:
+        document.getElementById("consentementProfilPublic").checked,
+      acceptationReglement:
+        document.getElementById("acceptationReglement").checked,
+      status: "pending",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       source: "membres/membres.html",
       version: FORM_VERSION
     };
@@ -1192,39 +1233,36 @@
       '<i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours...';
 
     try {
-      const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(payload)
-      });
+      const documentReference = await db
+        .collection(COLLECTION_NAME)
+        .add(payload);
 
-      if (!response.ok) {
-        throw new Error("Réponse HTTP invalide : " + response.status);
-      }
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.message || "La demande n’a pas été enregistrée.");
-      }
+      console.info(
+        "Demande Firestore enregistrée :",
+        documentReference.id
+      );
 
       showFormMessage(
         "success",
-        result.message ||
-          "Votre demande a été enregistrée avec le statut EN ATTENTE."
+        "Votre demande a été enregistrée avec le statut EN ATTENTE. Elle sera examinée par l’administration Geomapia."
       );
 
       form.reset();
     } catch (error) {
-      console.error(error);
+      console.error("Erreur Firestore :", error);
 
-      showFormMessage(
-        "error",
-        error.message ||
-          "Une erreur empêche actuellement l’enregistrement."
-      );
+      let message =
+        "Une erreur empêche actuellement l’enregistrement. Veuillez réessayer.";
+
+      if (error && error.code === "permission-denied") {
+        message =
+          "La demande a été refusée par les règles de sécurité. Vérifiez que les règles Firestore publiées correspondent au formulaire.";
+      } else if (error && error.code === "unavailable") {
+        message =
+          "Le service Firestore est momentanément indisponible. Vérifiez votre connexion puis réessayez.";
+      }
+
+      showFormMessage("error", message);
     } finally {
       submitButton.disabled = false;
       submitButton.innerHTML =
